@@ -1,2 +1,2 @@
 # Ersatz
-PlaceholderAPI intergration for Skript
+PlaceholderAPI integration for Skript
