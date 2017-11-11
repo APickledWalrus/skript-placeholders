@@ -1,0 +1,5 @@
+name: Ersatz
+main: com.pikachu.papiaddon.Main
+version: 1.0
+author: Pikachu
+depend: [Skript, PlaceholderAPI]
