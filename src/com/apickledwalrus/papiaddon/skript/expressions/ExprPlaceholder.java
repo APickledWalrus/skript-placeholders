@@ -1,4 +1,4 @@
-package com.pikachu.papiaddon.skript.expressions;
+package com.apickledwalrus.papiaddon.skript.expressions;
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;

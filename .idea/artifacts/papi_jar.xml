@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="papi:jar">
-    <output-path>D:/papi</output-path>
-    <root id="archive" name="papi.jar">
-      <element id="module-output" name="papi" />
-      <element id="file-copy" path="$PROJECT_DIR$/src/plugin.yml" />
-    </root>
-  </artifact>
-</component>

@@ -1,4 +1,4 @@
-package com.pikachu.papiaddon.skript.events;
+package com.apickledwalrus.papiaddon.skript.events;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -9,9 +9,9 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.skript.util.Getter;
-import com.pikachu.papiaddon.Main;
-import com.pikachu.papiaddon.placeholderapi.PlaceholderAPIEvent;
-import com.pikachu.papiaddon.placeholderapi.PlaceholderAPIListener;
+import com.apickledwalrus.papiaddon.Main;
+import com.apickledwalrus.papiaddon.placeholderapi.PlaceholderAPIEvent;
+import com.apickledwalrus.papiaddon.placeholderapi.PlaceholderAPIListener;
 import org.bukkit.entity.Player;
 import ch.njol.skript.registrations.EventValues;
 import org.bukkit.event.Event;
@@ -46,7 +46,7 @@ public class EvtPlaceholderRequest extends SkriptEvent {
             Skript.error(prefix + " is not a valid placeholder", ErrorQuality.SEMANTIC_ERROR);
             return false;
         }
-        new PlaceholderAPIListener(Main.getInstance(), prefix).hook();
+        new PlaceholderAPIListener(Main.getInstance(), prefix).register();
         return true;
     }
 

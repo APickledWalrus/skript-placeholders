@@ -1,4 +1,4 @@
-package com.pikachu.papiaddon.placeholderapi;
+package com.apickledwalrus.papiaddon.placeholderapi;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

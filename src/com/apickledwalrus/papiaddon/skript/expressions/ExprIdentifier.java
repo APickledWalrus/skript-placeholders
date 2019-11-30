@@ -1,4 +1,4 @@
-package com.pikachu.papiaddon.skript.expressions;
+package com.apickledwalrus.papiaddon.skript.expressions;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
@@ -10,7 +10,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
-import com.pikachu.papiaddon.placeholderapi.PlaceholderAPIEvent;
+import com.apickledwalrus.papiaddon.placeholderapi.PlaceholderAPIEvent;
 import org.bukkit.event.Event;
 import ch.njol.skript.lang.util.SimpleExpression;
 

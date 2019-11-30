@@ -1,4 +1,4 @@
-package com.pikachu.papiaddon.skript.expressions;
+package com.apickledwalrus.papiaddon.skript.expressions;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
@@ -13,7 +13,7 @@ import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
 import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.util.coll.CollectionUtils;
-import com.pikachu.papiaddon.placeholderapi.PlaceholderAPIEvent;
+import com.apickledwalrus.papiaddon.placeholderapi.PlaceholderAPIEvent;
 import org.bukkit.event.Event;
 
 @Name("Placeholder Result")
