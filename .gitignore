@@ -4,3 +4,6 @@
 build/
 out/
 .idea/
+.classpath
+*.iml
+.project
