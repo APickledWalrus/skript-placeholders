@@ -23,7 +23,7 @@ import org.bukkit.event.Event;
 public class ExprMvdwPlaceholder extends SimpleExpression<String> {
 
 	static {
-		if (!Main.hasMVdW()) {
+		if (Main.hasMVdW()) {
 			Skript.registerExpression(ExprMvdwPlaceholder.class, String.class, ExpressionType.SIMPLE,
 							"[the] [mvdw[ ][placeholder[api]]] placeholder");
 		}

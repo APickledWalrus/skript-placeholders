@@ -25,7 +25,7 @@ import org.bukkit.event.Event;
 public class ExprMvdwResult extends SimpleExpression<String> {
 
 	static {
-		if (!Main.hasMVdW()) {
+		if (Main.hasMVdW()) {
 			Skript.registerExpression(ExprMvdwResult.class, String.class, ExpressionType.SIMPLE,
 							"[the] [mvdw[ ][placeholder[api]]] result");
 		}

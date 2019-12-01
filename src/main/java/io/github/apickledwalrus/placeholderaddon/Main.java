@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
 	private static Main instance;
-	private static final boolean hasMVdW = Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI");
-	private static final boolean hasPapi = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
+	private static final boolean hasMVdW = Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI");
+	private static final boolean hasPapi = Skript.classExists("me.clip.placeholderapi.expansion.PlaceholderExpansion");
 
 	public static Main getInstance() {
 		if (instance == null) {
@@ -32,12 +32,13 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		if (!hasMVdW && !hasPapi) {
-			Logger.getLogger("Minecraft").severe("[skript-placeholders] - No placeholders plugin found! Disabling!");
+			Logger.getLogger("Minecraft").severe("[skript-placeholders] No placeholders plugin found! Disabling!");
+			Logger.getLogger("Minecraft").severe("[skript-placeholders] Has PlaceholderAPI: " + hasPapi + " Has MVdWPlaceholderAPI: " + hasMVdW);
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
 		try {
-			Skript.registerAddon(this).loadClasses("com.apickledwalrus.papiaddon.skript", "events", "expressions");
+			Skript.registerAddon(this).loadClasses("io.github.apickledwalrus.placeholderaddon.skript", "events", "expressions");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

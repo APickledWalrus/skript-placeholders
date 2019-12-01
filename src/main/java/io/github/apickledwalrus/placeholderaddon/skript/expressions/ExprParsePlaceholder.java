@@ -27,7 +27,7 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 	static {
 		Skript.registerExpression(ExprParsePlaceholder.class, String.class, ExpressionType.SIMPLE,
 				"[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [from %players%]",
-			"parse placeholder[s] %strings% [(for|as) %players%]");
+				"parse placeholder[s] %strings% [(for|as) %players%]");
 	}
 
 	private Expression<String> placeholders;

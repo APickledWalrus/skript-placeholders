@@ -23,7 +23,7 @@ import org.bukkit.event.Event;
 public class ExprPapiPrefix extends SimpleExpression<String> {
 
 	static {
-		if (!Main.hasPapi()) {
+		if (Main.hasPapi()) {
 			Skript.registerExpression(ExprPapiPrefix.class, String.class, ExpressionType.SIMPLE,
 							"[the] [(placeholder[api]|papi)] (prefix|placeholder)");
 		}

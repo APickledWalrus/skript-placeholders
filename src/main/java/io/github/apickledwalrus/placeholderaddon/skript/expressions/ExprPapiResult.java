@@ -25,7 +25,7 @@ import org.bukkit.event.Event;
 public class ExprPapiResult extends SimpleExpression<String> {
 
 	static {
-		if (!Main.hasPapi()) {
+		if (Main.hasPapi()) {
 			Skript.registerExpression(ExprPapiResult.class, String.class, ExpressionType.SIMPLE,
 							"[the] [(placeholder[api]|papi)] result");
 		}

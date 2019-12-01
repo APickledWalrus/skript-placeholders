@@ -24,7 +24,7 @@ import org.bukkit.event.Event;
 public class EvtPapiPlaceholderRequest extends SkriptEvent {
 
 	static {
-		if (!Main.hasPapi()) {
+		if (Main.hasPapi()) {
 			Skript.registerEvent("Placeholder Request", EvtPapiPlaceholderRequest.class, PlaceholderAPIEvent.class, "(placeholder[api]|papi) request with [the] prefix %string%");
 			EventValues.registerEventValue(PlaceholderAPIEvent.class, Player.class, new Getter<Player, PlaceholderAPIEvent>() {
 				@Override
