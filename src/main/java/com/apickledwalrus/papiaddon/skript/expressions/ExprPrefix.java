@@ -5,6 +5,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -15,8 +16,9 @@ import com.apickledwalrus.papiaddon.placeholderapi.PlaceholderAPIEvent;
 import org.bukkit.event.Event;
 
 @Name("Placeholder Prefix")
-@Description("Represents the prefix in a placeholder request event")
+@Description("Returns the prefix in a placeholder request event.")
 @Examples("on placeholder request with the prefix \"example\":\n\tbroadcast the prefix # \"example\" will be broadcasted")
+@Since("1.0")
 public class ExprPrefix extends SimpleExpression<String> {
 
   static {

@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -17,12 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Name("Value of Placeholder")
-@Description("Grabs the value of a PlaceholderAPI prefix")
+@Description("Returns the value of a PlaceholderAPI/MVdW placeholder.")
 @Examples("on first join:\n\tset {_uniqueJoins} to the value of placeholder \"server_unique_joins\"\n\tbroadcast \"%{_uniqueJoins}% unique players have joined our server!\"")
+@Since("1.0 - PAPI Placeholders, 1.2 - MVdW Placeholders")
 public class ExprPlaceholder extends SimpleExpression<String> {
 
   static {
-    Skript.registerExpression(ExprPlaceholder.class, String.class, ExpressionType.SIMPLE, "[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [from %players%]");
+    Skript.registerExpression(ExprPlaceholder.class, String.class, ExpressionType.SIMPLE,
+        "[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [from %players%]");
   }
 
   private Expression<String> placeholders;
@@ -41,17 +44,28 @@ public class ExprPlaceholder extends SimpleExpression<String> {
     return "%" + placeholder + "%";
   }
 
-  private String getPlaceholder(String placeholder, Player player) {
-    placeholder = formatPlaceholder(placeholder);
-    if (PlaceholderAPI.containsPlaceholders(placeholder)) {
-      String value = PlaceholderAPI.setPlaceholders(player, placeholder);
-      if (value.equals(placeholder) || "".equals(value)) {
-        return null;
+  /*
+   * Type - Represents where the placeholder is from e.g. PAPI, MVdW
+   */
+  private String getPlaceholder(String placeholder, Player player, boolean mvdw) {
+    String value;
+    if (mvdw) {
+      if (placeholder.charAt(0) == '{' && placeholder.charAt(placeholder.length() - 1) == '}') {
+        value = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, placeholder);
+        if (value.equals(placeholder)) // MVdW placeholders return the input if no MVdW plugins are installed.
+          return null;
+        return value;
       }
-      return value;
     } else {
-      return null;
+      placeholder = formatPlaceholder(placeholder);
+      if (PlaceholderAPI.containsPlaceholders(placeholder)) {
+        value = PlaceholderAPI.setPlaceholders(player, placeholder);
+        if (value.equals(placeholder) || "".equals(value))
+          return null;
+        return value;
+      }
     }
+    return null;
   }
 
   @SuppressWarnings("unchecked")
@@ -67,15 +81,16 @@ public class ExprPlaceholder extends SimpleExpression<String> {
     String[] placeholders = this.placeholders.getArray(e);
     Player[] players = this.players.getArray(e);
     List<String> values = new ArrayList<>();
+    boolean mvdw = Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI");
     if (players.length != 0) {
       for (String ph : placeholders) {
         for (Player p : players) {
-          values.add(getPlaceholder(ph, p));
+          values.add(getPlaceholder(ph, p, mvdw));
         }
       }
     } else {
       for (String ph : placeholders) {
-        values.add(getPlaceholder(ph, null));
+        values.add(getPlaceholder(ph, null, mvdw));
       }
     }
     return values.toArray(new String[0]);
