@@ -17,26 +17,22 @@ import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPILi
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-@Name("On Placeholder Request")
+@Name("On PlaceholderAPI Placeholder Request")
 @Description("Called whenever a placeholder is requested by PlaceholderAPI.")
-@Examples("on placeholder request with prefix \"example\":\n\tif the identifier is \"name\": # example_name\n\t\tset the result to player's name\n\telse if the identifier is \"uuid\": # example_uuid\n\t\tset the result to the player's uuid\n\telse if the identifier is \"money\": # example_money\n\t\tset the result to \"$%{money::%player's uuid%}%\"")
+@Examples("INSERT EXAMPLE")
 @Since("1.0")
-public class EvtPlaceholderRequest extends SkriptEvent {
+public class EvtPapiPlaceholderRequest extends SkriptEvent {
 
   static {
-    Skript.registerEvent("Placeholder Request", EvtPlaceholderRequest.class, PlaceholderAPIEvent.class, "(placeholder[api]|papi) request with [the] prefix %string%");
-    EventValues.registerEventValue(PlaceholderAPIEvent.class, Player.class, new Getter<Player, PlaceholderAPIEvent>() {
-      @Override
-      public Player get(PlaceholderAPIEvent e) {
-        return e.getPlayer();
-      }
-    }, 0);
-    EventValues.registerEventValue(PlaceholderAPIEvent.class, String.class, new Getter<String, PlaceholderAPIEvent>() {
-      @Override
-      public String get(PlaceholderAPIEvent e) {
-        return e.getIdentifier();
-      }
-    }, 0);
+    if (!Main.hasPapi()) {
+      Skript.registerEvent("Placeholder Request", EvtPapiPlaceholderRequest.class, PlaceholderAPIEvent.class, "(placeholder[api]|papi) request with [the] prefix %string%");
+      EventValues.registerEventValue(PlaceholderAPIEvent.class, Player.class, new Getter<Player, PlaceholderAPIEvent>() {
+        @Override
+        public Player get(PlaceholderAPIEvent e) {
+          return e.getPlayer();
+        }
+      }, 0);
+    }
   }
 
   private String prefix;

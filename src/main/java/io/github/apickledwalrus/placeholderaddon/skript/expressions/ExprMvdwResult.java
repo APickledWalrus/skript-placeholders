@@ -14,23 +14,27 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
-import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPIEvent;
+import io.github.apickledwalrus.placeholderaddon.Main;
+import io.github.apickledwalrus.placeholderaddon.mvdwapi.MvdwAPIEvent;
 import org.bukkit.event.Event;
 
-@Name("Placeholder Result")
-@Description("The result in a placeholder request event.")
-@Examples("on placeholder request with prefix \"example\":\n\tif the identifier is \"name\": # example_name\n\t\tset the result to player's name\n\telse if the identifier is \"uuid\": # example_uuid\n\t\tset the result to the player's uuid\n\telse if the identifier is \"money\": # example_money\n\t\tset the result to \"$%{money::%player's uuid%}%\"")
-@Since("1.0")
-public class ExprResult extends SimpleExpression<String> {
+@Name("MVdWPlaceholderAPI Result")
+@Description("The result (placeholder value) in a MVdWPlaceholderAPI request event.")
+@Examples("INSERT EXAMPLE")
+@Since("1.3")
+public class ExprMvdwResult extends SimpleExpression<String> {
 
   static {
-    Skript.registerExpression(ExprResult.class, String.class, ExpressionType.SIMPLE, "[the] [(placeholder[api]|papi)] result");
+    if (!Main.hasMVdW()) {
+      Skript.registerExpression(ExprMvdwResult.class, String.class, ExpressionType.SIMPLE,
+              "[the] [mvdw[ ][placeholder[api]]] result");
+    }
   }
 
   @Override
   public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-    if (!ScriptLoader.isCurrentEvent(PlaceholderAPIEvent.class)) {
-      Skript.error("The PlaceholderAPI result can only be used in a placeholder request event", ErrorQuality.SEMANTIC_ERROR);
+    if (!ScriptLoader.isCurrentEvent(MvdwAPIEvent.class)) {
+      Skript.error("The MVdWPlaceholderAPI result can only be used in a MVdWPlaceholderAPI request event", ErrorQuality.SEMANTIC_ERROR);
       return false;
     }
     return true;
@@ -38,12 +42,12 @@ public class ExprResult extends SimpleExpression<String> {
 
   @Override
   protected String[] get(final Event e) {
-    return new String[]{((PlaceholderAPIEvent) e).getResult()};
+    return new String[]{((MvdwAPIEvent) e).getResult()};
   }
 
   @Override
   public String toString(Event e, boolean debug) {
-    return "the placeholder result";
+    return "the mvdwplaceholderapi result";
   }
 
   @Override
@@ -63,11 +67,11 @@ public class ExprResult extends SimpleExpression<String> {
   public void change(Event e, Object[] delta, ChangeMode mode) {
     switch (mode) {
       case SET:
-        ((PlaceholderAPIEvent) e).setResult((String) delta[0]);
+        ((MvdwAPIEvent) e).setResult((String) delta[0]);
         break;
       case RESET:
       case DELETE:
-        ((PlaceholderAPIEvent) e).setResult(null);
+        ((MvdwAPIEvent) e).setResult(null);
         break;
     }
   }

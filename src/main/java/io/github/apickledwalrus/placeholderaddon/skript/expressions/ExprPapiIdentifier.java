@@ -12,23 +12,27 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
+import io.github.apickledwalrus.placeholderaddon.Main;
 import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPIEvent;
 import org.bukkit.event.Event;
 
-@Name("Placeholder Identifier")
-@Description("Returns the identifier in a placeholder request event.")
-@Examples("on placeholder request with prefix \"example\":\n\tif the identifier is \"name\": # example_name\n\t\tset the result to player's name\n\telse if the identifier is \"uuid\": # example_uuid\n\t\tset the result to the player's uuid\n\telse if the identifier is \"money\": # example_money\n\t\tset the result to \"$%{money::%player's uuid%}%\"")
+@Name("PlaceholderAPI Identifier")
+@Description("Returns the identifier of the placeholder in a PlaceholderAPI request event.")
+@Examples("INSERT EXAMPLE")
 @Since("1.0")
-public class ExprIdentifier extends SimpleExpression<String> {
+public class ExprPapiIdentifier extends SimpleExpression<String> {
 
   static {
-    Skript.registerExpression(ExprIdentifier.class, String.class, ExpressionType.SIMPLE, "[the] [(placeholder[api]|papi)] identifier");
+    if (!Main.hasPapi()) {
+      Skript.registerExpression(ExprPapiIdentifier.class, String.class, ExpressionType.SIMPLE,
+              "[the] [(placeholder[api]|papi)] identifier");
+    }
   }
 
   @Override
   public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
     if (!ScriptLoader.isCurrentEvent(PlaceholderAPIEvent.class)) {
-      Skript.error("The PlaceholderAPI identifier can only be used in a placeholder request event", ErrorQuality.SEMANTIC_ERROR);
+      Skript.error("The PlaceholderAPI identifier can only be used in a PlaceholderAPI request event", ErrorQuality.SEMANTIC_ERROR);
       return false;
     }
     return true;
@@ -41,7 +45,7 @@ public class ExprIdentifier extends SimpleExpression<String> {
 
   @Override
   public String toString(Event e, boolean debug) {
-    return "the placeholder identifier";
+    return "the placeholderapi identifier";
   }
 
   @Override

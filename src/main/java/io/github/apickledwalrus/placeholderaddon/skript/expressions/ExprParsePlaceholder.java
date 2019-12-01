@@ -10,6 +10,7 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
+import io.github.apickledwalrus.placeholderaddon.Main;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -18,16 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Name("Value of Placeholder")
-@Description("Returns the value of a PlaceholderAPI/MVdW placeholder.")
-@Examples("on first join:\n\tset {_uniqueJoins} to the value of placeholder \"server_unique_joins\"\n\tbroadcast \"%{_uniqueJoins}% unique players have joined our server!\"")
-@Since("1.0 - PAPI Placeholders, 1.2 - MVdW Placeholders")
-public class ExprPlaceholder extends SimpleExpression<String> {
-
-  private static final boolean mvdwSupport = Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI");
+@Description("Returns the value of a PlaceholderAPI/MVdWPlaceholderAPI placeholder.")
+@Examples("INSERT EXAMPLE")
+@Since("1.0 - PAPI Placeholders, 1.2 - MVdW Placeholders, 1.3 - Updated Syntax")
+public class ExprParsePlaceholder extends SimpleExpression<String> {
 
   static {
-    Skript.registerExpression(ExprPlaceholder.class, String.class, ExpressionType.SIMPLE,
-        "[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [from %players%]");
+    Skript.registerExpression(ExprParsePlaceholder.class, String.class, ExpressionType.SIMPLE,
+        "[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [from %players%]",
+    	"parse placeholder[s] %strings% [(for|as) %players%]");
   }
 
   private Expression<String> placeholders;
@@ -51,14 +51,15 @@ public class ExprPlaceholder extends SimpleExpression<String> {
    */
   private String getPlaceholder(String placeholder, Player player) {
     String value;
-    if (mvdwSupport) {
+    if (Main.hasMVdW()) {
       if (placeholder.charAt(0) == '{' && placeholder.charAt(placeholder.length() - 1) == '}') {
         value = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, placeholder);
         if (value.equals(placeholder)) // MVdW placeholders return the input if no MVdW plugins are installed.
           return null;
         return value;
       }
-    } else {
+    }
+    if (Main.hasPapi()) {
       placeholder = formatPlaceholder(placeholder);
       if (PlaceholderAPI.containsPlaceholders(placeholder)) {
         value = PlaceholderAPI.setPlaceholders(player, placeholder);
