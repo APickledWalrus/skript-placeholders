@@ -24,60 +24,60 @@ import org.bukkit.event.Event;
 @Since("1.0")
 public class ExprPapiResult extends SimpleExpression<String> {
 
-  static {
-    if (!Main.hasPapi()) {
-      Skript.registerExpression(ExprPapiResult.class, String.class, ExpressionType.SIMPLE,
-              "[the] [(placeholder[api]|papi)] result");
-    }
-  }
+	static {
+		if (!Main.hasPapi()) {
+			Skript.registerExpression(ExprPapiResult.class, String.class, ExpressionType.SIMPLE,
+							"[the] [(placeholder[api]|papi)] result");
+		}
+	}
 
-  @Override
-  public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-    if (!ScriptLoader.isCurrentEvent(PlaceholderAPIEvent.class)) {
-      Skript.error("The PlaceholderAPI result can only be used in a PlaceholderAPI request event", ErrorQuality.SEMANTIC_ERROR);
-      return false;
-    }
-    return true;
-  }
+	@Override
+	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+		if (!ScriptLoader.isCurrentEvent(PlaceholderAPIEvent.class)) {
+			Skript.error("The PlaceholderAPI result can only be used in a PlaceholderAPI request event", ErrorQuality.SEMANTIC_ERROR);
+			return false;
+		}
+		return true;
+	}
 
-  @Override
-  protected String[] get(final Event e) {
-    return new String[]{((PlaceholderAPIEvent) e).getResult()};
-  }
+	@Override
+	protected String[] get(final Event e) {
+		return new String[]{((PlaceholderAPIEvent) e).getResult()};
+	}
 
-  @Override
-  public String toString(Event e, boolean debug) {
-    return "the placeholderapi result";
-  }
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "the placeholderapi result";
+	}
 
-  @Override
-  public boolean isSingle() {
-    return true;
-  }
+	@Override
+	public boolean isSingle() {
+		return true;
+	}
 
-  @Override
-  public Class<?>[] acceptChange(final ChangeMode mode) {
-    if (mode == ChangeMode.SET || mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {
-      return CollectionUtils.array(String.class);
-    }
-    return null;
-  }
+	@Override
+	public Class<?>[] acceptChange(final ChangeMode mode) {
+		if (mode == ChangeMode.SET || mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {
+			return CollectionUtils.array(String.class);
+		}
+		return null;
+	}
 
-  @Override
-  public void change(Event e, Object[] delta, ChangeMode mode) {
-    switch (mode) {
-      case SET:
-        ((PlaceholderAPIEvent) e).setResult((String) delta[0]);
-        break;
-      case RESET:
-      case DELETE:
-        ((PlaceholderAPIEvent) e).setResult(null);
-        break;
-    }
-  }
+	@Override
+	public void change(Event e, Object[] delta, ChangeMode mode) {
+		switch (mode) {
+			case SET:
+				((PlaceholderAPIEvent) e).setResult((String) delta[0]);
+				break;
+			case RESET:
+			case DELETE:
+				((PlaceholderAPIEvent) e).setResult(null);
+				break;
+		}
+	}
 
-  @Override
-  public Class<? extends String> getReturnType() {
-    return String.class;
-  }
+	@Override
+	public Class<? extends String> getReturnType() {
+		return String.class;
+	}
 }

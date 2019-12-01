@@ -24,60 +24,60 @@ import org.bukkit.event.Event;
 @Since("1.3")
 public class ExprMvdwResult extends SimpleExpression<String> {
 
-  static {
-    if (!Main.hasMVdW()) {
-      Skript.registerExpression(ExprMvdwResult.class, String.class, ExpressionType.SIMPLE,
-              "[the] [mvdw[ ][placeholder[api]]] result");
-    }
-  }
+	static {
+		if (!Main.hasMVdW()) {
+			Skript.registerExpression(ExprMvdwResult.class, String.class, ExpressionType.SIMPLE,
+							"[the] [mvdw[ ][placeholder[api]]] result");
+		}
+	}
 
-  @Override
-  public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-    if (!ScriptLoader.isCurrentEvent(MvdwAPIEvent.class)) {
-      Skript.error("The MVdWPlaceholderAPI result can only be used in a MVdWPlaceholderAPI request event", ErrorQuality.SEMANTIC_ERROR);
-      return false;
-    }
-    return true;
-  }
+	@Override
+	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+		if (!ScriptLoader.isCurrentEvent(MvdwAPIEvent.class)) {
+			Skript.error("The MVdWPlaceholderAPI result can only be used in a MVdWPlaceholderAPI request event", ErrorQuality.SEMANTIC_ERROR);
+			return false;
+		}
+		return true;
+	}
 
-  @Override
-  protected String[] get(final Event e) {
-    return new String[]{((MvdwAPIEvent) e).getResult()};
-  }
+	@Override
+	protected String[] get(final Event e) {
+		return new String[]{((MvdwAPIEvent) e).getResult()};
+	}
 
-  @Override
-  public String toString(Event e, boolean debug) {
-    return "the mvdwplaceholderapi result";
-  }
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "the mvdwplaceholderapi result";
+	}
 
-  @Override
-  public boolean isSingle() {
-    return true;
-  }
+	@Override
+	public boolean isSingle() {
+		return true;
+	}
 
-  @Override
-  public Class<?>[] acceptChange(final ChangeMode mode) {
-    if (mode == ChangeMode.SET || mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {
-      return CollectionUtils.array(String.class);
-    }
-    return null;
-  }
+	@Override
+	public Class<?>[] acceptChange(final ChangeMode mode) {
+		if (mode == ChangeMode.SET || mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {
+			return CollectionUtils.array(String.class);
+		}
+		return null;
+	}
 
-  @Override
-  public void change(Event e, Object[] delta, ChangeMode mode) {
-    switch (mode) {
-      case SET:
-        ((MvdwAPIEvent) e).setResult((String) delta[0]);
-        break;
-      case RESET:
-      case DELETE:
-        ((MvdwAPIEvent) e).setResult(null);
-        break;
-    }
-  }
+	@Override
+	public void change(Event e, Object[] delta, ChangeMode mode) {
+		switch (mode) {
+			case SET:
+				((MvdwAPIEvent) e).setResult((String) delta[0]);
+				break;
+			case RESET:
+			case DELETE:
+				((MvdwAPIEvent) e).setResult(null);
+				break;
+		}
+	}
 
-  @Override
-  public Class<? extends String> getReturnType() {
-    return String.class;
-  }
+	@Override
+	public Class<? extends String> getReturnType() {
+		return String.class;
+	}
 }

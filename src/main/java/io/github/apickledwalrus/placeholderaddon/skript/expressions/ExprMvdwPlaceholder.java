@@ -22,39 +22,39 @@ import org.bukkit.event.Event;
 @Since("1.3")
 public class ExprMvdwPlaceholder extends SimpleExpression<String> {
 
-  static {
-    if (!Main.hasMVdW()) {
-      Skript.registerExpression(ExprMvdwPlaceholder.class, String.class, ExpressionType.SIMPLE,
-              "[the] [mvdw[ ][placeholder[api]]] placeholder");
-    }
-  }
+	static {
+		if (!Main.hasMVdW()) {
+			Skript.registerExpression(ExprMvdwPlaceholder.class, String.class, ExpressionType.SIMPLE,
+							"[the] [mvdw[ ][placeholder[api]]] placeholder");
+		}
+	}
 
-  @Override
-  public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-    if (!ScriptLoader.isCurrentEvent(MvdwAPIEvent.class)) {
-      Skript.error("The MVdWPlaceholderAPI placeholder can only be used in a MVdWPlaceholderAPI request event", ErrorQuality.SEMANTIC_ERROR);
-      return false;
-    }
-    return true;
-  }
+	@Override
+	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+		if (!ScriptLoader.isCurrentEvent(MvdwAPIEvent.class)) {
+			Skript.error("The MVdWPlaceholderAPI placeholder can only be used in a MVdWPlaceholderAPI request event", ErrorQuality.SEMANTIC_ERROR);
+			return false;
+		}
+		return true;
+	}
 
-  @Override
-  protected String[] get(final Event e) {
-    return new String[]{((MvdwAPIEvent) e).getPlaceholder()};
-  }
+	@Override
+	protected String[] get(final Event e) {
+		return new String[]{((MvdwAPIEvent) e).getPlaceholder()};
+	}
 
-  @Override
-  public String toString(Event e, boolean debug) {
-    return "the mvdwplaceholderapi prefix";
-  }
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "the mvdwplaceholderapi prefix";
+	}
 
-  @Override
-  public boolean isSingle() {
-    return true;
-  }
+	@Override
+	public boolean isSingle() {
+		return true;
+	}
 
-  @Override
-  public Class<? extends String> getReturnType() {
-    return String.class;
-  }
+	@Override
+	public Class<? extends String> getReturnType() {
+		return String.class;
+	}
 }

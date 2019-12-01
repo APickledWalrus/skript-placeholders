@@ -23,39 +23,39 @@ import org.bukkit.event.Event;
 @Since("1.3")
 public class EvtMvdwPlaceholderRequest extends SkriptEvent {
 
-  static {
-	if (!Main.hasMVdW()) {
-      Skript.registerEvent("Placeholder Request", EvtMvdwPlaceholderRequest.class, MvdwAPIEvent.class, "mvdw[ ][placeholder[api]] request with [the] placeholder %string%");
-      EventValues.registerEventValue(MvdwAPIEvent.class, Player.class, new Getter<Player, MvdwAPIEvent>() {
-        @Override
-        public Player get(MvdwAPIEvent e) {
-          return e.getPlayer();
-        }
-      }, 0);
+	static {
+		if (!Main.hasMVdW()) {
+			Skript.registerEvent("Placeholder Request", EvtMvdwPlaceholderRequest.class, MvdwAPIEvent.class, "mvdw[ ][placeholder[api]] request with [the] placeholder %string%");
+			EventValues.registerEventValue(MvdwAPIEvent.class, Player.class, new Getter<Player, MvdwAPIEvent>() {
+				@Override
+				public Player get(MvdwAPIEvent e) {
+					return e.getPlayer();
+				}
+			}, 0);
+		}
 	}
-  }
 
-  private String placeholder;
+	private String placeholder;
 
-  @SuppressWarnings("unchecked")
-  @Override
-  public boolean init(final Literal<?>[] args, final int matchedPattern, final SkriptParser.ParseResult parser) {
-    placeholder = ((Literal<String>) args[0]).getSingle();
-    if ("".equals(placeholder)) {
-      Skript.error(placeholder + " is not a valid placeholder", ErrorQuality.SEMANTIC_ERROR);
-      return false;
-    }
-    MvdwAPIListener.registerPlaceholder(Main.getInstance(), placeholder);
-    return true;
-  }
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean init(final Literal<?>[] args, final int matchedPattern, final SkriptParser.ParseResult parser) {
+		placeholder = ((Literal<String>) args[0]).getSingle();
+		if ("".equals(placeholder)) {
+			Skript.error(placeholder + " is not a valid placeholder", ErrorQuality.SEMANTIC_ERROR);
+			return false;
+		}
+		MvdwAPIListener.registerPlaceholder(Main.getInstance(), placeholder);
+		return true;
+	}
 
-  @Override
-  public boolean check(final Event e) {
-    return ((MvdwAPIEvent) e).getPlaceholder().equalsIgnoreCase(placeholder);
-  }
+	@Override
+	public boolean check(final Event e) {
+		return ((MvdwAPIEvent) e).getPlaceholder().equalsIgnoreCase(placeholder);
+	}
 
-  @Override
-  public String toString(Event e, boolean debug) {
-    return "placeholder request" + (placeholder != null ? ("with placeholder \"" + placeholder + "\"") : "");
-  }
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "placeholder request" + (placeholder != null ? ("with placeholder \"" + placeholder + "\"") : "");
+	}
 }

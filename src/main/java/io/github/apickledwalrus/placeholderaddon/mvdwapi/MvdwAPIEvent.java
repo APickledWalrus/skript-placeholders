@@ -6,39 +6,39 @@ import org.bukkit.event.HandlerList;
 
 public class MvdwAPIEvent extends Event {
 
-  private static final HandlerList handlerList = new HandlerList();
+	private static final HandlerList handlerList = new HandlerList();
 
-  private Player player;
-  private String placeholder;
-  private String result;
+	private Player player;
+	private String placeholder;
+	private String result;
 
-  public MvdwAPIEvent(Player player, String placeholder) {
-    this.placeholder = placeholder;
-    this.player = player;
-  }
+	public MvdwAPIEvent(Player player, String placeholder) {
+		this.placeholder = placeholder;
+		this.player = player;
+	}
 
-  public static HandlerList getHandlerList() {
-    return handlerList;
-  }
+	public static HandlerList getHandlerList() {
+		return handlerList;
+	}
 
-  @Override
-  public HandlerList getHandlers() {
-    return handlerList;
-  }
+	@Override
+	public HandlerList getHandlers() {
+		return handlerList;
+	}
 
-  public Player getPlayer() {
-    return player;
-  }
+	public Player getPlayer() {
+		return player;
+	}
 
-  public String getPlaceholder() {
-    return placeholder;
-  }
+	public String getPlaceholder() {
+		return placeholder;
+	}
 
-  public String getResult() {
-    return result;
-  }
+	public String getResult() {
+		return result;
+	}
 
-  public void setResult(String result) {
-    this.result = result;
-  }
+	public void setResult(String result) {
+		this.result = result;
+	}
 }
