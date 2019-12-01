@@ -5,6 +5,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -15,8 +16,9 @@ import com.apickledwalrus.papiaddon.placeholderapi.PlaceholderAPIEvent;
 import org.bukkit.event.Event;
 
 @Name("Placeholder Identifier")
-@Description("Grabs the identifier from a placeholder request event")
+@Description("Returns the identifier in a placeholder request event.")
 @Examples("on placeholder request with prefix \"example\":\n\tif the identifier is \"name\": # example_name\n\t\tset the result to player's name\n\telse if the identifier is \"uuid\": # example_uuid\n\t\tset the result to the player's uuid\n\telse if the identifier is \"money\": # example_money\n\t\tset the result to \"$%{money::%player's uuid%}%\"")
+@Since("1.0")
 public class ExprIdentifier extends SimpleExpression<String> {
 
   static {

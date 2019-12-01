@@ -13,5 +13,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/apick/Desktop/.jar Files/PlaceholderAPI-2.10.4.jar"/>
 	<classpathentry kind="lib" path="C:/Users/apick/Desktop/.jar Files/Skript.jar"/>
+	<classpathentry kind="lib" path="C:/Users/apick/Desktop/.jar Files/MVdWPlaceholderAPI.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
