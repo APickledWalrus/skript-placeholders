@@ -23,6 +23,8 @@ import java.util.List;
 @Since("1.0 - PAPI Placeholders, 1.2 - MVdW Placeholders")
 public class ExprPlaceholder extends SimpleExpression<String> {
 
+  private static final boolean mvdwSupport = Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI");
+
   static {
     Skript.registerExpression(ExprPlaceholder.class, String.class, ExpressionType.SIMPLE,
         "[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [from %players%]");
@@ -47,9 +49,9 @@ public class ExprPlaceholder extends SimpleExpression<String> {
   /*
    * Type - Represents where the placeholder is from e.g. PAPI, MVdW
    */
-  private String getPlaceholder(String placeholder, Player player, boolean mvdw) {
+  private String getPlaceholder(String placeholder, Player player) {
     String value;
-    if (mvdw) {
+    if (mvdwSupport) {
       if (placeholder.charAt(0) == '{' && placeholder.charAt(placeholder.length() - 1) == '}') {
         value = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, placeholder);
         if (value.equals(placeholder)) // MVdW placeholders return the input if no MVdW plugins are installed.
@@ -81,16 +83,15 @@ public class ExprPlaceholder extends SimpleExpression<String> {
     String[] placeholders = this.placeholders.getArray(e);
     Player[] players = this.players.getArray(e);
     List<String> values = new ArrayList<>();
-    boolean mvdw = Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI");
     if (players.length != 0) {
       for (String ph : placeholders) {
         for (Player p : players) {
-          values.add(getPlaceholder(ph, p, mvdw));
+          values.add(getPlaceholder(ph, p));
         }
       }
     } else {
       for (String ph : placeholders) {
-        values.add(getPlaceholder(ph, null, mvdw));
+        values.add(getPlaceholder(ph, null));
       }
     }
     return values.toArray(new String[0]);

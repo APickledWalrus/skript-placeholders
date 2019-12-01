@@ -42,7 +42,7 @@ public class EvtPlaceholderRequest extends SkriptEvent {
   private String prefix;
 
   @SuppressWarnings("unchecked")
-	@Override
+  @Override
   public boolean init(final Literal<?>[] args, final int matchedPattern, final SkriptParser.ParseResult parser) {
     prefix = ((Literal<String>) args[0]).getSingle();
     if ("".equals(prefix)) {
