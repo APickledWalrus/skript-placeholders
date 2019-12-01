@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
+    compileOnly 'com.github.SkriptLang:Skript:2.3'
+    compileOnly 'me.clip:placeholderapi:2.10.4'
+    compileOnly fileTree(dir: 'libs', include: '*.jar')
+}
