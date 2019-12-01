@@ -1,4 +1,4 @@
-package com.apickledwalrus.papiaddon.skript.expressions;
+package io.github.apickledwalrus.placeholderaddon.skript.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;

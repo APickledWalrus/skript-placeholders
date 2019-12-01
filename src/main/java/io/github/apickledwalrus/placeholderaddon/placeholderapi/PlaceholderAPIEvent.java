@@ -1,4 +1,4 @@
-package com.apickledwalrus.papiaddon.placeholderapi;
+package io.github.apickledwalrus.placeholderaddon.placeholderapi;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

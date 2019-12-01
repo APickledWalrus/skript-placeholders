@@ -1,4 +1,4 @@
-package com.apickledwalrus.papiaddon;
+package io.github.apickledwalrus.placeholderaddon;
 
 import ch.njol.skript.Skript;
 import org.bukkit.plugin.java.JavaPlugin;

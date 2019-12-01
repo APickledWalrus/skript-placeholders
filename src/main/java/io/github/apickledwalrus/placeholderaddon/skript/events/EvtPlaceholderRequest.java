@@ -1,4 +1,4 @@
-package com.apickledwalrus.papiaddon.skript.events;
+package io.github.apickledwalrus.placeholderaddon.skript.events;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -11,9 +11,9 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
-import com.apickledwalrus.papiaddon.Main;
-import com.apickledwalrus.papiaddon.placeholderapi.PlaceholderAPIEvent;
-import com.apickledwalrus.papiaddon.placeholderapi.PlaceholderAPIListener;
+import io.github.apickledwalrus.placeholderaddon.Main;
+import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPIEvent;
+import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPIListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 

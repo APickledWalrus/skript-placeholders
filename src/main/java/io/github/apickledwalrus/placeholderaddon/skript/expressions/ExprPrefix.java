@@ -1,4 +1,4 @@
-package com.apickledwalrus.papiaddon.skript.expressions;
+package io.github.apickledwalrus.placeholderaddon.skript.expressions;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
@@ -12,7 +12,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
-import com.apickledwalrus.papiaddon.placeholderapi.PlaceholderAPIEvent;
+import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPIEvent;
 import org.bukkit.event.Event;
 
 @Name("Placeholder Prefix")

@@ -1,6 +1,6 @@
-package com.apickledwalrus.papiaddon.placeholderapi;
+package io.github.apickledwalrus.placeholderaddon.placeholderapi;
 
-import com.apickledwalrus.papiaddon.Main;
+import io.github.apickledwalrus.placeholderaddon.Main;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
