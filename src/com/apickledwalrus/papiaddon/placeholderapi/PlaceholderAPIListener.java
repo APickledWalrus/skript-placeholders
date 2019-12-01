@@ -12,8 +12,8 @@ public class PlaceholderAPIListener extends PlaceholderExpansion {
 
 	@Override
 	public String getIdentifier() {
-        return prefix;
-    }
+		return prefix;
+	}
 
 	@Override
 	public String getAuthor() {
@@ -27,7 +27,7 @@ public class PlaceholderAPIListener extends PlaceholderExpansion {
 
 	@Override
 	public String getPlugin() {
-		return null;
+		return "skript-placeholders";
 	}
 
 	public PlaceholderAPIListener(Main plugin, String prefix) {

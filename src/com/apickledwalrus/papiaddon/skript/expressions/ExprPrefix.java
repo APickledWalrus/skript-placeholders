@@ -19,36 +19,36 @@ import org.bukkit.event.Event;
 @Examples("on placeholder request with the prefix \"example\":\n\tbroadcast the prefix # \"example\" will be broadcasted")
 public class ExprPrefix extends SimpleExpression<String> {
 
-    static {
-        Skript.registerExpression(ExprPrefix.class, String.class, ExpressionType.SIMPLE,"[the] [(placeholder[api]|papi)] (prefix|placeholder)");
-    }
+	static {
+		Skript.registerExpression(ExprPrefix.class, String.class, ExpressionType.SIMPLE,"[the] [(placeholder[api]|papi)] (prefix|placeholder)");
+	}
 
-    @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        if (!ScriptLoader.isCurrentEvent(PlaceholderAPIEvent.class)) {
-            Skript.error("The PlaceholderAPI prefix can only be used in a placeholder request event", ErrorQuality.SEMANTIC_ERROR);
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+		if (!ScriptLoader.isCurrentEvent(PlaceholderAPIEvent.class)) {
+			Skript.error("The PlaceholderAPI prefix can only be used in a placeholder request event", ErrorQuality.SEMANTIC_ERROR);
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    protected String[] get(final Event e) {
-        return new String[] {((PlaceholderAPIEvent) e).getPrefix()};
-    }
+	@Override
+	protected String[] get(final Event e) {
+		return new String[] {((PlaceholderAPIEvent) e).getPrefix()};
+	}
 
-    @Override
-    public String toString(Event e, boolean debug) {
-        return "the placeholder prefix";
-    }
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "the placeholder prefix";
+	}
 
-    @Override
-    public boolean isSingle() {
-        return true;
-    }
+	@Override
+	public boolean isSingle() {
+		return true;
+	}
 
-    @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
-    }
+	@Override
+	public Class<? extends String> getReturnType() {
+		return String.class;
+	}
 }
