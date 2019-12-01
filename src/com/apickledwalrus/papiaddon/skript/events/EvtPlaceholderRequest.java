@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
@@ -17,8 +18,9 @@ import ch.njol.skript.registrations.EventValues;
 import org.bukkit.event.Event;
 
 @Name("On Placeholder Request")
-@Description("Called whenever a placeholder is requested")
+@Description("Called whenever a placeholder is requested by PlaceholderAPI.")
 @Examples("on placeholder request with prefix \"example\":\n\tif the identifier is \"name\": # example_name\n\t\tset the result to player's name\n\telse if the identifier is \"uuid\": # example_uuid\n\t\tset the result to the player's uuid\n\telse if the identifier is \"money\": # example_money\n\t\tset the result to \"$%{money::%player's uuid%}%\"")
+@Since("1.0")
 public class EvtPlaceholderRequest extends SkriptEvent {
 
 	private String prefix;

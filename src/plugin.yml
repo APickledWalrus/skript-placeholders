@@ -1,7 +1,8 @@
 name: skript-placeholders
 main: com.apickledwalrus.papiaddon.Main
-version: 1.1
+version: 1.2
 authors: [Pikachu, APickledWalrus]
 description: Allows using and registering placeholders with PlaceholderAPI in Skript
 website: https://github.com/APickledWalrus/skript-placeholders
 depend: [Skript, PlaceholderAPI]
+softdepend: [MVdWPlaceholderAPI]
