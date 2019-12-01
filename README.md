@@ -30,7 +30,7 @@ If you want to get the value of a placeholder, use the Value of Placeholder expr
 send "Your Ping: %placeholder ""player_ping"" from player%"
 ```
 
-As of 1.2, you can get the value of a MVdW placeholder by using curly brackets around the name (e.g. **{PREFIX_IDENTIFIER}**).
+As of **1.2**, you can get the value of a MVdW placeholder by using curly brackets around the name (e.g. **{NAME}**).
 
 Note: If you don't specify the players, it will default to the player/executor.
 
@@ -38,7 +38,7 @@ Note: If you don't specify the players, it will default to the player/executor.
 
 To register a placeholder, use the Placeholder Request Event.
 ```
-[on] (placeholder[api]|papi) request with [the] prefix %string
+[on] (placeholder[api]|papi) request with [the] prefix %string%
 ```
 
 In a placeholder, there are two parts: the **prefix** and the **identifier**
