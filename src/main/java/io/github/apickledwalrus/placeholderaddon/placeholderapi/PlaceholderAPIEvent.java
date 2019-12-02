@@ -47,4 +47,5 @@ public class PlaceholderAPIEvent extends Event {
 	public void setResult(String result) {
 		this.result = result;
 	}
+
 }

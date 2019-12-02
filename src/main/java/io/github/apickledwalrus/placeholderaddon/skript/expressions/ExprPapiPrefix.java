@@ -18,14 +18,16 @@ import org.bukkit.event.Event;
 
 @Name("PlaceholderAPI Prefix")
 @Description("Returns the prefix of the placeholder in a PlaceholderAPI request event.")
-@Examples("INSERT EXAMPLE")
+@Examples({"on placeholderapi request with prefix \"hello\":",
+	"\tif the identifier is \"world\": # Placeholder is hello_world", 
+	"# The prefix is the part before the first underscore."})
 @Since("1.0")
 public class ExprPapiPrefix extends SimpleExpression<String> {
 
 	static {
 		if (Main.hasPapi()) {
 			Skript.registerExpression(ExprPapiPrefix.class, String.class, ExpressionType.SIMPLE,
-							"[the] [(placeholder[api]|papi)] (prefix|placeholder)");
+					"[the] [(placeholder[api]|papi)] (prefix|placeholder)");
 		}
 	}
 
@@ -57,4 +59,5 @@ public class ExprPapiPrefix extends SimpleExpression<String> {
 	public Class<? extends String> getReturnType() {
 		return String.class;
 	}
+
 }

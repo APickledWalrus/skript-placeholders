@@ -17,15 +17,17 @@ import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPILi
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-@Name("On PlaceholderAPI Placeholder Request")
+@Name("PlaceholderAPI Placeholder Request Event")
 @Description("Called whenever a placeholder is requested by PlaceholderAPI.")
-@Examples("INSERT EXAMPLE")
+@Examples({"on placeholderapi request with prefix \"double\":",
+			"\tif the identifier is \"health\": # The placeholder is double_health",
+			"\t\tset the result to player's health * 2 "})
 @Since("1.0")
 public class EvtPapiPlaceholderRequest extends SkriptEvent {
 
 	static {
 		if (Main.hasPapi()) {
-			Skript.registerEvent("Placeholder Request", EvtPapiPlaceholderRequest.class, PlaceholderAPIEvent.class, "(placeholder[api]|papi) request with [the] prefix %string%");
+			Skript.registerEvent("Placeholder Request", EvtPapiPlaceholderRequest.class, PlaceholderAPIEvent.class, "(placeholderapi|papi) [placeholder] request (with|for) [the] prefix %string%");
 			EventValues.registerEventValue(PlaceholderAPIEvent.class, Player.class, new Getter<Player, PlaceholderAPIEvent>() {
 				@Override
 				public Player get(PlaceholderAPIEvent e) {
@@ -58,4 +60,5 @@ public class EvtPapiPlaceholderRequest extends SkriptEvent {
 	public String toString(Event e, boolean debug) {
 		return "placeholder request" + (prefix != null ? ("with prefix \"" + prefix + "\"") : "");
 	}
+
 }

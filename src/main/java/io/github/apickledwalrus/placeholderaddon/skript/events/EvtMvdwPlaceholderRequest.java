@@ -17,15 +17,16 @@ import io.github.apickledwalrus.placeholderaddon.mvdwapi.MvdwAPIEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-@Name("On MVdWPlaceholderAPI Placeholder Request")
+@Name("MVdWPlaceholderAPI Placeholder Request Event")
 @Description("Called whenever a placeholder is requested by MVdWPlaceholderAPI.")
-@Examples("INSERT EXAMPLE")
+@Examples({"on mvdw placeholder request for placeholder \"doublehealth\":",
+			"\tset the result to player's health * 2"})
 @Since("1.3")
 public class EvtMvdwPlaceholderRequest extends SkriptEvent {
 
 	static {
 		if (Main.hasMVdW()) {
-			Skript.registerEvent("Placeholder Request", EvtMvdwPlaceholderRequest.class, MvdwAPIEvent.class, "mvdw[ ]placeholder[api] request with [the] placeholder %string%");
+			Skript.registerEvent("Placeholder Request", EvtMvdwPlaceholderRequest.class, MvdwAPIEvent.class, "mvdw[ ](placeholderapi placeholder|placeholder) request (for|with) [the] placeholder %string%");
 			EventValues.registerEventValue(MvdwAPIEvent.class, Player.class, new Getter<Player, MvdwAPIEvent>() {
 				@Override
 				public Player get(MvdwAPIEvent e) {
@@ -58,4 +59,5 @@ public class EvtMvdwPlaceholderRequest extends SkriptEvent {
 	public String toString(Event e, boolean debug) {
 		return "placeholder request" + (placeholder != null ? ("with placeholder \"" + placeholder + "\"") : "");
 	}
+
 }

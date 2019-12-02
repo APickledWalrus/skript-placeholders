@@ -36,4 +36,5 @@ public class PlaceholderAPIListener extends PlaceholderExpansion {
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		return event.getResult();
 	}
+
 }

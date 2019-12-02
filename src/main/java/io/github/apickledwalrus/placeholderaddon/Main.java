@@ -33,7 +33,6 @@ public class Main extends JavaPlugin {
 		instance = this;
 		if (!hasMVdW && !hasPapi) {
 			Logger.getLogger("Minecraft").severe("[skript-placeholders] No placeholders plugin found! Disabling!");
-			Logger.getLogger("Minecraft").severe("[skript-placeholders] Has PlaceholderAPI: " + hasPapi + " Has MVdWPlaceholderAPI: " + hasMVdW);
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
@@ -43,4 +42,5 @@ public class Main extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
+
 }

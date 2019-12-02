@@ -20,7 +20,11 @@ import java.util.List;
 
 @Name("Value of Placeholder")
 @Description("Returns the value of a PlaceholderAPI/MVdWPlaceholderAPI placeholder.")
-@Examples("INSERT EXAMPLE")
+@Examples({"command /ping <player>:",
+	"\ttrigger:",
+	"\t\tset {_ping} to placeholder \"player_ping\" from arg-1 # PlaceholderAPI",
+	"\t\tset {_ping} to placeholder \"{ping}\" from arg-1 # MVdWPlaceholderAPI",
+	"\t\tsend \"Ping of %arg-1%: %{_ping}%\" to player"})
 @Since("1.0 - PAPI Placeholders, 1.2 - MVdW Placeholders, 1.3 - Updated Syntax")
 public class ExprParsePlaceholder extends SimpleExpression<String> {
 
@@ -112,4 +116,5 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 	public Class<? extends String> getReturnType() {
 		return String.class;
 	}
+
 }

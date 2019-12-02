@@ -19,15 +19,18 @@ import io.github.apickledwalrus.placeholderaddon.mvdwapi.MvdwAPIEvent;
 import org.bukkit.event.Event;
 
 @Name("MVdWPlaceholderAPI Result")
-@Description("The result (placeholder value) in a MVdWPlaceholderAPI request event.")
-@Examples("INSERT EXAMPLE")
+@Description("The result (placeholder value) in a MVdWPlaceholderAPI request event. It can be set or reset/deleted.")
+@Examples({"on mvdw placeholder request for placeholder \"isAdmin\":",
+			"\tset the result to \"false\"",
+			"\tif player has permission \"is.admin\":",
+			"\t\tset the result to \"true\""})
 @Since("1.3")
 public class ExprMvdwResult extends SimpleExpression<String> {
 
 	static {
 		if (Main.hasMVdW()) {
 			Skript.registerExpression(ExprMvdwResult.class, String.class, ExpressionType.SIMPLE,
-							"[the] [mvdw[ ][placeholder[api]]] result");
+					"[the] [mvdw[ ][placeholder[api]]] result");
 		}
 	}
 
@@ -80,4 +83,5 @@ public class ExprMvdwResult extends SimpleExpression<String> {
 	public Class<? extends String> getReturnType() {
 		return String.class;
 	}
+
 }

@@ -41,4 +41,5 @@ public class MvdwAPIEvent extends Event {
 	public void setResult(String result) {
 		this.result = result;
 	}
+
 }

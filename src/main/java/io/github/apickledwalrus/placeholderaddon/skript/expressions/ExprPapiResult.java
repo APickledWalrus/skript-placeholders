@@ -19,15 +19,19 @@ import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPIEv
 import org.bukkit.event.Event;
 
 @Name("PlaceholderAPI Result")
-@Description("The result (placeholder value) in a PlaceholderAPI request event.")
-@Examples("INSERT EXAMPLE")
+@Description("The result (placeholder value) in a PlaceholderAPI request event. It can be set or reset/deleted.")
+@Examples({"on mvdw placeholder request for prefix \"user\":",
+			"\tif the identifier is \"hasrank_admin\" # The placeholder is user_hasrank_admin:",
+			"\t\tset the result to \"false\" # The placeholder's value is \"false\".",
+			"\t\tif player has permission \"is.admin\":",
+			"\t\t\tset the result to \"true\" # The placeholder's value is \"true\"."})
 @Since("1.0")
 public class ExprPapiResult extends SimpleExpression<String> {
 
 	static {
 		if (Main.hasPapi()) {
 			Skript.registerExpression(ExprPapiResult.class, String.class, ExpressionType.SIMPLE,
-							"[the] [(placeholder[api]|papi)] result");
+					"[the] [(placeholder[api]|papi)] result");
 		}
 	}
 
@@ -80,4 +84,5 @@ public class ExprPapiResult extends SimpleExpression<String> {
 	public Class<? extends String> getReturnType() {
 		return String.class;
 	}
+
 }
