@@ -70,7 +70,7 @@ public class ExprMvdwResult extends SimpleExpression<String> {
 	public void change(Event e, Object[] delta, ChangeMode mode) {
 		switch (mode) {
 			case SET:
-				((MvdwAPIEvent) e).setResult((String) delta[0]);
+				((MvdwAPIEvent) e).setResult(String.valueOf(delta[0]));
 				break;
 			case RESET:
 			case DELETE:

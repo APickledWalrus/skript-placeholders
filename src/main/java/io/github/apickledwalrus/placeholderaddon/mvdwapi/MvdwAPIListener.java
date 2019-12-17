@@ -16,8 +16,8 @@ public class MvdwAPIListener {
 
 				@Override
 				public String onPlaceholderReplace(PlaceholderReplaceEvent event) {
-					MvdwAPIEvent e = new MvdwAPIEvent(event.getPlayer(), event.getPlaceholder());
-					Bukkit.getServer().getPluginManager().callEvent(e);
+					MvdwAPIEvent e = new MvdwAPIEvent(event.getPlayer(), event.getPlaceholder(), !Bukkit.getServer().isPrimaryThread());
+					Bukkit.getPluginManager().callEvent(e);
 					return e.getResult();
 				}
 

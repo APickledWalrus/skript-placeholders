@@ -13,7 +13,8 @@ public class PlaceholderAPIEvent extends Event {
 	private String prefix;
 	private String result;
 
-	public PlaceholderAPIEvent(String identifier, Player player, String prefix) {
+	public PlaceholderAPIEvent(String identifier, Player player, String prefix, boolean isAsynchronous) {
+		super(isAsynchronous);
 		this.prefix = prefix;
 		this.identifier = identifier;
 		this.player = player;

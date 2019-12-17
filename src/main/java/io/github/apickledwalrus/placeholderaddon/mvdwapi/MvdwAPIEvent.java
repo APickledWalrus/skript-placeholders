@@ -12,7 +12,8 @@ public class MvdwAPIEvent extends Event {
 	private String placeholder;
 	private String result;
 
-	public MvdwAPIEvent(Player player, String placeholder) {
+	public MvdwAPIEvent(Player player, String placeholder, boolean isAsynchronous) {
+		super(isAsynchronous);
 		this.placeholder = placeholder;
 		this.player = player;
 	}

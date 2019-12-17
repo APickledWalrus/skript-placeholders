@@ -32,8 +32,8 @@ public class PlaceholderAPIListener extends PlaceholderExpansion {
 
 	@Override
 	public String onPlaceholderRequest(Player player, String identifier) {
-		PlaceholderAPIEvent event = new PlaceholderAPIEvent(identifier, player, prefix);
-		Bukkit.getServer().getPluginManager().callEvent(event);
+		PlaceholderAPIEvent event = new PlaceholderAPIEvent(identifier, player, prefix, !Bukkit.getServer().isPrimaryThread());
+		Bukkit.getPluginManager().callEvent(event);
 		return event.getResult();
 	}
 

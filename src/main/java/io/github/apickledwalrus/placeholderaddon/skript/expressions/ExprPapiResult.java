@@ -71,7 +71,7 @@ public class ExprPapiResult extends SimpleExpression<String> {
 	public void change(Event e, Object[] delta, ChangeMode mode) {
 		switch (mode) {
 			case SET:
-				((PlaceholderAPIEvent) e).setResult((String) delta[0]);
+				((PlaceholderAPIEvent) e).setResult(String.valueOf(delta[0]));
 				break;
 			case RESET:
 			case DELETE:
