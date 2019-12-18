@@ -26,7 +26,7 @@ public class EvtMvdwPlaceholderRequest extends SkriptEvent {
 
 	static {
 		if (Main.hasMVdW()) {
-			Skript.registerEvent("Placeholder Request", EvtMvdwPlaceholderRequest.class, MvdwAPIEvent.class, "mvdw[ ](placeholderapi placeholder|placeholder) request (for|with) [the] placeholder %string%");
+			Skript.registerEvent("Placeholder Request", EvtMvdwPlaceholderRequest.class, MvdwAPIEvent.class, "[on] mvdw[ ](placeholderapi [placeholder]|placeholder) request (for|with) [the] placeholder %string%");
 			EventValues.registerEventValue(MvdwAPIEvent.class, Player.class, new Getter<Player, MvdwAPIEvent>() {
 				@Override
 				public Player get(MvdwAPIEvent e) {
