@@ -17,9 +17,9 @@ import io.github.apickledwalrus.placeholderaddon.mvdwapi.MvdwAPIEvent;
 import org.bukkit.event.Event;
 
 @Name("MVdWPlaceholderAPI Placeholder")
-@Description("Returns the placeholder in a MvDWPlaceholderAPI request event.")
+@Description("Returns the placeholder in a MVdWPlaceholderAPI request event.")
 @Examples({"on mvdw placeholder request for placeholder \"doublehealth\":",
-			"\tsend \"MVdW requested the placeholder %placeholder%!\" to console"})
+			"\tsend \"MVdWPlaceholderAPI requested the placeholder %placeholder%!\" to console"})
 @Since("1.3")
 public class ExprMvdwPlaceholder extends SimpleExpression<String> {
 
@@ -45,11 +45,6 @@ public class ExprMvdwPlaceholder extends SimpleExpression<String> {
 	}
 
 	@Override
-	public String toString(Event e, boolean debug) {
-		return "the mvdwplaceholderapi prefix";
-	}
-
-	@Override
 	public boolean isSingle() {
 		return true;
 	}
@@ -57,6 +52,11 @@ public class ExprMvdwPlaceholder extends SimpleExpression<String> {
 	@Override
 	public Class<? extends String> getReturnType() {
 		return String.class;
+	}
+
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "the mvdwplaceholderapi prefix";
 	}
 
 }

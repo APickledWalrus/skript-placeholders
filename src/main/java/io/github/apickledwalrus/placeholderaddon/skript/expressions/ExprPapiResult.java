@@ -21,10 +21,11 @@ import org.bukkit.event.Event;
 @Name("PlaceholderAPI Result")
 @Description("The result (placeholder value) in a PlaceholderAPI request event. It can be set or reset/deleted.")
 @Examples({"on mvdw placeholder request for prefix \"user\":",
-			"\tif the identifier is \"hasrank_admin\" # The placeholder is user_hasrank_admin:",
-			"\t\tset the result to \"false\" # The placeholder's value is \"false\".",
+			"\tif the identifier is \"is_admin\": # The placeholder is 'user_is_admin'",
 			"\t\tif player has permission \"is.admin\":",
-			"\t\t\tset the result to \"true\" # The placeholder's value is \"true\"."})
+			"\t\t\tset the result to \"true\"",
+			"\t\telse:",
+			"\t\t\tset the result to \"false\""})
 @Since("1.0")
 public class ExprPapiResult extends SimpleExpression<String> {
 
@@ -50,16 +51,6 @@ public class ExprPapiResult extends SimpleExpression<String> {
 	}
 
 	@Override
-	public String toString(Event e, boolean debug) {
-		return "the placeholderapi result";
-	}
-
-	@Override
-	public boolean isSingle() {
-		return true;
-	}
-
-	@Override
 	public Class<?>[] acceptChange(final ChangeMode mode) {
 		if (mode == ChangeMode.SET || mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {
 			return CollectionUtils.array(String.class);
@@ -77,12 +68,26 @@ public class ExprPapiResult extends SimpleExpression<String> {
 			case DELETE:
 				((PlaceholderAPIEvent) e).setResult(null);
 				break;
+			case ADD:
+			case REMOVE:
+			case REMOVE_ALL:
+				assert false;
 		}
+	}
+
+	@Override
+	public boolean isSingle() {
+		return true;
 	}
 
 	@Override
 	public Class<? extends String> getReturnType() {
 		return String.class;
+	}
+
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "the placeholderapi result";
 	}
 
 }

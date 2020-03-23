@@ -1,5 +1,6 @@
 package io.github.apickledwalrus.placeholderaddon.mvdwapi;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -12,8 +13,11 @@ public class MvdwAPIEvent extends Event {
 	private String placeholder;
 	private String result;
 
-	public MvdwAPIEvent(Player player, String placeholder, boolean isAsynchronous) {
-		super(isAsynchronous);
+	public MvdwAPIEvent(Player player, String placeholder) {
+
+		// Declare the event as sync or async.
+		super(!Bukkit.getServer().isPrimaryThread());
+
 		this.placeholder = placeholder;
 		this.player = player;
 	}

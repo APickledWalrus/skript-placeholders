@@ -21,9 +21,10 @@ import org.bukkit.event.Event;
 @Name("MVdWPlaceholderAPI Result")
 @Description("The result (placeholder value) in a MVdWPlaceholderAPI request event. It can be set or reset/deleted.")
 @Examples({"on mvdw placeholder request for placeholder \"isAdmin\":",
-			"\tset the result to \"false\"",
 			"\tif player has permission \"is.admin\":",
-			"\t\tset the result to \"true\""})
+			"\t\tset the result to \"true\"",
+			"\telse:",
+			"\t\tset the result to \"false\""})
 @Since("1.3")
 public class ExprMvdwResult extends SimpleExpression<String> {
 
@@ -37,7 +38,7 @@ public class ExprMvdwResult extends SimpleExpression<String> {
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
 		if (!ScriptLoader.isCurrentEvent(MvdwAPIEvent.class)) {
-			Skript.error("The MVdWPlaceholderAPI result can only be used in a MVdWPlaceholderAPI request event", ErrorQuality.SEMANTIC_ERROR);
+			Skript.error("The MVdWPlaceholderAPI result can only be used in a MVdWPlaceholderAPI placeholder request event", ErrorQuality.SEMANTIC_ERROR);
 			return false;
 		}
 		return true;
@@ -46,16 +47,6 @@ public class ExprMvdwResult extends SimpleExpression<String> {
 	@Override
 	protected String[] get(final Event e) {
 		return new String[]{((MvdwAPIEvent) e).getResult()};
-	}
-
-	@Override
-	public String toString(Event e, boolean debug) {
-		return "the mvdwplaceholderapi result";
-	}
-
-	@Override
-	public boolean isSingle() {
-		return true;
 	}
 
 	@Override
@@ -76,12 +67,26 @@ public class ExprMvdwResult extends SimpleExpression<String> {
 			case DELETE:
 				((MvdwAPIEvent) e).setResult(null);
 				break;
+			case ADD:
+			case REMOVE:
+			case REMOVE_ALL:
+				assert false;
 		}
+	}
+
+	@Override
+	public boolean isSingle() {
+		return true;
 	}
 
 	@Override
 	public Class<? extends String> getReturnType() {
 		return String.class;
+	}
+
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "the mvdwplaceholderapi result";
 	}
 
 }

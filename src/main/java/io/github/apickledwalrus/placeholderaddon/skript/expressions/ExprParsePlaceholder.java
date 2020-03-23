@@ -50,9 +50,6 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 		return "%" + placeholder + "%";
 	}
 
-	/*
-	 * Type - Represents where the placeholder is from e.g. PAPI, MVdW
-	 */
 	private String getPlaceholder(String placeholder, Player player) {
 		String value;
 		if (Main.hasMVdW()) {
@@ -67,7 +64,7 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 			placeholder = formatPlaceholder(placeholder);
 			if (PlaceholderAPI.containsPlaceholders(placeholder)) {
 				value = PlaceholderAPI.setPlaceholders(player, placeholder);
-				if (value.equals(placeholder) || "".equals(value))
+				if (value == null || value.equals(placeholder))
 					return null;
 				return value;
 			}
@@ -89,22 +86,17 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 		Player[] players = this.players.getArray(e);
 		List<String> values = new ArrayList<>();
 		if (players.length != 0) {
-			for (String ph : placeholders) {
+			for (String pl : placeholders) {
 				for (Player p : players) {
-					values.add(getPlaceholder(ph, p));
+					values.add(getPlaceholder(pl, p));
 				}
 			}
 		} else {
-			for (String ph : placeholders) {
-				values.add(getPlaceholder(ph, null));
+			for (String pl : placeholders) {
+				values.add(getPlaceholder(pl, null));
 			}
 		}
 		return values.toArray(new String[0]);
-	}
-
-	@Override
-	public String toString(Event e, boolean debug) {
-		return "the value of placeholder " + placeholders.toString(e, debug) + " from " + players.toString(e, debug);
 	}
 
 	@Override
@@ -115,6 +107,11 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 	@Override
 	public Class<? extends String> getReturnType() {
 		return String.class;
+	}
+
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "the value of placeholder " + placeholders.toString(e, debug) + " from " + players.toString(e, debug);
 	}
 
 }

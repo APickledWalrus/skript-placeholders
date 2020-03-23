@@ -46,11 +46,6 @@ public class ExprPapiIdentifier extends SimpleExpression<String> {
 	}
 
 	@Override
-	public String toString(Event e, boolean debug) {
-		return "the placeholderapi identifier";
-	}
-
-	@Override
 	public boolean isSingle() {
 		return true;
 	}
@@ -58,6 +53,11 @@ public class ExprPapiIdentifier extends SimpleExpression<String> {
 	@Override
 	public Class<? extends String> getReturnType() {
 		return String.class;
+	}
+
+	@Override
+	public String toString(Event e, boolean debug) {
+		return "the placeholderapi identifier";
 	}
 
 }

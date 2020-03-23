@@ -14,6 +14,8 @@ import ch.njol.skript.util.Getter;
 import io.github.apickledwalrus.placeholderaddon.Main;
 import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPIEvent;
 import io.github.apickledwalrus.placeholderaddon.placeholderapi.PlaceholderAPIListener;
+
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
@@ -42,8 +44,11 @@ public class EvtPapiPlaceholderRequest extends SkriptEvent {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(final Literal<?>[] args, final int matchedPattern, final SkriptParser.ParseResult parser) {
-		prefix = ((Literal<String>) args[0]).getSingle();
-		if ("".equals(prefix)) {
+		Literal<String> l = (Literal<String>) args[0];
+		if (l == null)
+			return false;
+		prefix = l.getSingle();
+		if (StringUtils.isBlank(prefix)) {
 			Skript.error(prefix + " is not a valid placeholder", ErrorQuality.SEMANTIC_ERROR);
 			return false;
 		}
@@ -58,7 +63,7 @@ public class EvtPapiPlaceholderRequest extends SkriptEvent {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "placeholder request" + (prefix != null ? ("with prefix \"" + prefix + "\"") : "");
+		return "placeholderapi placeholder request" + (prefix != null ? ("for prefix \"" + prefix + "\"") : "");
 	}
 
 }
