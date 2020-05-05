@@ -16,10 +16,8 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
     compileOnly 'com.github.SkriptLang:Skript:2.3'
-    compileOnly 'me.clip:placeholderapi:2.10.4'
+    compileOnly 'me.clip:placeholderapi:2.10.6'
     compileOnly('be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT') {
     	exclude group: 'org.spigotmc'
     }
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
-    //compileOnly fileTree(dir: 'libs', include: '*.jar')
 }
