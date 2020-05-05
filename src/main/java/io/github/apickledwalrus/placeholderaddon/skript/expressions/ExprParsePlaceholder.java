@@ -93,18 +93,18 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	@Override
 	protected String[] get(final Event e) {
-		String[] placeholders = this.placeholders.getArray(e);
-		OfflinePlayer[] players = this.players.getArray(e);
 		List<String> values = new ArrayList<>();
-		if (players.length != 0) {
+		String[] placeholders = this.placeholders.getArray(e);
+		if (this.players == null) {
+			for (String pl : placeholders) {
+				values.add(getPlaceholder(pl, null));
+			}
+		} else {
+			OfflinePlayer[] players = this.players.getArray(e);
 			for (String pl : placeholders) {
 				for (OfflinePlayer p : players) {
 					values.add(getPlaceholder(pl, p));
 				}
-			}
-		} else {
-			for (String pl : placeholders) {
-				values.add(getPlaceholder(pl, null));
 			}
 		}
 		return values.toArray(new String[0]);
