@@ -74,8 +74,9 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 				} else {
 					value = PlaceholderAPI.setPlaceholders(player, placeholder, !colorize);
 				}
-
-				return value.equals(placeholder) ? null : value;
+				if (value == null || value.isEmpty() || value.equalsIgnoreCase(placeholder))
+					return null;
+				return value;
 			}
 		}
 

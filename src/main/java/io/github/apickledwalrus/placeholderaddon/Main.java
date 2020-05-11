@@ -6,7 +6,6 @@ import ch.njol.skript.SkriptAddon;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class Main extends JavaPlugin {
 
@@ -20,7 +19,7 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 		if (!hasMVdW && !hasPapi) {
-			Logger.getLogger("Minecraft").severe("[skript-placeholders] No placeholders plugin found! Disabling!");
+			getLogger().severe("[skript-placeholders] No placeholders plugin found! Disabling!");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}

@@ -30,7 +30,8 @@ assignees: ''
 * **Server version/platform:**       <!-- /version -->
 * **skript-placeholders version:**                <!-- /version skript-placeholders -->
 * **Skript version:**                <!-- /version Skript -->
-* **PlaceholderAPI version:**                <!-- /version PlaceholderAPI -->
+* **PlaceholderAPI version (if applicable):**                <!-- /version PlaceholderAPI -->
+* **MVdWPlaceholderAPI version (if applicable):**                <!-- /version MVdWPlaceholderAPI -->
 
 ### Additional Context
 <!--- Add any other context about the problem here --->

@@ -26,6 +26,8 @@ This addon is a fork of Ersatz (by Pikachu - https://github.com/Pikachu920/Ersat
 
 # Examples and Documentation
 
-All examples and documentation have been moved to the wiki!
+Documentation is available on the following wikis:
 
-https://github.com/APickledWalrus/skript-placeholders/wiki
+**GitHub Wiki:** https://github.com/APickledWalrus/skript-placeholders/wiki
+
+[![SkriptHubViewTheDocs](http://skripthub.net/static/addon/ViewTheDocsButton.png)](http://skripthub.net/docs/?addon=skript-placeholders)

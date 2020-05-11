@@ -7,7 +7,7 @@ import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.log.ErrorQuality;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
@@ -20,7 +20,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 @Name("PlaceholderAPI Placeholder Request Event")
-@Description("Called whenever a placeholder is requested by PlaceholderAPI.")
+@Description({"Called whenever a placeholder is requested by PlaceholderAPI.",
+			"Use this event to create PlaceholderAPI placeholders."
+})
 @Examples({"on placeholderapi request with prefix \"double\":",
 			"\tif the identifier is \"health\": # The placeholder is double_health",
 			"\t\tset the result to player's health * 2 "})
@@ -29,7 +31,7 @@ public class EvtPapiPlaceholderRequest extends SkriptEvent {
 
 	static {
 		if (Main.hasPapi()) {
-			Skript.registerEvent("Placeholder Request", EvtPapiPlaceholderRequest.class, PlaceholderAPIEvent.class, "(placeholderapi|papi) [placeholder] request (with|for) [the] prefix %string%");
+			Skript.registerEvent("Placeholder Request", EvtPapiPlaceholderRequest.class, PlaceholderAPIEvent.class, "(placeholderapi|papi) [placeholder] request (for|with) [the] prefix %string%");
 			EventValues.registerEventValue(PlaceholderAPIEvent.class, Player.class, new Getter<Player, PlaceholderAPIEvent>() {
 				@Override
 				public Player get(PlaceholderAPIEvent e) {
@@ -43,7 +45,7 @@ public class EvtPapiPlaceholderRequest extends SkriptEvent {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean init(final Literal<?>[] args, final int matchedPattern, final SkriptParser.ParseResult parser) {
+	public boolean init(final Literal<?>[] args, final int matchedPattern, final ParseResult parser) {
 		Literal<String> l = (Literal<String>) args[0];
 		if (l == null)
 			return false;
