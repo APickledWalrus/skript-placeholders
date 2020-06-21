@@ -16,8 +16,8 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Upload artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       if: success()
       with:
         name: skript-placeholders-dev
-        path: build/libs/skript-placeholders-dev.jar
+        path: build/libs/skript-placeholders.jar
