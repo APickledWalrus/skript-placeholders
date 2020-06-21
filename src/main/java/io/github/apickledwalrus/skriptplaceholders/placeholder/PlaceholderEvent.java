@@ -1,26 +1,24 @@
-package io.github.apickledwalrus.placeholderaddon.placeholderapi;
+package io.github.apickledwalrus.skriptplaceholders.placeholder;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PlaceholderAPIEvent extends Event {
+public class PlaceholderEvent extends Event {
 
 	private static final HandlerList handlerList = new HandlerList();
 
-	private String identifier;
-	private Player player;
-	private String prefix;
+	private String placeholder;
 	private String result;
 
-	public PlaceholderAPIEvent(String identifier, Player player, String prefix) {
+	private OfflinePlayer player;
+	public PlaceholderEvent(String placeholder, OfflinePlayer player) {
 
 		// Declare the event as sync or async.
 		super(!Bukkit.getServer().isPrimaryThread());
 
-		this.prefix = prefix;
-		this.identifier = identifier;
+		this.placeholder = placeholder;
 		this.player = player;
 	}
 
@@ -33,24 +31,28 @@ public class PlaceholderAPIEvent extends Event {
 		return handlerList;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public String getPlaceholder() {
+		return this.placeholder;
 	}
 
 	public String getPrefix() {
-		return prefix;
+		return getPlaceholder().split("_")[0];
 	}
 
 	public String getIdentifier() {
-		return identifier;
+		return getPlaceholder().split("_")[1];
 	}
 
-	public String getResult() {
-		return result;
+	public OfflinePlayer getPlayer() {
+		return this.player;
 	}
 
 	public void setResult(String result) {
 		this.result = result;
+	}
+
+	public String getResult() {
+		return result;
 	}
 
 }

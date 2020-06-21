@@ -1,4 +1,4 @@
-package io.github.apickledwalrus.placeholderaddon;
+package io.github.apickledwalrus.skriptplaceholders;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
@@ -7,13 +7,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 
-public class Main extends JavaPlugin {
+public class SkriptPlaceholders extends JavaPlugin {
 
-	private static Main instance;
+	private static SkriptPlaceholders instance;
 	private static SkriptAddon addonInstance;
 
 	private static final boolean hasMVdW = Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI");
 	private static final boolean hasPapi = Skript.classExists("me.clip.placeholderapi.expansion.PlaceholderExpansion");
+
+	public static boolean hasMVdW() {
+		return hasMVdW;
+	}
+
+	public static boolean hasPapi() {
+		return hasPapi;
+	}
 
 	@Override
 	public void onEnable() {
@@ -25,29 +33,18 @@ public class Main extends JavaPlugin {
 		}
 		try {
 			addonInstance = Skript.registerAddon(this);
-			addonInstance.loadClasses("io.github.apickledwalrus.placeholderaddon.skript", "events", "expressions");
+			addonInstance.loadClasses("io.github.apickledwalrus.skriptplaceholders.skript.elements");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static Main getInstance() {
-		if (instance == null) {
-			throw new IllegalStateException("The plugin's instance should not be null.");
-		}
+	public static SkriptPlaceholders getInstance() {
 		return instance;
 	}
 
 	public static SkriptAddon getAddonInstance() {
 		return addonInstance;
-	}
-
-	public static boolean hasMVdW() {
-		return hasMVdW;
-	}
-
-	public static boolean hasPapi() {
-		return hasPapi;
 	}
 
 }

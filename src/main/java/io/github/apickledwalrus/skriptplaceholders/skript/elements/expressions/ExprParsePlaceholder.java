@@ -1,4 +1,4 @@
-package io.github.apickledwalrus.placeholderaddon.skript.expressions;
+package io.github.apickledwalrus.skriptplaceholders.skript.elements.expressions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -10,11 +10,10 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import io.github.apickledwalrus.placeholderaddon.Main;
-import me.clip.placeholderapi.PlaceholderAPI;
+
+import io.github.apickledwalrus.skriptplaceholders.skript.util.PlaceholderUtils;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ import java.util.List;
 	"\t\tset {_ping} to placeholder \"player_ping\" from arg-1 # PlaceholderAPI",
 	"\t\tset {_ping} to placeholder \"{ping}\" from arg-1 # MVdWPlaceholderAPI",
 	"\t\tsend \"Ping of %arg-1%: %{_ping}%\" to player"})
-@Since("1.0 - PAPI Placeholders, 1.2 - MVdW Placeholders, 1.3 - Updated Syntax, 1.4 - Colorize Option")
+@Since("1.0 - PAPI Placeholders | 1.2 - MVdW Placeholders | 1.3 - Updated Syntax | 1.4 - Colorize Option")
 public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	static {
@@ -42,53 +41,12 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	private boolean colorize;
 
-	private String formatPlaceholder(String placeholder) {
-		if (placeholder == null) {
-			return null;
-		}
-		if (placeholder.charAt(0) == '%') {
-			placeholder = placeholder.substring(1);
-		}
-		if (placeholder.charAt(placeholder.length() - 1) == '%') {
-			placeholder = placeholder.substring(0, placeholder.length() - 1);
-		}
-		return "%" + placeholder + "%";
-	}
-
-	private String getPlaceholder(String placeholder, OfflinePlayer player) {
-		String value;
-
-		if (Main.hasMVdW()) {
-			if (placeholder.charAt(0) == '{' && placeholder.charAt(placeholder.length() - 1) == '}') {
-				value = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, placeholder);
-				return value.equals(placeholder) ? null : value;
-			}
-		}
-
-		if (Main.hasPapi()) {
-			placeholder = formatPlaceholder(placeholder);
-			if (PlaceholderAPI.containsPlaceholders(placeholder)) {
-
-				if (player != null && player.isOnline()) {
-					value = PlaceholderAPI.setPlaceholders((Player) player, placeholder, !colorize);
-				} else {
-					value = PlaceholderAPI.setPlaceholders(player, placeholder, !colorize);
-				}
-				if (value == null || value.isEmpty() || value.equalsIgnoreCase(placeholder))
-					return null;
-				return value;
-			}
-		}
-
-		return null;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
 		placeholders = (Expression<String>) exprs[0];
 		players = (Expression<OfflinePlayer>) exprs[1];
-		colorize = parseResult.mark == 1;
+		colorize = parseResult.mark != 1;
 		return true;
 	}
 
@@ -96,17 +54,17 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 	protected String[] get(final Event e) {
 		List<String> values = new ArrayList<>();
 		String[] placeholders = this.placeholders.getArray(e);
-		if (this.players == null) {
-			for (String pl : placeholders) {
-				values.add(getPlaceholder(pl, null));
-			}
-		} else {
-			OfflinePlayer[] players = this.players.getArray(e);
-			for (String pl : placeholders) {
-				for (OfflinePlayer p : players) {
-					values.add(getPlaceholder(pl, p));
+		if (this.players != null) {
+			Object[] players = this.players.getArray(e);
+			for (String placeholder : placeholders) {
+				for (Object player : players) {
+					if (player instanceof OfflinePlayer)
+						values.add(PlaceholderUtils.getPlaceholder(placeholder, (OfflinePlayer) player, colorize));
 				}
 			}
+		} else {
+			for (String placeholder : placeholders)
+				values.add(PlaceholderUtils.getPlaceholder(placeholder, null, colorize));
 		}
 		return values.toArray(new String[0]);
 	}

@@ -14,6 +14,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.eclipse.jdt:org.eclipse.jdt.annotation:1.1.0'
     implementation 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
     implementation 'com.github.SkriptLang:Skript:2.3'
     implementation 'me.clip:placeholderapi:2.10.6'
