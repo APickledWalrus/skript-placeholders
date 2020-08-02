@@ -42,10 +42,10 @@ public class PlaceholderUtils {
 			placeholder = formatPlaceholder(placeholder);
 			if (PlaceholderAPI.containsPlaceholders(placeholder)) {
 				if (player != null)
-					value = PlaceholderAPI.setPlaceholders(player, placeholder, colorize);
+					value = PlaceholderAPI.setPlaceholders(player, placeholder);
 				if (value == null || value.isEmpty() || value.equalsIgnoreCase(placeholder))
 					return null;
-				return value;
+				return colorize ? ChatColor.translateAlternateColorCodes('&', value) : value;
 			}
 		}
 

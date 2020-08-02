@@ -1,6 +1,7 @@
 package io.github.apickledwalrus.skriptplaceholders.skript.elements.events;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -40,8 +41,8 @@ public class EvtPlaceholderRequest extends SkriptEvent {
 
 	static {
 		Skript.registerEvent("Placeholder Request", EvtPlaceholderRequest.class, PlaceholderEvent.class, 
-				"(placeholder[ ]api|papi) [placeholder] request (for|with) [the] prefix %strings%",
-				"mvdw[ ](placeholder[ ]api [placeholder]|placeholder) request (for|with) [the] placeholder %strings%"
+				"(placeholder[ ]api|papi) [placeholder] request (for|with) [the] prefix[es] %strings%",
+				"mvdw[ ](placeholder[ ]api [placeholder]|placeholder) request (for|with) [the] placeholder[es] %strings%"
 		);
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, new Getter<Player, PlaceholderEvent>() {
 			@Override
@@ -127,13 +128,17 @@ public class EvtPlaceholderRequest extends SkriptEvent {
 
 	@Override
 	public String toString(@Nullable Event e, boolean debug) {
+		String placeholders = Arrays.toString(this.placeholders);
+		// Trim off the ends
+		placeholders = placeholders.substring(1, placeholders.length() - 1);
 		switch (pattern) {
 			case 0: // PlaceholderAPI
-				return "placeholderapi placeholder request for the prefixes: " + placeholders.toString();
+				return "placeholderapi placeholder request for the prefixes " + placeholders;
 			case 1: // MVdWPlaceholderAPI
-				return "mvdwplaceholderapi placeholder request for the placeholders: " + placeholders.toString();
+				return "mvdwplaceholderapi placeholder request for the placeholders " + placeholders;
+			default:
+				return "placeholder request event";
 		}
-		return "placeholder request event";
 	}
 
 }
