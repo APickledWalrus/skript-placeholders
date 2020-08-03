@@ -87,8 +87,9 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 				return "the placeholder prefix";
 			case 2: // Part AFTER first underscore
 				return "the placeholder identifier";
+			default:
+				return "placeholder";
 		}
-		return "placeholder";
 	}
 
 }
