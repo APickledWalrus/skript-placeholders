@@ -22,9 +22,14 @@ public class PlaceholderEvent extends Event {
 		super(!Bukkit.getServer().isPrimaryThread());
 
 		this.placeholder = placeholder;
-		String[] split = placeholder.split("_");
-		prefix = split.length >= 1 ? split[0] : null;
-		identifier = split.length >= 2 ? split[1] : null;
+		int underscorePos = placeholder.indexOf("_");
+		if (underscorePos != -1) { // It exists
+			prefix = placeholder.substring(0, underscorePos);
+			identifier = placeholder.substring(underscorePos + 1);
+		} else {
+			prefix = null;
+			identifier = null;
+		}
 
 		this.player = player;
 	}
