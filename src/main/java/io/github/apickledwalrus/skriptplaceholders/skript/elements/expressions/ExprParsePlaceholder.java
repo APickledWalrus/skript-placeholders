@@ -32,7 +32,7 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	static {
 		Skript.registerExpression(ExprParsePlaceholder.class, String.class, ExpressionType.SIMPLE,
-				"[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [from %-players/offlineplayers%] [(1¦without color)]",
+				"[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [(from|of) %-players/offlineplayers%] [(1¦without color)]",
 				"parse placeholder[s] %strings% [(for|as) %-players/offlineplayers%] [(1¦without color)]");
 	}
 
@@ -81,7 +81,9 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	@Override
 	public String toString(Event e, boolean debug) {
-		return "the value of placeholder(s) " + placeholders.toString(e, debug) + " from " + players.toString(e, debug);
+		if (players != null)
+			return "the value of placeholder(s) " + placeholders.toString(e, debug) + " from " + players.toString(e, debug);
+		return "the value of placeholder(s) " + placeholders.toString(e, debug);
 	}
 
 }
