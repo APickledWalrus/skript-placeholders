@@ -42,7 +42,7 @@ public class EvtPlaceholderRequest extends SkriptEvent {
 	static {
 		Skript.registerEvent("Placeholder Request", EvtPlaceholderRequest.class, PlaceholderEvent.class, 
 				"(placeholder[ ]api|papi) [placeholder] request (for|with) [the] prefix[es] %strings%",
-				"mvdw[ ](placeholder[ ]api [placeholder]|placeholder) request (for|with) [the] placeholder[es] %strings%"
+				"mvdw[ ](placeholder[ ]api [placeholder]|placeholder) request (for|with) [the] placeholder[s] %strings%"
 		);
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, new Getter<Player, PlaceholderEvent>() {
 			@Override
