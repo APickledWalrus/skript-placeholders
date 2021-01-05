@@ -74,7 +74,7 @@ public class EvtPlaceholderRequest extends SkriptEvent {
 				}
 				break;
 			case 1: // MVdWPlaceholderAPI
-				if (!SkriptPlaceholders.hasPapi()) {
+				if (!SkriptPlaceholders.hasMVdW()) {
 					Skript.error("MVdWPlaceholderAPI is required to register MVdWPlaceholderAPI placeholders.", ErrorQuality.SEMANTIC_ERROR);
 					return false;
 				}
