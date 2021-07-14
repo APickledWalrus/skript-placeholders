@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
+import org.eclipse.jdt.annotation.Nullable;
 
 public class PlaceholderUtils {
 
@@ -13,8 +14,9 @@ public class PlaceholderUtils {
 	 * @param player The player to get the placeholder from. Can be null in some cases (e.g. PlaceholderAPI)
 	 * @return The value of the placeholder for the given player (if one is given)
 	 */
-	public static String getPlaceholder(String placeholder, OfflinePlayer player, boolean colorize) {
-		String value = "";
+	@Nullable
+	public static String getPlaceholder(String placeholder, @Nullable OfflinePlayer player, boolean colorize) {
+		String value;
 
 		if (SkriptPlaceholders.hasMVdW()) {
 			if (placeholder.charAt(0) == '{' && placeholder.charAt(placeholder.length() - 1) == '}') {

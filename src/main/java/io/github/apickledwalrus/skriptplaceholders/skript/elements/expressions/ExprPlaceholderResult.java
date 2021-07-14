@@ -18,17 +18,19 @@ import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderEvent;
+import org.eclipse.jdt.annotation.Nullable;
 
 @Name("Placeholder Result")
 @Description("The value of a placeholder in a placeholder event. Can be set, reset, or deleted.")
-@Examples({"on placeholderapi placeholder request for the prefix \"custom\":",
-	"\tif the identifier is \"hello\": # Placeholder is \"%custom_hey%\"",
-	"\t\tset the result to \"Hey there %player%!\"",
-	"on mvdw placeholder request for the placeholder \"custom_hey\":",
-	"\t# Placeholder is \"{custom_hey}\"",
-	"\tset the result to \"Hey there %player%!\""
+@Examples({
+		"on placeholderapi placeholder request for the prefix \"custom\":",
+		"\tif the identifier is \"hello\": # Placeholder is \"%custom_hey%\"",
+		"\t\tset the result to \"Hey there %player%!\"",
+		"on mvdw placeholder request for the placeholder \"custom_hey\":",
+		"\t# Placeholder is \"{custom_hey}\"",
+		"\tset the result to \"Hey there %player%!\""
 })
-@Since("1.0 - PlaceholderAPI | 1.3 - MVdWPlaceholderAPI")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support)")
 @Events("Placeholder Request")
 public class ExprPlaceholderResult extends SimpleExpression<String> {
 
@@ -53,7 +55,8 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	}
 
 	@Override
-	public Class<?>[] acceptChange(final ChangeMode mode) {
+	@Nullable
+	public Class<?>[] acceptChange(ChangeMode mode) {
 		if (mode == ChangeMode.SET || mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {
 			return CollectionUtils.array(String.class);
 		}
@@ -61,7 +64,7 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	}
 
 	@Override
-	public void change(Event e, Object[] delta, ChangeMode mode) {
+	public void change(Event e, @Nullable Object[] delta, ChangeMode mode) {
 		if (delta == null && mode == ChangeMode.SET)
 			return;
 		switch (mode) {
@@ -72,9 +75,7 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 			case DELETE:
 				((PlaceholderEvent) e).setResult(null);
 				break;
-			case ADD:
-			case REMOVE:
-			case REMOVE_ALL:
+			default:
 				assert false;
 		}
 	}
@@ -90,7 +91,7 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	}
 
 	@Override
-	public String toString(Event e, boolean debug) {
+	public String toString(@Nullable Event e, boolean debug) {
 		return "the placeholder result";
 	}
 

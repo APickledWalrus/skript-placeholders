@@ -29,14 +29,15 @@ import io.github.apickledwalrus.skriptplaceholders.placeholder.placeholderapi.Pl
 
 @Name("Placeholder Request Event")
 @Description("Called whenever a placeholder is requested by a supported placeholder plugin.")
-@Examples({"on placeholderapi placeholder request for the prefix \"custom\":",
+@Examples({
+		"on placeholderapi placeholder request for the prefix \"custom\":",
 		"\tif the identifier is \"hello\": # Placeholder is \"%custom_hey%\"",
 		"\t\tset the result to \"Hey there %player%!\"",
 		"on mvdw placeholder request for the placeholder \"custom_hey\":",
 		"\t# Placeholder is \"{custom_hey}\"",
 		"\tset the result to \"Hey there %player%!\""
 })
-@Since("1.0 - PlaceholderAPI | 1.3 - MVdWPlaceholderAPI | 2.0 - New Event Features")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support), 2.0 (new event features)")
 public class EvtPlaceholderRequest extends SkriptEvent {
 
 	static {
@@ -46,40 +47,45 @@ public class EvtPlaceholderRequest extends SkriptEvent {
 		);
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, new Getter<Player, PlaceholderEvent>() {
 			@Override
+			@Nullable
 			public Player get(PlaceholderEvent e) {
-				if (e.getPlayer().isOnline())
+				if (e.getPlayer() != null && e.getPlayer().isOnline())
 					return (Player) e.getPlayer();
 				return null;
 			}
 		}, 0);
 		EventValues.registerEventValue(PlaceholderEvent.class, OfflinePlayer.class, new Getter<OfflinePlayer, PlaceholderEvent>() {
 			@Override
+			@Nullable
 			public OfflinePlayer get(PlaceholderEvent e) {
 				return e.getPlayer();
 			}
 		}, 0);
 	}
 
-	private String[] placeholders;
+	private static final int PLACEHOLDERAPI = 0, MVDWPLACEHOLDERAPI = 1;
 
-	private int pattern;
+	@SuppressWarnings("NotNullFieldNotInitialized")
+	private String[] placeholders;
+	private int source;
 
 	@Override
 	public boolean init(Literal<?>[] args, int matchedPattern, ParseResult parseResult) {
 		switch (matchedPattern) { // Installation Check
-			case 0: // PlaceholderAPI
+			case PLACEHOLDERAPI:
 				if (!SkriptPlaceholders.hasPapi()) {
 					Skript.error("PlaceholderAPI is required to register PlaceholderAPI placeholders.", ErrorQuality.SEMANTIC_ERROR);
 					return false;
 				}
 				break;
-			case 1: // MVdWPlaceholderAPI
+			case MVDWPLACEHOLDERAPI:
 				if (!SkriptPlaceholders.hasMVdW()) {
 					Skript.error("MVdWPlaceholderAPI is required to register MVdWPlaceholderAPI placeholders.", ErrorQuality.SEMANTIC_ERROR);
 					return false;
 				}
 				break;
 		}
+
 		List<String> placeholders = new ArrayList<>();
 		for (Literal<?> literal : args) {
 			String placeholder = (String) literal.getSingle();
@@ -91,52 +97,59 @@ public class EvtPlaceholderRequest extends SkriptEvent {
 		}
 		if (placeholders.isEmpty())
 			return false;
+
 		switch (matchedPattern) {
-			case 0: // PlaceholderAPI
+			case PLACEHOLDERAPI:
 				for (String placeholder : placeholders)
 					new PlaceholderAPIListener(SkriptPlaceholders.getInstance(), placeholder).register();
 				break;
-			case 1: // MVdWPlaceholderAPI
+			case MVDWPLACEHOLDERAPI:
 				for (String placeholder : placeholders)
 					new MVdWPlaceholderAPIListener(SkriptPlaceholders.getInstance(), placeholder).register();
 				break;
 		}
+
 		this.placeholders = placeholders.toArray(new String[0]);
-		this.pattern = matchedPattern;
+		this.source = matchedPattern;
+
 		return true;
 	}
 
 	@Override
 	public boolean check(Event e) {
-		String eventPlaceholder = "";
-		switch (pattern) {
-			case 0: // PlaceholderAPI
+		String eventPlaceholder = null;
+		switch (source) {
+			case PLACEHOLDERAPI:
 				eventPlaceholder = ((PlaceholderEvent) e).getPrefix();
 				break;
-			case 1: // MVdWPlaceholderAPI
+			case MVDWPLACEHOLDERAPI:
 				eventPlaceholder = ((PlaceholderEvent) e).getPlaceholder();
 				break;
+			default:
+				assert false;
 		}
-		if (eventPlaceholder.equals(""))
+		if (eventPlaceholder == null)
 			return false;
+
 		for (String placeholder : this.placeholders) {
-			if (eventPlaceholder.equalsIgnoreCase(placeholder))
+			if (placeholder.equalsIgnoreCase(eventPlaceholder))
 				return true;
 		}
+
 		return false;
 	}
 
 	@Override
 	public String toString(@Nullable Event e, boolean debug) {
 		String placeholders = Arrays.toString(this.placeholders);
-		// Trim off the ends
-		placeholders = placeholders.substring(1, placeholders.length() - 1);
-		switch (pattern) {
-			case 0: // PlaceholderAPI
+		placeholders = placeholders.substring(1, placeholders.length() - 1); // Trim off the ends
+		switch (source) {
+			case PLACEHOLDERAPI:
 				return "placeholderapi placeholder request for the prefixes " + placeholders;
-			case 1: // MVdWPlaceholderAPI
+			case MVDWPLACEHOLDERAPI:
 				return "mvdwplaceholderapi placeholder request for the placeholders " + placeholders;
 			default:
+				assert false;
 				return "placeholder request event";
 		}
 	}

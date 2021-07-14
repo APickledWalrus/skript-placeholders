@@ -15,28 +15,36 @@ import io.github.apickledwalrus.skriptplaceholders.skript.util.PlaceholderUtils;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
+import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Name("Value of Placeholder")
-@Description({"Returns the value of a PlaceholderAPI/MVdWPlaceholderAPI placeholder.",
-				"Note: The 'without color' option is only applicable for PlaceholderAPI placeholders."})
-@Examples({"command /ping <player>:",
-	"\ttrigger:",
-	"\t\tset {_ping} to placeholder \"player_ping\" from arg-1 # PlaceholderAPI",
-	"\t\tset {_ping} to placeholder \"{ping}\" from arg-1 # MVdWPlaceholderAPI",
-	"\t\tsend \"Ping of %arg-1%: %{_ping}%\" to player"})
-@Since("1.0 - PAPI Placeholders | 1.2 - MVdW Placeholders | 1.3 - Updated Syntax | 1.4 - Colorize Option")
+@Description({
+		"Returns the value of a PlaceholderAPI/MVdWPlaceholderAPI placeholder.",
+		"Note: The 'without color' option is only applicable for PlaceholderAPI placeholders."
+})
+@Examples({
+		"command /ping <player>:",
+		"\ttrigger:",
+		"\t\tset {_ping} to placeholder \"player_ping\" from arg-1 # PlaceholderAPI",
+		"\t\tset {_ping} to placeholder \"{ping}\" from arg-1 # MVdWPlaceholderAPI",
+		"\t\tsend \"Ping of %arg-1%: %{_ping}%\" to player"
+})
+@Since("1.0, 1.2 (MVdWPlaceholderAPI support), 1.3 (syntax changes), 1.4 (colorize option)")
 public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	static {
 		Skript.registerExpression(ExprParsePlaceholder.class, String.class, ExpressionType.SIMPLE,
-				"[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [(from|of) %-players/offlineplayers%] [(1¦without color)]",
-				"parse placeholder[s] %strings% [(for|as) %-players/offlineplayers%] [(1¦without color)]");
+				"[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [(from|of) %-players/offlineplayers%] [(1Â¦without color)]",
+				"parse placeholder[s] %strings% [(for|as) %-players/offlineplayers%] [(1Â¦without color)]"
+		);
 	}
 
+	@SuppressWarnings("NotNullFieldNotInitialized")
 	private Expression<String> placeholders;
+	@Nullable
 	private Expression<OfflinePlayer> players;
 
 	private boolean colorize;
@@ -51,7 +59,7 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 	}
 
 	@Override
-	protected String[] get(final Event e) {
+	protected String[] get(Event e) {
 		List<String> values = new ArrayList<>();
 		String[] placeholders = this.placeholders.getArray(e);
 		if (this.players != null) {
@@ -80,7 +88,7 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 	}
 
 	@Override
-	public String toString(Event e, boolean debug) {
+	public String toString(@Nullable Event e, boolean debug) {
 		if (players != null)
 			return "the value of placeholder(s) " + placeholders.toString(e, debug) + " from " + players.toString(e, debug);
 		return "the value of placeholder(s) " + placeholders.toString(e, debug);

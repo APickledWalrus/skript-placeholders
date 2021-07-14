@@ -17,33 +17,32 @@ import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
 
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderEvent;
+import org.eclipse.jdt.annotation.Nullable;
 
 @Name("Placeholder")
 @Description("Returns the placeholder in a placeholder request event.")
-@Examples({"on placeholderapi placeholder request for the prefix \"custom\":",
-	"\tbroadcast \"Placeholder: %the placeholder%\"",
-	"\tbroadcast \"Prefix: %the placeholder prefix%\"",
-	"\tbroadcast \"Identifier: %the placeholder identifier%\"",
-	"on mvdw placeholder request for the placeholder \"custom_hey\":",
-	"\tbroadcast \"Placeholder: %the placeholder%\"",
+@Examples({
+		"on placeholderapi placeholder request for the prefix \"custom\":",
+		"\tbroadcast \"Placeholder: %the placeholder%\"",
+		"\tbroadcast \"Prefix: %the placeholder prefix%\"",
+		"\tbroadcast \"Identifier: %the placeholder identifier%\"",
+		"on mvdw placeholder request for the placeholder \"custom_hey\":",
+		"\tbroadcast \"Placeholder: %the placeholder%\""
 })
-@Since("1.0 - PlaceholderAPI | 1.3 - MVdWPlaceholderAPI")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support)")
 @Events("Placeholder Request")
 public class ExprPlaceholder extends SimpleExpression<String> {
 
 	static {
 		Skript.registerExpression(ExprPlaceholder.class, String.class, ExpressionType.SIMPLE,
 				"[the] [event(-| )]placeholder",
-				"[the] [[event(-| )]placeholder] (1¦prefix|2¦identifier)"
+				"[the] [[event(-| )]placeholder] (1Â¦prefix|2Â¦identifier)"
 		);
 	}
 
-	/**
-	 * 0 = full placeholder
-	 * 1 = part BEFORE first underscore
-	 * 2 = part AFTER first underscore
-	 */
-	private int placeholderPart;
+	private static final int PLACEHOLDER = 0, PREFIX = 1, IDENTIFIER = 2;
+
+	private int part;
 
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
@@ -51,18 +50,18 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 			Skript.error("The placeholder can only be used in a placeholder request event", ErrorQuality.SEMANTIC_ERROR);
 			return false;
 		}
-		this.placeholderPart = parseResult.mark;
+		this.part = parseResult.mark;
 		return true;
 	}
 
 	@Override
 	protected String[] get(Event e) {
-		switch (placeholderPart) {
-			case 0: // Full placeholder
+		switch (part) {
+			case PLACEHOLDER:
 				return new String[]{((PlaceholderEvent) e).getPlaceholder()};
-			case 1: // Part BEFORE first underscore
+			case PREFIX:
 				return new String[]{((PlaceholderEvent) e).getPrefix()};
-			case 2: // Part AFTER first underscore
+			case IDENTIFIER:
 				return new String[]{((PlaceholderEvent) e).getIdentifier()};
 		}
 		return new String[]{};
@@ -79,15 +78,16 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 	}
 
 	@Override
-	public String toString(Event e, boolean debug) {
-		switch (placeholderPart) {
-			case 0: // Full placeholder
+	public String toString(@Nullable Event e, boolean debug) {
+		switch (part) {
+			case PLACEHOLDER:
 				return "the placeholder";
-			case 1: // Part BEFORE first underscore
+			case PREFIX:
 				return "the placeholder prefix";
-			case 2: // Part AFTER first underscore
+			case IDENTIFIER:
 				return "the placeholder identifier";
 			default:
+				assert false;
 				return "placeholder";
 		}
 	}

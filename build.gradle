@@ -1,7 +1,18 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id 'java'
-    id 'idea'
-    id 'eclipse'
+}
+
+group 'io.github.apickledwalrus'
+version '1.5.2'
+
+compileJava.options.encoding = 'UTF-8'
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
 }
 
 repositories {
@@ -9,16 +20,43 @@ repositories {
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots' }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url 'https://jitpack.io' }
-    maven { url 'http://repo.extendedclip.com/content/repositories/placeholderapi/' }
-    maven { url 'http://repo.mvdw-software.be/content/groups/public/' }
+    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven {
+        allowInsecureProtocol = true // lame
+        url 'http://repo.mvdw-software.be/content/groups/public/'
+    }
 }
 
 dependencies {
-    implementation 'org.eclipse.jdt:org.eclipse.jdt.annotation:1.1.0'
-    implementation 'org.spigotmc:spigot-api:1.14.4-R0.1-SNAPSHOT'
-    implementation 'com.github.SkriptLang:Skript:2.3'
-    implementation 'me.clip:placeholderapi:2.10.8'
-    implementation('be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT') {
-    	exclude group: 'org.spigotmc'
+    implementation 'org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.600'
+    implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    implementation ('com.github.SkriptLang:Skript:2.6-beta2') {
+        transitive = false
     }
+    implementation ('me.clip:placeholderapi:2.10.10')
+    implementation('be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT') {
+    	transitive = false
+    }
+}
+
+processResources {
+    filter ReplaceTokens, tokens: [
+            'version': version
+    ]
+}
+
+task nightlyResources(type: ProcessResources) {
+    from 'src/main/resources', {
+        include '**'
+        filter ReplaceTokens, tokens: [
+                'version' : project.property('version') + '-nightly-' + 'git rev-parse --short HEAD'.execute().text.trim()
+        ]
+    }
+    into 'build/resources/main'
+}
+
+task nightlyBuild(type: Jar) {
+    dependsOn nightlyResources
+    from sourceSets.main.output
+    archiveFileName = 'skript-placeholders-nightly.jar'
 }
