@@ -1,3 +1,5 @@
+# NOTICE - It has been some time since this addon's last update, but I want to clarify that I am still here for support if any issues arise or if any future updates are needed! PLEASE feel free to ask for help in the issues tab (https://github.com/APickledWalrus/skript-placeholders/issues) or on Discord (see links below!)
+
 # skript-placeholders
 Placeholder integration for Skript.
 
