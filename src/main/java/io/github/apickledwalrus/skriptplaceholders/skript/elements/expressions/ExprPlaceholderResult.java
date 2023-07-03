@@ -21,57 +21,59 @@ import org.eclipse.jdt.annotation.Nullable;
 @Name("Placeholder Result")
 @Description("The value of a placeholder in a placeholder event. Can be set, reset, or deleted.")
 @Examples({
-		"on placeholderapi placeholder request for the prefix \"custom\":",
-		"\tif the identifier is \"hello\": # Placeholder is \"%custom_hey%\"",
-		"\t\tset the result to \"Hey there %player%!\"",
-		"on mvdw placeholder request for the placeholder \"custom_hey\":",
-		"\t# Placeholder is \"{custom_hey}\"",
-		"\tset the result to \"Hey there %player%!\""
+	"on placeholderapi placeholder request for the prefix \"skriptplaceholders\":",
+		"\tif the identifier is \"author\": # Placeholder is \"%skriptplaceholders_author%\"",
+			"\t\tset the result to \"APickledWalrus\"",
+	"on mvdw placeholder request for the placeholder \"skriptplaceholders_author\":",
+		"\t# Placeholder is \"{skriptplaceholders_author}\"",
+		"\tset the result to \"APickledWalrus\""
 })
-@Since("1.0, 1.3 (MVdWPlaceholderAPI support)")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support), 1.6 (syntax changes)")
 @Events("Placeholder Request")
 public class ExprPlaceholderResult extends SimpleExpression<String> {
 
 	static {
 		Skript.registerExpression(ExprPlaceholderResult.class, String.class, ExpressionType.SIMPLE,
-				"[the] [[event(-| )]placeholder] result"
+				"[the] [placeholder] result"
 		);
 	}
 
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
 		if (!getParser().isCurrentEvent(PlaceholderEvent.class)) {
-			Skript.error("The placeholder result can only be used in a placeholder request event", ErrorQuality.SEMANTIC_ERROR);
+			Skript.error("The placeholder result can only be used in a placeholder request event");
 			return false;
 		}
 		return true;
 	}
 
 	@Override
-	protected String[] get(Event e) {
-		return new String[]{((PlaceholderEvent) e).getResult()};
+	protected String[] get(Event event) {
+		return new String[]{((PlaceholderEvent) event).getResult()};
 	}
 
 	@Override
 	@Nullable
 	public Class<?>[] acceptChange(ChangeMode mode) {
-		if (mode == ChangeMode.SET || mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {
-			return CollectionUtils.array(String.class);
+		switch (mode) {
+			case SET:
+			case DELETE:
+			case RESET:
+				return CollectionUtils.array(String.class);
+			default:
+				return null;
 		}
-		return null;
 	}
 
 	@Override
-	public void change(Event e, @Nullable Object[] delta, ChangeMode mode) {
-		if (delta == null && mode == ChangeMode.SET)
-			return;
+	public void change(Event event, @Nullable Object[] delta, ChangeMode mode) {
 		switch (mode) {
 			case SET:
-				((PlaceholderEvent) e).setResult((String) delta[0]);
+				((PlaceholderEvent) event).setResult((String) delta[0]);
 				break;
 			case RESET:
 			case DELETE:
-				((PlaceholderEvent) e).setResult(null);
+				((PlaceholderEvent) event).setResult(null);
 				break;
 			default:
 				assert false;
@@ -89,7 +91,7 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	}
 
 	@Override
-	public String toString(@Nullable Event e, boolean debug) {
+	public String toString(@Nullable Event event, boolean debug) {
 		return "the placeholder result";
 	}
 

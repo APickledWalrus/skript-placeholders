@@ -1,6 +1,5 @@
-package io.github.apickledwalrus.skriptplaceholders.placeholder.placeholderapi;
+package io.github.apickledwalrus.skriptplaceholders.placeholder;
 
-import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderEvent;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -42,6 +41,7 @@ public class PlaceholderAPIListener extends PlaceholderExpansion {
 	}
 
 	@Override
+	@Nullable
 	public String onRequest(@Nullable OfflinePlayer player, @NonNull String identifier) {
 		PlaceholderEvent event = new PlaceholderEvent(this.prefix + "_" + identifier, player);
 		Bukkit.getPluginManager().callEvent(event);

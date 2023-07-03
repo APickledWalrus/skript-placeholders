@@ -11,7 +11,7 @@ import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 
-import io.github.apickledwalrus.skriptplaceholders.skript.util.PlaceholderUtils;
+import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderUtils;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;

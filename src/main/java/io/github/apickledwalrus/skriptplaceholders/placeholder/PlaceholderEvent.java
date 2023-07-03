@@ -9,8 +9,6 @@ import org.eclipse.jdt.annotation.Nullable;
 
 public class PlaceholderEvent extends Event {
 
-	private static final HandlerList handlerList = new HandlerList();
-
 	@Nullable
 	private final OfflinePlayer player;
 	private final String placeholder;
@@ -18,6 +16,7 @@ public class PlaceholderEvent extends Event {
 	private final String prefix;
 	@Nullable
 	private final String identifier;
+	@Nullable
 	private String result;
 
 	public PlaceholderEvent(String placeholder, @Nullable OfflinePlayer player) {
@@ -56,13 +55,18 @@ public class PlaceholderEvent extends Event {
 		return this.player;
 	}
 
-	public void setResult(String result) {
+	public void setResult(@Nullable String result) {
 		this.result = result;
 	}
 
+	@Nullable
 	public String getResult() {
 		return result;
 	}
+
+	// Bukkit Stuff
+
+	private static final HandlerList handlerList = new HandlerList();
 
 	@Override
 	@NonNull

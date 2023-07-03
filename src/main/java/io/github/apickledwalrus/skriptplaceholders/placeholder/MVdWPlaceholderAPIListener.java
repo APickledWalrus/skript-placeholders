@@ -1,7 +1,6 @@
-package io.github.apickledwalrus.skriptplaceholders.placeholder.mvdwplaceholderapi;
+package io.github.apickledwalrus.skriptplaceholders.placeholder;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
-import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 

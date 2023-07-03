@@ -17,29 +17,34 @@ import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
 @Name("Placeholder")
-@Description("Returns the placeholder in a placeholder request event.")
+@Description("An expression to obtain the placeholder (or part of it) in a placeholder request event.")
 @Examples({
-		"on placeholderapi placeholder request for the prefix \"custom\":",
+	"on placeholderapi placeholder request for the prefix \"custom\":",
 		"\tbroadcast \"Placeholder: %the placeholder%\"",
 		"\tbroadcast \"Prefix: %the placeholder prefix%\"",
 		"\tbroadcast \"Identifier: %the placeholder identifier%\"",
-		"on mvdw placeholder request for the placeholder \"custom_hey\":",
+	"on mvdw placeholder request for the placeholder \"custom_hey\":",
 		"\tbroadcast \"Placeholder: %the placeholder%\""
 })
-@Since("1.0, 1.3 (MVdWPlaceholderAPI support)")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support), 1.6 (syntax changes)")
 @Events("Placeholder Request")
 public class ExprPlaceholder extends SimpleExpression<String> {
 
 	static {
 		Skript.registerExpression(ExprPlaceholder.class, String.class, ExpressionType.SIMPLE,
-				"[the] [event(-| )]placeholder",
-				"[the] [[event(-| )]placeholder] (1¦prefix|2¦identifier)"
+				"[the] placeholder",
+				"[the] [placeholder] (1:prefix|2:identifier)"
 		);
 	}
 
-	private static final int PLACEHOLDER = 0, PREFIX = 1, IDENTIFIER = 2;
+	private enum PlaceholderPart {
+		PLACEHOLDER,
+		PREFIX,
+		IDENTIFIER
+	}
 
-	private int part;
+	@SuppressWarnings("NotNullFieldNotInitialized")
+	private PlaceholderPart part;
 
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
@@ -47,21 +52,22 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 			Skript.error("The placeholder can only be used in a placeholder request event", ErrorQuality.SEMANTIC_ERROR);
 			return false;
 		}
-		this.part = parseResult.mark;
+		this.part = PlaceholderPart.values()[parseResult.mark];
 		return true;
 	}
 
 	@Override
-	protected String[] get(Event e) {
+	protected String[] get(Event event) {
 		switch (part) {
 			case PLACEHOLDER:
-				return new String[]{((PlaceholderEvent) e).getPlaceholder()};
+				return new String[]{((PlaceholderEvent) event).getPlaceholder()};
 			case PREFIX:
-				return new String[]{((PlaceholderEvent) e).getPrefix()};
+				return new String[]{((PlaceholderEvent) event).getPrefix()};
 			case IDENTIFIER:
-				return new String[]{((PlaceholderEvent) e).getIdentifier()};
+				return new String[]{((PlaceholderEvent) event).getIdentifier()};
+			default:
+				throw new IllegalArgumentException("Unable to handle PlaceholderPart: " + part);
 		}
-		return new String[]{};
 	}
 
 	@Override
@@ -75,7 +81,7 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 	}
 
 	@Override
-	public String toString(@Nullable Event e, boolean debug) {
+	public String toString(@Nullable Event event, boolean debug) {
 		switch (part) {
 			case PLACEHOLDER:
 				return "the placeholder";
@@ -84,8 +90,7 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 			case IDENTIFIER:
 				return "the placeholder identifier";
 			default:
-				assert false;
-				return "placeholder";
+				throw new IllegalArgumentException("Unable to handle PlaceholderPart: " + part);
 		}
 	}
 

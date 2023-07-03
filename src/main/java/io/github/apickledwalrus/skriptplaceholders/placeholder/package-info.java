@@ -1,5 +1,5 @@
 @NonNullByDefault({DefaultLocation.PARAMETER, DefaultLocation.RETURN_TYPE, DefaultLocation.FIELD})
-package io.github.apickledwalrus.skriptplaceholders.skript.util;
+package io.github.apickledwalrus.skriptplaceholders.placeholder;
 
 import org.eclipse.jdt.annotation.DefaultLocation;
 import org.eclipse.jdt.annotation.NonNullByDefault;
