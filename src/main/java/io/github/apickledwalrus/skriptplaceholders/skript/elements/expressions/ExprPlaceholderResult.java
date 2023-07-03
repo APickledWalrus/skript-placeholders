@@ -1,8 +1,5 @@
 package io.github.apickledwalrus.skriptplaceholders.skript.elements.expressions;
 
-import org.bukkit.event.Event;
-
-import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.doc.Description;
@@ -18,6 +15,7 @@ import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderEvent;
+import org.bukkit.event.Event;
 import org.eclipse.jdt.annotation.Nullable;
 
 @Name("Placeholder Result")
@@ -42,7 +40,7 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 
 	@Override
 	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-		if (!ScriptLoader.isCurrentEvent(PlaceholderEvent.class)) {
+		if (!getParser().isCurrentEvent(PlaceholderEvent.class)) {
 			Skript.error("The placeholder result can only be used in a placeholder request event", ErrorQuality.SEMANTIC_ERROR);
 			return false;
 		}
