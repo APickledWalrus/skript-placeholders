@@ -3,6 +3,7 @@ package io.github.apickledwalrus.skriptplaceholders.placeholder;
 import ch.njol.skript.Skript;
 import io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.OfflinePlayer;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -11,7 +12,6 @@ import org.eclipse.jdt.annotation.Nullable;
 public enum PlaceholderPlugin {
 
 	PLACEHOLDER_API("PlaceholderAPI", Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI")) {
-
 		private final char[] illegalCharacters = new char[]{'%', '{', '}', '_'};
 
 		@Override
@@ -35,9 +35,18 @@ public enum PlaceholderPlugin {
 			new PlaceholderAPIListener(SkriptPlaceholders.getInstance(), placeholder).register();
 		}
 
+		@Override
+		@Nullable
+		public String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player) {
+			if (placeholder.indexOf('%') == -1) // Try to add percentage signs manually
+				placeholder = "%" + placeholder + "%";
+			String value = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, placeholder);
+			if (value.isEmpty() || value.equalsIgnoreCase(placeholder))
+				return null;
+			return value;
+		}
 	},
 	MVDW_PLACEHOLDER_API("MVdWPlaceholderAPI", Skript.classExists("me.clip.placeholderapi.expansion.PlaceholderExpansion")) {
-
 		@Override
 		@Nullable
 		public String isValidPrefix(String prefix) {
@@ -49,6 +58,17 @@ public enum PlaceholderPlugin {
 			new MVdWPlaceholderAPIListener(SkriptPlaceholders.getInstance(), placeholder).register();
 		}
 
+		@Override
+		@Nullable
+		public String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player) {
+			if (placeholder.charAt(0) == '{' && placeholder.charAt(placeholder.length() - 1) == '}') {
+				String value = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, placeholder);
+				if (value.isEmpty() || value.equalsIgnoreCase(placeholder))
+					return null;
+				return value;
+			}
+			return null;
+		}
 	};
 
 	private final String displayName;
@@ -62,14 +82,14 @@ public enum PlaceholderPlugin {
 	/**
 	 * @return A display name representing the placeholder plugin.
 	 */
-	public String getDisplayName() {
+	public final String getDisplayName() {
 		return displayName;
 	}
 
 	/**
 	 * @return Whether the placeholder plugin is installed on the server.
 	 */
-	public boolean isInstalled() {
+	public final boolean isInstalled() {
 		return installed;
 	}
 
@@ -80,6 +100,18 @@ public enum PlaceholderPlugin {
 	@Nullable
 	public abstract String isValidPrefix(String prefix);
 
+	/**
+	 * Registers a new placeholder with this plugin.
+	 * @param placeholder The name of the placeholder to register.
+	 */
 	public abstract void registerPlaceholder(String placeholder);
+
+	/**
+	 * @param placeholder The placeholder to obtain the value of.
+	 * @param player The player to obtain the placeholder from. For some implementations, a player is not required.
+	 * @return The value of the placeholder for the given player (if provided).
+	 */
+	@Nullable
+	public abstract String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player);
 
 }

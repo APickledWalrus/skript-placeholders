@@ -26,7 +26,7 @@ import org.eclipse.jdt.annotation.Nullable;
 	"on mvdw placeholder request for the placeholder \"custom_hey\":",
 		"\tbroadcast \"Placeholder: %the placeholder%\""
 })
-@Since("1.0, 1.3 (MVdWPlaceholderAPI support), 1.6 (syntax changes)")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support)")
 @Events("Placeholder Request")
 public class ExprPlaceholder extends SimpleExpression<String> {
 

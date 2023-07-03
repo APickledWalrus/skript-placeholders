@@ -35,7 +35,7 @@ import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderEvent;
 		"\t# Placeholder is \"{skriptplaceholders_author}\"",
 		"\tset the result to \"APickledWalrus\""
 })
-@Since("1.0, 1.3 (MVdWPlaceholderAPI support), 1.6 (syntax changes)")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support)")
 public class EvtPlaceholderRequest extends SkriptEvent {
 
 	static {

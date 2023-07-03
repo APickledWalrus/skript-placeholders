@@ -28,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
 		"\t# Placeholder is \"{skriptplaceholders_author}\"",
 		"\tset the result to \"APickledWalrus\""
 })
-@Since("1.0, 1.3 (MVdWPlaceholderAPI support), 1.6 (syntax changes)")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support)")
 @Events("Placeholder Request")
 public class ExprPlaceholderResult extends SimpleExpression<String> {
 
