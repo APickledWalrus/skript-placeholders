@@ -1,15 +1,5 @@
 package io.github.apickledwalrus.skriptplaceholders.skript.elements.events;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderPlugin;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
@@ -20,8 +10,18 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
-
+import io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderEvent;
+import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Name("Placeholder Request Event")
 @Description({
@@ -89,8 +89,18 @@ public class EvtPlaceholderRequest extends SkriptEvent {
 		}
 
 		this.placeholders = placeholders.toArray(new String[0]);
-		for (String placeholder : placeholders) {
-			plugin.registerPlaceholder(placeholder);
+
+		// see https://github.com/APickledWalrus/skript-placeholders/issues/40
+		if (Bukkit.isPrimaryThread()) {
+			for (String placeholder : placeholders) {
+				plugin.registerPlaceholder(placeholder);
+			}
+		} else {
+			Bukkit.getScheduler().runTask(SkriptPlaceholders.getInstance(), () -> {
+				for (String placeholder : placeholders) {
+					plugin.registerPlaceholder(placeholder);
+				}
+			});
 		}
 
 		return true;
@@ -98,7 +108,7 @@ public class EvtPlaceholderRequest extends SkriptEvent {
 
 	@Override
 	public boolean check(Event event) {
-		String eventPlaceholder = null;
+		String eventPlaceholder;
 		switch (plugin) {
 			case PLACEHOLDER_API:
 				eventPlaceholder = ((PlaceholderEvent) event).getPrefix();
