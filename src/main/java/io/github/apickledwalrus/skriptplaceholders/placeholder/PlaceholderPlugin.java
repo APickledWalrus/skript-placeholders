@@ -11,7 +11,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public enum PlaceholderPlugin {
 
-	PLACEHOLDER_API("PlaceholderAPI", Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI")) {
+	PLACEHOLDER_API("PlaceholderAPI", Skript.classExists("me.clip.placeholderapi.expansion.PlaceholderExpansion")) {
 		private final char[] illegalCharacters = new char[]{'%', '{', '}', '_'};
 
 		@Override
@@ -46,7 +46,7 @@ public enum PlaceholderPlugin {
 			return value;
 		}
 	},
-	MVDW_PLACEHOLDER_API("MVdWPlaceholderAPI", Skript.classExists("me.clip.placeholderapi.expansion.PlaceholderExpansion")) {
+	MVDW_PLACEHOLDER_API("MVdWPlaceholderAPI", Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI")) {
 		@Override
 		@Nullable
 		public String isValidPrefix(String prefix) {
