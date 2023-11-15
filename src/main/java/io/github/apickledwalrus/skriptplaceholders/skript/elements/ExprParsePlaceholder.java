@@ -1,4 +1,4 @@
-package io.github.apickledwalrus.skriptplaceholders.skript.elements.expressions;
+package io.github.apickledwalrus.skriptplaceholders.skript.elements;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
@@ -31,7 +31,7 @@ import java.util.List;
 public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprParsePlaceholder.class, String.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprParsePlaceholder.class, String.class, ExpressionType.COMBINED,
 				"[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [(from|of) %-players/offlineplayers%]",
 				"parse placeholder[s] %strings% [(for|as) %-players/offlineplayers%]"
 		);

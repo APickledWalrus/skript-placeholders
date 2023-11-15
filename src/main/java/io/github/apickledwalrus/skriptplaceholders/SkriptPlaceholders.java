@@ -17,7 +17,7 @@ public class SkriptPlaceholders extends JavaPlugin {
 			if (plugin.isInstalled()) {
 				break;
 			}
-			getLogger().severe("[skript-placeholders] No placeholders plugin found! Disabling!");
+			getLogger().severe("No placeholder plugins were found. Do you have any installed? Disabling...");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}

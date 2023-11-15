@@ -1,4 +1,4 @@
-package io.github.apickledwalrus.skriptplaceholders.skript.elements.events;
+package io.github.apickledwalrus.skriptplaceholders.skript.elements;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
