@@ -27,8 +27,8 @@ repositories {
 
 dependencies {
     implementation 'org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.600'
-    implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
-    implementation ('com.github.SkriptLang:Skript:2.6.4') {
+    implementation 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    implementation ('com.github.SkriptLang:Skript:2.7.2') {
         transitive = false
     }
     implementation ('me.clip:placeholderapi:2.11.3')
