@@ -1,7 +1,5 @@
-# NOTICE - It has been some time since this addon's last update, but I want to clarify that I am still here for support if any issues arise or if any future updates are needed! PLEASE feel free to ask for help in the issues tab (https://github.com/APickledWalrus/skript-placeholders/issues) or on Discord (see links below!)
-
 # skript-placeholders
-Placeholder integration for Skript.
+Placeholder integration for Skript. This addon requires Skript 2.7.2.
 
 
 This addon allows you to use and register placeholders with PlaceholderAPI and/or MVdWPlaceholderAPI.
@@ -9,6 +7,9 @@ For this addon to work, you must have PlaceholderAPI or MVdWPlaceholderAPI insta
 Please note that you must have an MVdW plugin for MVdWPlaceholderAPI to function.
 
 This addon is a fork of Ersatz (by Pikachu - https://github.com/Pikachu920/Ersatz) which has been updated to work with PlaceholderAPI's new PlaceholderExpansion system and adds new features.
+
+Please note that while this addon does not frequently receive updates, it is still compatible with the latest Skript versions and should function without issue.
+If you encounter errors of any kind, please report them in the [issues tab](https://github.com/APickledWalrus/skript-placeholders/issues).
 
 # Links
 
