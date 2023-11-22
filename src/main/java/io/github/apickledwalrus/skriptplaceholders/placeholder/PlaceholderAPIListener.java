@@ -1,19 +1,20 @@
 package io.github.apickledwalrus.skriptplaceholders.placeholder;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-public class PlaceholderAPIListener extends PlaceholderExpansion {
+public class PlaceholderAPIListener extends PlaceholderExpansion implements PlaceholderListener {
 
 	private final Plugin plugin;
+	private final PlaceholderEvaluator evaluator;
 	private final String prefix;
 
-	public PlaceholderAPIListener(Plugin plugin, String prefix) {
+	public PlaceholderAPIListener(Plugin plugin, PlaceholderEvaluator evaluator, String prefix) {
 		this.plugin = plugin;
+		this.evaluator = evaluator;
 		this.prefix = prefix;
 	}
 
@@ -43,9 +44,17 @@ public class PlaceholderAPIListener extends PlaceholderExpansion {
 	@Override
 	@Nullable
 	public String onRequest(@Nullable OfflinePlayer player, @NonNull String identifier) {
-		PlaceholderEvent event = new PlaceholderEvent(this.prefix + "_" + identifier, player);
-		Bukkit.getPluginManager().callEvent(event);
-		return event.getResult();
+		return evaluator.evaluate(this.prefix + "_" + identifier, player);
+	}
+
+	@Override
+	public void registerListener() {
+		register();
+	}
+
+	@Override
+	public void unregisterListener() {
+		unregister();
 	}
 
 }

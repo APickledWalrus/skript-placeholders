@@ -1,4 +1,4 @@
-package io.github.apickledwalrus.skriptplaceholders.placeholder;
+package io.github.apickledwalrus.skriptplaceholders.skript;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -7,6 +7,9 @@ import org.bukkit.event.HandlerList;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
+/**
+ * An event to be used by Skript for passing context during execution.
+ */
 public class PlaceholderEvent extends Event {
 
 	@Nullable

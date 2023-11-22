@@ -31,8 +31,10 @@ public enum PlaceholderPlugin {
 		}
 
 		@Override
-		public void registerPlaceholder(String placeholder) {
-			new PlaceholderAPIListener(SkriptPlaceholders.getInstance(), placeholder).register();
+		public PlaceholderListener registerPlaceholder(PlaceholderEvaluator evaluator, String placeholder) {
+			PlaceholderListener listener = new PlaceholderAPIListener(SkriptPlaceholders.getInstance(), evaluator, placeholder);
+			listener.registerListener();
+			return listener;
 		}
 
 		@Override
@@ -54,8 +56,10 @@ public enum PlaceholderPlugin {
 		}
 
 		@Override
-		public void registerPlaceholder(String placeholder) {
-			new MVdWPlaceholderAPIListener(SkriptPlaceholders.getInstance(), placeholder).register();
+		public PlaceholderListener registerPlaceholder(PlaceholderEvaluator evaluator, String placeholder) {
+			PlaceholderListener listener = new MVdWPlaceholderAPIListener(SkriptPlaceholders.getInstance(), evaluator, placeholder);
+			listener.registerListener();
+			return listener;
 		}
 
 		@Override
@@ -103,8 +107,9 @@ public enum PlaceholderPlugin {
 	/**
 	 * Registers a new placeholder with this plugin.
 	 * @param placeholder The name of the placeholder to register.
+	 * @return The registered listener.
 	 */
-	public abstract void registerPlaceholder(String placeholder);
+	public abstract PlaceholderListener registerPlaceholder(PlaceholderEvaluator evaluator, String placeholder);
 
 	/**
 	 * @param placeholder The placeholder to obtain the value of.
