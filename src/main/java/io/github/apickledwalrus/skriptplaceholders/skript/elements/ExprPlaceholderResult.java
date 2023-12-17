@@ -11,6 +11,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.registrations.Classes;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
 import io.github.apickledwalrus.skriptplaceholders.skript.PlaceholderEvent;
@@ -56,6 +57,7 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	public Class<?>[] acceptChange(ChangeMode mode) {
 		switch (mode) {
 			case SET:
+				return CollectionUtils.array(Object.class);
 			case DELETE:
 			case RESET:
 				return CollectionUtils.array(String.class);
@@ -66,13 +68,18 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 
 	@Override
 	public void change(Event event, @Nullable Object[] delta, ChangeMode mode) {
+		PlaceholderEvent placeholderEvent = ((PlaceholderEvent) event);
 		switch (mode) {
 			case SET:
-				((PlaceholderEvent) event).setResult((String) delta[0]);
+				if (delta[0] instanceof String) {
+					placeholderEvent.setResult((String) delta[0]);
+					break;
+				}
+				placeholderEvent.setResult(Classes.toString(delta[0]));
 				break;
 			case RESET:
 			case DELETE:
-				((PlaceholderEvent) event).setResult(null);
+				placeholderEvent.setResult(null);
 				break;
 			default:
 				assert false;
