@@ -57,10 +57,9 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	public Class<?>[] acceptChange(ChangeMode mode) {
 		switch (mode) {
 			case SET:
-				return CollectionUtils.array(Object.class);
 			case DELETE:
 			case RESET:
-				return CollectionUtils.array(String.class);
+				return CollectionUtils.array(Object.class);
 			default:
 				return null;
 		}
@@ -73,9 +72,9 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 			case SET:
 				if (delta[0] instanceof String) {
 					placeholderEvent.setResult((String) delta[0]);
-					break;
+				} else {
+					placeholderEvent.setResult(Classes.toString(delta[0]));
 				}
-				placeholderEvent.setResult(Classes.toString(delta[0]));
 				break;
 			case RESET:
 			case DELETE:
