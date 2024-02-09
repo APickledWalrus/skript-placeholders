@@ -11,6 +11,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.registrations.Classes;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
 import io.github.apickledwalrus.skriptplaceholders.skript.PlaceholderEvent;
@@ -27,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
 		"\t# Placeholder is \"{skriptplaceholders_author}\"",
 		"\tset the result to \"APickledWalrus\""
 })
-@Since("1.0, 1.3 (MVdWPlaceholderAPI support)")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support), INSERT VERSION (object support)")
 @Events("Placeholder Request")
 public class ExprPlaceholderResult extends SimpleExpression<String> {
 
@@ -58,7 +59,7 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 			case SET:
 			case DELETE:
 			case RESET:
-				return CollectionUtils.array(String.class);
+				return CollectionUtils.array(Object.class);
 			default:
 				return null;
 		}
@@ -66,13 +67,18 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 
 	@Override
 	public void change(Event event, @Nullable Object[] delta, ChangeMode mode) {
+		PlaceholderEvent placeholderEvent = ((PlaceholderEvent) event);
 		switch (mode) {
 			case SET:
-				((PlaceholderEvent) event).setResult((String) delta[0]);
+				if (delta[0] instanceof String) {
+					placeholderEvent.setResult((String) delta[0]);
+				} else {
+					placeholderEvent.setResult(Classes.toString(delta[0]));
+				}
 				break;
 			case RESET:
 			case DELETE:
-				((PlaceholderEvent) event).setResult(null);
+				placeholderEvent.setResult(null);
 				break;
 			default:
 				assert false;
