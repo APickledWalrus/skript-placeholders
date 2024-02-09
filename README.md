@@ -1,5 +1,5 @@
 # skript-placeholders
-Placeholder integration for Skript. This addon requires Skript 2.7.2.
+Placeholder integration for Skript. This addon requires Skript 2.7.3.
 
 
 This addon allows you to use and register placeholders with PlaceholderAPI and/or MVdWPlaceholderAPI.

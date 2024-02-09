@@ -28,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
 		"\t# Placeholder is \"{skriptplaceholders_author}\"",
 		"\tset the result to \"APickledWalrus\""
 })
-@Since("1.0, 1.3 (MVdWPlaceholderAPI support), INSERT VERSION (object support)")
+@Since("1.0, 1.3 (MVdWPlaceholderAPI support), 1.6.0 (using any type support)")
 @Events("Placeholder Request")
 public class ExprPlaceholderResult extends SimpleExpression<String> {
 
@@ -76,8 +76,8 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 					placeholderEvent.setResult(Classes.toString(delta[0]));
 				}
 				break;
-			case RESET:
 			case DELETE:
+			case RESET:
 				placeholderEvent.setResult(null);
 				break;
 			default:
