@@ -3,9 +3,12 @@ package io.github.apickledwalrus.skriptplaceholders.placeholder;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+/**
+ * A placeholder listener for placeholders created using {@link PlaceholderPlugin#PLACEHOLDER_API}.
+ */
 public class PlaceholderAPIListener extends PlaceholderExpansion implements PlaceholderListener {
 
 	private final Plugin plugin;
@@ -19,20 +22,17 @@ public class PlaceholderAPIListener extends PlaceholderExpansion implements Plac
 	}
 
 	@Override
-	@NonNull
-	public String getIdentifier() {
+	public @NotNull String getIdentifier() {
 		return prefix;
 	}
 
 	@Override
-	@NonNull
-	public String getAuthor() {
+	public @NotNull String getAuthor() {
 		return plugin.getDescription().getAuthors().toString();
 	}
 
 	@Override
-	@NonNull
-	public String getVersion() {
+	public @NotNull String getVersion() {
 		return plugin.getDescription().getVersion();
 	}
 
@@ -42,8 +42,7 @@ public class PlaceholderAPIListener extends PlaceholderExpansion implements Plac
 	}
 
 	@Override
-	@Nullable
-	public String onRequest(@Nullable OfflinePlayer player, @NonNull String identifier) {
+	public @Nullable String onRequest(@Nullable OfflinePlayer player, @NotNull String identifier) {
 		return evaluator.evaluate(this.prefix + "_" + identifier, player);
 	}
 

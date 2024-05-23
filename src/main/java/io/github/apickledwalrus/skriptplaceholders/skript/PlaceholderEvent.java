@@ -4,23 +4,19 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An event to be used by Skript for passing context during execution.
  */
 public class PlaceholderEvent extends Event {
 
-	@Nullable
-	private final OfflinePlayer player;
+	private final @Nullable OfflinePlayer player;
 	private final String placeholder;
-	@Nullable
-	private final String prefix;
-	@Nullable
-	private final String identifier;
-	@Nullable
-	private String result;
+	private final @Nullable String prefix;
+	private final @Nullable String identifier;
+	private @Nullable String result;
 
 	public PlaceholderEvent(String placeholder, @Nullable OfflinePlayer player) {
 		// Declare the event as sync or async.
@@ -43,18 +39,15 @@ public class PlaceholderEvent extends Event {
 		return this.placeholder;
 	}
 
-	@Nullable
-	public String getPrefix() {
+	public @Nullable String getPrefix() {
 		return prefix;
 	}
 
-	@Nullable
-	public String getIdentifier() {
+	public @Nullable String getIdentifier() {
 		return identifier;
 	}
 
-	@Nullable
-	public OfflinePlayer getPlayer() {
+	public @Nullable OfflinePlayer getPlayer() {
 		return this.player;
 	}
 
@@ -72,8 +65,7 @@ public class PlaceholderEvent extends Event {
 	private static final HandlerList handlerList = new HandlerList();
 
 	@Override
-	@NonNull
-	public HandlerList getHandlers() {
+	public @NotNull HandlerList getHandlers() {
 		return handlerList;
 	}
 

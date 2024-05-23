@@ -23,7 +23,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.skriptlang.skript.lang.entry.EntryContainer;
 import org.skriptlang.skript.lang.script.Script;
 import org.skriptlang.skript.lang.structure.Structure;
@@ -54,7 +55,6 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		);
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, new Getter<Player, PlaceholderEvent>() {
 			@Override
-			@Nullable
 			public Player get(PlaceholderEvent event) {
 				if (event.getPlayer() != null && event.getPlayer().isOnline())
 					return (Player) event.getPlayer();
@@ -63,26 +63,20 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		}, EventValues.TIME_NOW);
 		EventValues.registerEventValue(PlaceholderEvent.class, OfflinePlayer.class, new Getter<OfflinePlayer, PlaceholderEvent>() {
 			@Override
-			@Nullable
 			public OfflinePlayer get(PlaceholderEvent event) {
 				return event.getPlayer();
 			}
 		}, EventValues.TIME_NOW);
 	}
 
-	@SuppressWarnings("NotNullFieldNotInitialized")
 	private PlaceholderPlugin plugin;
-	@SuppressWarnings("NotNullFieldNotInitialized")
 	private String[] placeholders;
 
-	@SuppressWarnings("NotNullFieldNotInitialized")
 	private PlaceholderListener[] listeners;
-	@SuppressWarnings("NotNullFieldNotInitialized")
 	private Trigger trigger;
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public boolean init(Literal<?>[] args, int matchedPattern, ParseResult parseResult, EntryContainer entryContainer) {
+	public boolean init(Literal<?> @NotNull [] args, int matchedPattern, @NotNull ParseResult parseResult, @NotNull EntryContainer entryContainer) {
 		plugin = PlaceholderPlugin.values()[matchedPattern];
 		if (!plugin.isInstalled()) {
 			Skript.error(plugin.getDisplayName() + " placeholders can not be requested because the plugin is not installed.");
@@ -90,6 +84,7 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		}
 
 		List<String> placeholders = new ArrayList<>();
+		//noinspection unchecked - Skript guarantees this will be a Literal<String>
 		for (String placeholder : ((Literal<String>) args[0]).getAll()) {
 			String error = plugin.isValidPrefix(placeholder);
 			if (error != null) {
@@ -144,7 +139,7 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 	}
 
 	@Override
-	public String toString(@Nullable Event event, boolean debug) {
+	public @NotNull String toString(@Nullable Event event, boolean debug) {
 		String placeholders = Arrays.toString(this.placeholders);
 		placeholders = placeholders.substring(1, placeholders.length() - 1); // Trim off the ends
 		switch (plugin) {

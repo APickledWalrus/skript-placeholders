@@ -4,6 +4,9 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 
+/**
+ * A placeholder listener for placeholders created using {@link PlaceholderPlugin#MVDW_PLACEHOLDER_API}.
+ */
 public class MVdWPlaceholderAPIListener implements PlaceholderListener {
 
 	private final Plugin plugin;

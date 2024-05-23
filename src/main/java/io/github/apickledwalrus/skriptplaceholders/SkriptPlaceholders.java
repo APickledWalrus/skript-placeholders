@@ -25,7 +25,9 @@ public class SkriptPlaceholders extends JavaPlugin {
 		try {
 			Skript.registerAddon(this).loadClasses("io.github.apickledwalrus.skriptplaceholders.skript.elements");
 		} catch (IOException e) {
-			e.printStackTrace();
+			getLogger().severe("A severe error occurred while trying to load the addon. Disabling...");
+			getLogger().severe(e.toString());
+			getServer().getPluginManager().disablePlugin(this);
 		}
 	}
 

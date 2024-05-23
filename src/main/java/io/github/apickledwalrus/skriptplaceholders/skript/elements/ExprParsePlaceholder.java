@@ -13,7 +13,8 @@ import ch.njol.util.Kleenean;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,21 +38,20 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 		);
 	}
 
-	@SuppressWarnings("NotNullFieldNotInitialized")
 	private Expression<String> placeholders;
 	@Nullable
 	private Expression<OfflinePlayer> players;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+	public boolean init(Expression<?>[] exprs, int matchedPattern, @NotNull Kleenean isDelayed, @NotNull ParseResult parseResult) {
 		placeholders = (Expression<String>) exprs[0];
 		players = (Expression<OfflinePlayer>) exprs[1];
 		return true;
 	}
 
 	@Override
-	protected String[] get(Event event) {
+	protected String @NotNull [] get(@NotNull Event event) {
 		List<String> values = new ArrayList<>();
 
 		for (OfflinePlayer player : players != null ? players.getArray(event) : new OfflinePlayer[]{null}) {
@@ -78,12 +78,12 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 	}
 
 	@Override
-	public Class<? extends String> getReturnType() {
+	public @NotNull Class<? extends String> getReturnType() {
 		return String.class;
 	}
 
 	@Override
-	public String toString(@Nullable Event event, boolean debug) {
+	public @NotNull String toString(@Nullable Event event, boolean debug) {
 		return "the value of placeholder(s) " + placeholders.toString(event, debug)
 				+ (players != null ? " from " + players.toString(event, debug) : "");
 	}

@@ -10,11 +10,11 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.skript.log.ErrorQuality;
 import ch.njol.util.Kleenean;
 import io.github.apickledwalrus.skriptplaceholders.skript.PlaceholderEvent;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @Name("Placeholder")
 @Description("An expression to obtain the placeholder (or part of it) in a placeholder request event.")
@@ -43,13 +43,12 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 		IDENTIFIER
 	}
 
-	@SuppressWarnings("NotNullFieldNotInitialized")
 	private PlaceholderPart part;
 
 	@Override
-	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+	public boolean init(Expression<?> @NotNull [] exprs, int matchedPattern, @NotNull Kleenean isDelayed, @NotNull ParseResult parseResult) {
 		if (!getParser().isCurrentEvent(PlaceholderEvent.class)) {
-			Skript.error("The placeholder can only be used in a placeholder request event", ErrorQuality.SEMANTIC_ERROR);
+			Skript.error("The placeholder can only be used in a placeholder request event");
 			return false;
 		}
 		this.part = PlaceholderPart.values()[parseResult.mark];
@@ -57,7 +56,7 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 	}
 
 	@Override
-	protected String[] get(Event event) {
+	protected String @NotNull [] get(@NotNull Event event) {
 		switch (part) {
 			case PLACEHOLDER:
 				return new String[]{((PlaceholderEvent) event).getPlaceholder()};
@@ -76,12 +75,12 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 	}
 
 	@Override
-	public Class<? extends String> getReturnType() {
+	public @NotNull Class<? extends String> getReturnType() {
 		return String.class;
 	}
 
 	@Override
-	public String toString(@Nullable Event event, boolean debug) {
+	public @NotNull String toString(@Nullable Event event, boolean debug) {
 		switch (part) {
 			case PLACEHOLDER:
 				return "the placeholder";

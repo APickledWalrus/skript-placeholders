@@ -15,7 +15,6 @@ public interface PlaceholderEvaluator {
 	 *  Can be null for placeholders that do not require such context.
 	 * @return The value of the placeholder.
 	 */
-	@Nullable
-	String evaluate(String placeholder, @Nullable OfflinePlayer player);
+	@Nullable String evaluate(String placeholder, @Nullable OfflinePlayer player);
 
 }

@@ -16,7 +16,8 @@ import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
 import io.github.apickledwalrus.skriptplaceholders.skript.PlaceholderEvent;
 import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @Name("Placeholder Result")
 @Description("The value of a placeholder in a placeholder event. Can be set, reset, or deleted.")
@@ -39,7 +40,7 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	}
 
 	@Override
-	public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+	public boolean init(Expression<?> @NotNull [] exprs, int matchedPattern, @NotNull Kleenean isDelayed, @NotNull ParseResult parseResult) {
 		if (!getParser().isCurrentEvent(PlaceholderEvent.class)) {
 			Skript.error("The placeholder result can only be used in a placeholder request event");
 			return false;
@@ -48,25 +49,25 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	}
 
 	@Override
-	protected String[] get(Event event) {
+	protected String @NotNull [] get(@NotNull Event event) {
 		return new String[]{((PlaceholderEvent) event).getResult()};
 	}
 
 	@Override
-	@Nullable
-	public Class<?>[] acceptChange(ChangeMode mode) {
+	public Class<?> @NotNull [] acceptChange(ChangeMode mode) {
 		switch (mode) {
 			case SET:
 			case DELETE:
 			case RESET:
 				return CollectionUtils.array(Object.class);
 			default:
+				//noinspection ConstantConditions - Skript annotated this wrong
 				return null;
 		}
 	}
 
 	@Override
-	public void change(Event event, @Nullable Object[] delta, ChangeMode mode) {
+	public void change(@NotNull Event event, Object @NotNull [] delta, ChangeMode mode) {
 		PlaceholderEvent placeholderEvent = ((PlaceholderEvent) event);
 		switch (mode) {
 			case SET:
@@ -91,12 +92,12 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	}
 
 	@Override
-	public Class<? extends String> getReturnType() {
+	public @NotNull Class<? extends String> getReturnType() {
 		return String.class;
 	}
 
 	@Override
-	public String toString(@Nullable Event event, boolean debug) {
+	public @NotNull String toString(@Nullable Event event, boolean debug) {
 		return "the placeholder result";
 	}
 

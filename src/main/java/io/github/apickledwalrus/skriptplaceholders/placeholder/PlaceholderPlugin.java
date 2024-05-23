@@ -4,7 +4,7 @@ import ch.njol.skript.Skript;
 import io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
-import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A utility enum for the placeholder plugins.
@@ -15,8 +15,7 @@ public enum PlaceholderPlugin {
 		private final char[] illegalCharacters = new char[]{'%', '{', '}', '_'};
 
 		@Override
-		@Nullable
-		public String isValidPrefix(String prefix) {
+		public @Nullable String isValidPrefix(String prefix) {
 			if (StringUtils.isBlank(prefix)) {
 				return "A prefix cannot be blank";
 			}
@@ -38,8 +37,7 @@ public enum PlaceholderPlugin {
 		}
 
 		@Override
-		@Nullable
-		public String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player) {
+		public @Nullable String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player) {
 			if (placeholder.indexOf('%') == -1) // Try to add percentage signs manually
 				placeholder = "%" + placeholder + "%";
 			String value = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, placeholder);
@@ -50,8 +48,7 @@ public enum PlaceholderPlugin {
 	},
 	MVDW_PLACEHOLDER_API("MVdWPlaceholderAPI", Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI")) {
 		@Override
-		@Nullable
-		public String isValidPrefix(String prefix) {
+		public @Nullable String isValidPrefix(String prefix) {
 			return StringUtils.isBlank(prefix) ? "A placeholder cannot be blank" : null;
 		}
 
@@ -63,8 +60,7 @@ public enum PlaceholderPlugin {
 		}
 
 		@Override
-		@Nullable
-		public String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player) {
+		public @Nullable String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player) {
 			if (placeholder.charAt(0) == '{' && placeholder.charAt(placeholder.length() - 1) == '}') {
 				String value = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, placeholder);
 				if (value.isEmpty() || value.equalsIgnoreCase(placeholder))
@@ -101,8 +97,7 @@ public enum PlaceholderPlugin {
 	 * @param prefix The prefix to validate.
 	 * @return Null, or an error message detailing why the prefix is invalid.
 	 */
-	@Nullable
-	public abstract String isValidPrefix(String prefix);
+	public abstract @Nullable String isValidPrefix(String prefix);
 
 	/**
 	 * Registers a new placeholder with this plugin.
@@ -116,7 +111,6 @@ public enum PlaceholderPlugin {
 	 * @param player The player to obtain the placeholder from. For some implementations, a player is not required.
 	 * @return The value of the placeholder for the given player (if provided).
 	 */
-	@Nullable
-	public abstract String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player);
+	public abstract @Nullable String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player);
 
 }
