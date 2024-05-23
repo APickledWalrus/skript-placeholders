@@ -57,13 +57,18 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 
 	@Override
 	protected String @NotNull [] get(@NotNull Event event) {
+		if (!(event instanceof PlaceholderEvent))
+			return new String[0];
+		PlaceholderEvent placeholderEvent = (PlaceholderEvent) event;
 		switch (part) {
 			case PLACEHOLDER:
-				return new String[]{((PlaceholderEvent) event).getPlaceholder()};
+				return new String[]{placeholderEvent.getPlaceholder()};
 			case PREFIX:
-				return new String[]{((PlaceholderEvent) event).getPrefix()};
+				String prefix = placeholderEvent.getPrefix();
+				return prefix != null ? new String[]{prefix} : new String[0];
 			case IDENTIFIER:
-				return new String[]{((PlaceholderEvent) event).getIdentifier()};
+				String identifier = placeholderEvent.getIdentifier();
+				return identifier != null ? new String[]{identifier} : new String[0];
 			default:
 				throw new IllegalArgumentException("Unable to handle PlaceholderPart: " + part);
 		}

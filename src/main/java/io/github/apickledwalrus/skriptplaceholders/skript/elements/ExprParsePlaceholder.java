@@ -53,13 +53,11 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 	@Override
 	protected String @NotNull [] get(@NotNull Event event) {
 		List<String> values = new ArrayList<>();
-
-		for (OfflinePlayer player : players != null ? players.getArray(event) : new OfflinePlayer[]{null}) {
-			for (String placeholder : placeholders.getArray(event)) {
-				for (PlaceholderPlugin plugin : PlaceholderPlugin.values()) {
-					if (!plugin.isInstalled()) {
-						continue;
-					}
+		String[] placeholders = this.placeholders.getArray(event);
+		OfflinePlayer[] players = this.players != null ? this.players.getArray(event) : new OfflinePlayer[]{null};
+		for (OfflinePlayer player : players) {
+			for (String placeholder : placeholders) {
+				for (PlaceholderPlugin plugin : PlaceholderPlugin.getInstalledPlugins()) {
 					String value = plugin.parsePlaceholder(placeholder, player);
 					if (value != null) {
 						values.add(value);
@@ -68,13 +66,12 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 				}
 			}
 		}
-
 		return values.toArray(new String[0]);
 	}
 
 	@Override
 	public boolean isSingle() {
-		return players != null ? (placeholders.isSingle() && players.isSingle()) : placeholders.isSingle();
+		return placeholders.isSingle() && (players == null || players.isSingle());
 	}
 
 	@Override

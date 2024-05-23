@@ -13,10 +13,7 @@ public class SkriptPlaceholders extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
-		for (PlaceholderPlugin plugin : PlaceholderPlugin.values()) {
-			if (plugin.isInstalled()) {
-				break;
-			}
+		if (PlaceholderPlugin.getInstalledPlugins().isEmpty()) {
 			getLogger().severe("No placeholder plugins were found. Do you have any installed? Disabling...");
 			getServer().getPluginManager().disablePlugin(this);
 			return;

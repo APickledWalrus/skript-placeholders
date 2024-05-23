@@ -6,6 +6,10 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 /**
  * A utility enum for the placeholder plugins.
  */
@@ -70,6 +74,17 @@ public enum PlaceholderPlugin {
 			return null;
 		}
 	};
+
+	private static final Collection<PlaceholderPlugin> INSTALLED_PLUGINS = Arrays.stream(values())
+			.filter(PlaceholderPlugin::isInstalled)
+			.collect(Collectors.toSet());
+
+	/**
+	 * @return A list of all installed placeholder plugins.
+	 */
+	public static Collection<PlaceholderPlugin> getInstalledPlugins() {
+		return INSTALLED_PLUGINS;
+	}
 
 	private final String displayName;
 	private final boolean installed;
