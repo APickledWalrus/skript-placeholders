@@ -56,9 +56,8 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, new Getter<Player, PlaceholderEvent>() {
 			@Override
 			public Player get(PlaceholderEvent event) {
-				if (event.getPlayer() != null && event.getPlayer().isOnline())
-					return (Player) event.getPlayer();
-				return null;
+				OfflinePlayer player = event.getPlayer();
+				return player != null ? player.getPlayer() : null;
 			}
 		}, EventValues.TIME_NOW);
 		EventValues.registerEventValue(PlaceholderEvent.class, OfflinePlayer.class, new Getter<OfflinePlayer, PlaceholderEvent>() {
@@ -86,7 +85,7 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		List<String> placeholders = new ArrayList<>();
 		//noinspection unchecked - Skript guarantees this will be a Literal<String>
 		for (String placeholder : ((Literal<String>) args[0]).getAll()) {
-			String error = plugin.isValidPrefix(placeholder);
+			String error = plugin.validatePrefix(placeholder);
 			if (error != null) {
 				Skript.error(error);
 				return false;

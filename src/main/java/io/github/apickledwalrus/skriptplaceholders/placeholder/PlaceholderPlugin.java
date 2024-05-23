@@ -19,7 +19,7 @@ public enum PlaceholderPlugin {
 		private final char[] illegalCharacters = new char[]{'%', '{', '}', '_'};
 
 		@Override
-		public @Nullable String isValidPrefix(String prefix) {
+		public @Nullable String validatePrefix(String prefix) {
 			if (StringUtils.isBlank(prefix)) {
 				return "A prefix cannot be blank";
 			}
@@ -42,18 +42,23 @@ public enum PlaceholderPlugin {
 
 		@Override
 		public @Nullable String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player) {
-			if (placeholder.indexOf('%') == -1) // Try to add percentage signs manually
+			if (placeholder.indexOf('%') == -1) { // Try to add percentage signs manually
 				placeholder = "%" + placeholder + "%";
+			}
 			String value = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, placeholder);
-			if (value.isEmpty() || value.equalsIgnoreCase(placeholder))
+			if (value.isEmpty() || value.equalsIgnoreCase(placeholder)) {
 				return null;
+			}
 			return value;
 		}
 	},
 	MVDW_PLACEHOLDER_API("MVdWPlaceholderAPI", Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI")) {
 		@Override
-		public @Nullable String isValidPrefix(String prefix) {
-			return StringUtils.isBlank(prefix) ? "A placeholder cannot be blank" : null;
+		public @Nullable String validatePrefix(String prefix) {
+			if (StringUtils.isBlank(prefix)) {
+				return "A placeholder cannot be blank";
+			}
+			return null;
 		}
 
 		@Override
@@ -67,8 +72,9 @@ public enum PlaceholderPlugin {
 		public @Nullable String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player) {
 			if (placeholder.charAt(0) == '{' && placeholder.charAt(placeholder.length() - 1) == '}') {
 				String value = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, placeholder);
-				if (value.isEmpty() || value.equalsIgnoreCase(placeholder))
+				if (value.isEmpty() || value.equalsIgnoreCase(placeholder)) {
 					return null;
+				}
 				return value;
 			}
 			return null;
@@ -110,9 +116,9 @@ public enum PlaceholderPlugin {
 
 	/**
 	 * @param prefix The prefix to validate.
-	 * @return Null, or an error message detailing why the prefix is invalid.
+	 * @return Null if the prefix is valid, or an error message detailing why the prefix is invalid.
 	 */
-	public abstract @Nullable String isValidPrefix(String prefix);
+	public abstract @Nullable String validatePrefix(String prefix);
 
 	/**
 	 * Registers a new placeholder with this plugin.

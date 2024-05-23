@@ -57,8 +57,9 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 
 	@Override
 	protected String @NotNull [] get(@NotNull Event event) {
-		if (!(event instanceof PlaceholderEvent))
+		if (!(event instanceof PlaceholderEvent)) {
 			return new String[0];
+		}
 		PlaceholderEvent placeholderEvent = (PlaceholderEvent) event;
 		switch (part) {
 			case PLACEHOLDER:

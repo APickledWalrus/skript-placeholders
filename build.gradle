@@ -4,9 +4,6 @@ plugins {
     id 'java'
 }
 
-group 'io.github.apickledwalrus'
-version '1.6.0'
-
 compileJava.options.encoding = 'UTF-8'
 
 java {
