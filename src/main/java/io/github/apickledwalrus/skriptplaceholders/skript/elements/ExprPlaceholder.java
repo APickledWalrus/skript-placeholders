@@ -26,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 	"on mvdw placeholder request for the placeholder \"custom_hey\":",
 		"\tbroadcast \"Placeholder: %the placeholder%\""
 })
-@Since("1.0, 1.3 (MVdWPlaceholderAPI support)")
+@Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support)")
 @Events("Placeholder Request")
 public class ExprPlaceholder extends SimpleExpression<String> {
 

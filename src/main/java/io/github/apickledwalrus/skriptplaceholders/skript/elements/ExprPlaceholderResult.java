@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 		"\t# Placeholder is \"{skriptplaceholders_author}\"",
 		"\tset the result to \"APickledWalrus\""
 })
-@Since("1.0, 1.3 (MVdWPlaceholderAPI support), 1.6.0 (using any type support)")
+@Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support), 1.6.0 (using any type support)")
 @Events("Placeholder Request")
 public class ExprPlaceholderResult extends SimpleExpression<String> {
 

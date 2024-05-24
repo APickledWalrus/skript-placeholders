@@ -34,7 +34,7 @@ import java.util.List;
 			"\tset {_status} to the relational placeholder \"friendship_status\" from arg-1 and arg-2",
 			"\tsend \"Status: %{_status}%\" to the player"
 })
-@Since("1.0, 1.2 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
+@Since("1.0.0, 1.2.0 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
 public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	static {
