@@ -42,7 +42,7 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	@Override
 	public boolean init(Expression<?> @NotNull [] exprs, int matchedPattern, @NotNull Kleenean isDelayed, @NotNull ParseResult parseResult) {
 		if (!getParser().isCurrentEvent(PlaceholderEvent.class)) {
-			Skript.error("The placeholder result can only be used in a placeholder request event");
+			Skript.error("'the placeholder result' can only be used in custom placeholders");
 			return false;
 		}
 		return true;

@@ -40,10 +40,11 @@ public class ExprRelationalPlayers extends SimpleExpression<Player> {
 
 	@Override
 	public boolean init(Expression<?> @NotNull [] expressions, int matchedPattern, @NotNull Kleenean kleenean, @NotNull ParseResult parseResult) {
+		first = matchedPattern == 0;
 		if (!getParser().isCurrentEvent(RelationalPlaceholderEvent.class)) {
 			Skript.error("'the " + (first ? "first" : "second") + " player' can only be used in custom relational placeholders.");
+			return false;
 		}
-		first = matchedPattern == 0;
 		return true;
 	}
 

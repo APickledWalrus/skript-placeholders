@@ -28,10 +28,9 @@ import java.util.List;
 			"\t\tset {_ping} to the placeholder \"player_ping\" from arg-1 # PlaceholderAPI",
 			"\t\tset {_ping} to the placeholder \"{ping}\" from arg-1 # MVdWPlaceholderAPI",
 			"\t\tsend \"Ping of %arg-1%: %{_ping}%\" to the player",
-	"",
 	"command /friend status <player> <player>:",
 		"\ttrigger:",
-			"\tset {_status} to the relational placeholder \"friendship_status\" from arg-1 and arg-2",
+			"\tset {_status} to the relational placeholder \"rel_friendship_status\" from arg-1 and arg-2",
 			"\tsend \"Status: %{_status}%\" to the player"
 })
 @Since("1.0.0, 1.2.0 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")

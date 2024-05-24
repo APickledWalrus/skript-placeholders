@@ -34,16 +34,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@Name("Placeholder Request")
+@Name("Custom Placeholder")
 @Description({
-	"Triggers whenever the value of a placeholder is requested by a supported placeholder plugin.",
+	"A structure for creating custom placeholders.",
+	"The code will be executed every time the placeholder plugin requests a value for the placeholder."
 })
 @Examples({
 	"on placeholderapi placeholder request for the prefix \"skriptplaceholders\":",
 		"\tif the identifier is \"author\": # Placeholder is \"%skriptplaceholders_author%\"",
 			"\t\tset the result to \"APickledWalrus\"",
 	"on placeholderapi placeholder request for the relational prefix \"skriptplaceholders\":",
-		"\tif the identifier is \"rel_longer_name\": # Placeholder is \"%skriptplaceholders_author%\"",
+		"\tif the identifier is \"longer_name\": # Placeholder is \"%rel_skriptplaceholders_longer_name%\"",
 			"\t\tif the length of the name of the first player > the length of the name of the second player:",
 				"\t\t\tset the result to the name of the first player",
 			"\t\telse:",
