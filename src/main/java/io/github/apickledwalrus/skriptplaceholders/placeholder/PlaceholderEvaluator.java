@@ -1,6 +1,7 @@
 package io.github.apickledwalrus.skriptplaceholders.placeholder;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -13,8 +14,17 @@ public interface PlaceholderEvaluator {
 	 * @param placeholder The placeholder to evaluate.
 	 * @param player The player to use for evaluating this placeholder.
 	 *  Can be null for placeholders that do not require such context.
-	 * @return The value of the placeholder.
+	 * @return The value of the placeholder, or null if it could not be evaluated.
 	 */
 	@Nullable String evaluate(String placeholder, @Nullable OfflinePlayer player);
+
+	/**
+	 * A method to evaluate the value of a relational placeholder, which depends on two players.
+	 * @param placeholder The placeholder to evaluate.
+	 * @param one The first player to use for evaluating <code>placeholder</code>.
+	 * @param two The second player to use for evaluating <code>placeholder</code>.
+	 * @return The value of the placeholder, or null if it could not be evaluated.
+	 */
+	@Nullable String evaluateRelational(String placeholder, Player one, Player two);
 
 }

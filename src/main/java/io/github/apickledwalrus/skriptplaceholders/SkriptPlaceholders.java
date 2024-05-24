@@ -2,6 +2,7 @@ package io.github.apickledwalrus.skriptplaceholders;
 
 import ch.njol.skript.Skript;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderPlugin;
+import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderRegistry;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -9,6 +10,14 @@ import java.io.IOException;
 public class SkriptPlaceholders extends JavaPlugin {
 
 	private static SkriptPlaceholders instance;
+	private PlaceholderRegistry registry;
+
+	public static SkriptPlaceholders getInstance() {
+		if (instance == null) {
+			throw new IllegalStateException("skript-placeholders has not been initialized yet.");
+		}
+		return instance;
+	}
 
 	@Override
 	public void onEnable() {
@@ -26,10 +35,17 @@ public class SkriptPlaceholders extends JavaPlugin {
 			getLogger().severe(e.toString());
 			getServer().getPluginManager().disablePlugin(this);
 		}
+
+		this.registry = new PlaceholderRegistry(this);
 	}
 
-	public static SkriptPlaceholders getInstance() {
-		return instance;
+	@Override
+	public void onDisable() {
+		instance = null;
+	}
+
+	public PlaceholderRegistry getRegistry() {
+		return registry;
 	}
 
 }

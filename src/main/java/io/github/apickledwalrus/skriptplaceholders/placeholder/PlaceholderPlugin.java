@@ -1,10 +1,10 @@
 package io.github.apickledwalrus.skriptplaceholders.placeholder;
 
 import ch.njol.skript.Skript;
-import io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -35,8 +35,8 @@ public enum PlaceholderPlugin {
 		}
 
 		@Override
-		public PlaceholderListener registerPlaceholder(PlaceholderEvaluator evaluator, String placeholder) {
-			PlaceholderListener listener = new PlaceholderAPIListener(SkriptPlaceholders.getInstance(), evaluator, placeholder);
+		PlaceholderListener registerPlaceholder(Plugin plugin, String placeholder) {
+			PlaceholderListener listener = new PlaceholderAPIListener(plugin, placeholder);
 			listener.registerListener();
 			return listener;
 		}
@@ -80,8 +80,8 @@ public enum PlaceholderPlugin {
 		}
 
 		@Override
-		public PlaceholderListener registerPlaceholder(PlaceholderEvaluator evaluator, String placeholder) {
-			PlaceholderListener listener = new MVdWPlaceholderAPIListener(SkriptPlaceholders.getInstance(), evaluator, placeholder);
+		PlaceholderListener registerPlaceholder(Plugin plugin, String placeholder) {
+			PlaceholderListener listener = new MVdWPlaceholderAPIListener(plugin, placeholder);
 			listener.registerListener();
 			return listener;
 		}
@@ -145,10 +145,11 @@ public enum PlaceholderPlugin {
 
 	/**
 	 * Registers a new placeholder with this plugin.
+	 * @param plugin The plugin registering the placeholder.
 	 * @param placeholder The name of the placeholder to register.
 	 * @return The registered listener.
 	 */
-	public abstract PlaceholderListener registerPlaceholder(PlaceholderEvaluator evaluator, String placeholder);
+	abstract PlaceholderListener registerPlaceholder(Plugin plugin, String placeholder);
 
 	/**
 	 * @param placeholder The placeholder to obtain the value of.

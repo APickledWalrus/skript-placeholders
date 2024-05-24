@@ -4,18 +4,21 @@ import be.maximvdw.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * A placeholder listener for placeholders created using {@link PlaceholderPlugin#MVDW_PLACEHOLDER_API}.
  */
 public class MVdWPlaceholderAPIListener implements PlaceholderListener {
 
 	private final Plugin plugin;
-	private final PlaceholderEvaluator evaluator;
 	private final String placeholder;
 
-	public MVdWPlaceholderAPIListener(Plugin plugin, PlaceholderEvaluator evaluator, String placeholder) {
+	private final Set<PlaceholderEvaluator> evaluators = new HashSet<>();
+
+	public MVdWPlaceholderAPIListener(Plugin plugin, String placeholder) {
 		this.plugin = plugin;
-		this.evaluator = evaluator;
 		this.placeholder = placeholder;
 	}
 
@@ -26,13 +29,34 @@ public class MVdWPlaceholderAPIListener implements PlaceholderListener {
 			if (player == null) { // this is for an actual offline player
 				player = event.getOfflinePlayer();
 			}
-			return evaluator.evaluate(placeholder, player);
+			for (PlaceholderEvaluator evaluator : evaluators) {
+				String result = evaluator.evaluate(placeholder, player);;
+				if (result != null) {
+					return result;
+				}
+			}
+			return null;
 		});
 	}
 
 	@Override
 	public void unregisterListener() {
 		// TODO determine if this is possible
+	}
+
+	@Override
+	public void addEvaluator(PlaceholderEvaluator evaluator) {
+		evaluators.add(evaluator);
+	}
+
+	@Override
+	public void removeEvaluator(PlaceholderEvaluator evaluator) {
+		evaluators.remove(evaluator);
+	}
+
+	@Override
+	public boolean hasEvaluators() {
+		return !evaluators.isEmpty();
 	}
 
 }

@@ -16,9 +16,10 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderEvaluator;
+import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderRegistry;
 import io.github.apickledwalrus.skriptplaceholders.skript.PlaceholderEvent;
-import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderListener;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderPlugin;
+import io.github.apickledwalrus.skriptplaceholders.skript.RelationalPlaceholderEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -50,7 +51,7 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 
 	static {
 		Skript.registerStructure(StructPlaceholder.class,
-				"[on] (placeholder[ ]api|papi) [placeholder] request (for|with) [the] prefix[es] %*strings%",
+				"[on] (placeholder[ ]api|papi) [placeholder] request (for|with) [the] [:relational] prefix[es] %*strings%",
 				"[on] (mvdw[ ]placeholder[ ]api|mvdw) [placeholder] request (for|with) [the] placeholder[s] %*strings%"
 		);
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, new Getter<Player, PlaceholderEvent>() {
@@ -68,10 +69,11 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		}, EventValues.TIME_NOW);
 	}
 
+	private PlaceholderRegistry registry;
 	private PlaceholderPlugin plugin;
 	private String[] placeholders;
 
-	private PlaceholderListener[] listeners;
+	private boolean isRelational;
 	private Trigger trigger;
 
 	@Override
@@ -93,8 +95,9 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 			placeholders.add(placeholder);
 		}
 
+		this.registry = SkriptPlaceholders.getInstance().getRegistry();
 		this.placeholders = placeholders.toArray(new String[0]);
-		this.listeners = new PlaceholderListener[this.placeholders.length];
+		this.isRelational = parseResult.hasTag("relational");
 
 		return true;
 	}
@@ -105,10 +108,11 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		Script script = parser.getCurrentScript();
 		SectionNode source = getEntryContainer().getSource();
 
-		parser.setCurrentEvent("placeholder request", PlaceholderEvent.class);
+		parser.setCurrentEvent("placeholder request", isRelational ? RelationalPlaceholderEvent.class : PlaceholderEvent.class);
 
 		// TODO better SkriptEvent?
-		trigger = new Trigger(script, "placeholder request", new SimpleEvent(), ScriptLoader.loadItems(source));
+		//noinspection ConstantConditions - getCurrentEventName will not be null as we set it right before
+		trigger = new Trigger(script, parser.getCurrentEventName(), new SimpleEvent(), ScriptLoader.loadItems(source));
 		int lineNumber = source.getLine();
 		trigger.setLineNumber(lineNumber);
 		trigger.setDebugLabel(script + ": line " + lineNumber);
@@ -116,13 +120,13 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		// see https://github.com/APickledWalrus/skript-placeholders/issues/40
 		// ensure registration is on the main thread
 		if (Bukkit.isPrimaryThread()) {
-			for (int i = 0; i < placeholders.length; i++) {
-				listeners[i] = plugin.registerPlaceholder(this, placeholders[i]);
+			for (String placeholder : placeholders) {
+				registry.registerPlaceholder(plugin, placeholder, this);
 			}
 		} else {
 			Bukkit.getScheduler().runTask(SkriptPlaceholders.getInstance(), () -> {
-				for (int i = 0; i < placeholders.length; i++) {
-					listeners[i] = plugin.registerPlaceholder(this, placeholders[i]);
+				for (String placeholder : placeholders) {
+					registry.registerPlaceholder(plugin, placeholder, this);
 				}
 			});
 		}
@@ -132,8 +136,8 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 
 	@Override
 	public void unload() {
-		for (PlaceholderListener listener : listeners) {
-			listener.unregisterListener();
+		for (String placeholder : placeholders) {
+			registry.unregisterPlaceholder(plugin, placeholder, this);
 		}
 	}
 
@@ -154,7 +158,20 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 	@Override
 	@Nullable
 	public String evaluate(String placeholder, @Nullable OfflinePlayer player) {
+		if (isRelational) { // a relational placeholder structure cannot evaluate non-relational placeholders
+			return null;
+		}
 		PlaceholderEvent event = new PlaceholderEvent(placeholder, player);
+		trigger.execute(event);
+		return event.getResult();
+	}
+
+	@Override
+	public @Nullable String evaluateRelational(String placeholder, Player one, Player two) {
+		if (!isRelational) { // a non-relational placeholder structure cannot evaluate relational placeholders
+			return null;
+		}
+		RelationalPlaceholderEvent event = new RelationalPlaceholderEvent(placeholder, one, two);
 		trigger.execute(event);
 		return event.getResult();
 	}
