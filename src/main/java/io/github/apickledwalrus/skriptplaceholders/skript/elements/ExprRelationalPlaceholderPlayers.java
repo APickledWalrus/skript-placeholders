@@ -19,12 +19,12 @@ import org.jetbrains.annotations.Nullable;
 @Name("Relational Placeholder Players")
 @Description("The two players involved in a relational placeholder request.")
 @Examples({
-	"on placeholderapi placeholder request for the relational prefix \"skriptplaceholders\":",
-		"\tif the identifier is \"rel_longer_name\": # Placeholder is \"%skriptplaceholders_author%\"",
+	"placeholderapi relational placeholder with the prefix \"skriptplaceholders\":",
+		"\tif the identifier is \"longer_name\": # Placeholder is \"%rel_skriptplaceholders_longer_name%\"",
 			"\t\tif the length of the name of the first player > the length of the name of the second player:",
 				"\t\t\tset the result to the name of the first player",
 			"\t\telse:",
-				"\t\t\tset the result to the name of the second player"
+				"\t\t\tset the result to the name of the second player",
 })
 @Since("1.7.0")
 public class ExprRelationalPlaceholderPlayers extends SimpleExpression<Player> {

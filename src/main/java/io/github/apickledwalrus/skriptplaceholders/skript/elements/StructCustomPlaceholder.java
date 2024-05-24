@@ -36,16 +36,16 @@ import org.skriptlang.skript.lang.structure.Structure;
 	"The code will be executed every time the placeholder plugin requests a value for the placeholder."
 })
 @Examples({
-	"on placeholderapi placeholder request for the prefix \"skriptplaceholders\":",
+	"placeholderapi placeholder with the prefix \"skriptplaceholders\":",
 		"\tif the identifier is \"author\": # Placeholder is \"%skriptplaceholders_author%\"",
 			"\t\tset the result to \"APickledWalrus\"",
-	"on placeholderapi placeholder request for the relational prefix \"skriptplaceholders\":",
+	"placeholderapi relational placeholder with the prefix \"skriptplaceholders\":",
 		"\tif the identifier is \"longer_name\": # Placeholder is \"%rel_skriptplaceholders_longer_name%\"",
 			"\t\tif the length of the name of the first player > the length of the name of the second player:",
 				"\t\t\tset the result to the name of the first player",
 			"\t\telse:",
 				"\t\t\tset the result to the name of the second player",
-	"on mvdw placeholder request for the placeholder \"skriptplaceholders_author\":",
+	"mvdw placeholder named \"skriptplaceholders_author\":",
 		"\t# Placeholder is \"{skriptplaceholders_author}\"",
 		"\tset the result to \"APickledWalrus\""
 })
@@ -139,7 +139,7 @@ public class StructCustomPlaceholder extends Structure implements PlaceholderEva
 	public @NotNull String toString(@Nullable Event event, boolean debug) {
 		switch (plugin) {
 			case PLACEHOLDER_API:
-				return "placeholderapi " + (isRelational ? "relational " : "") + "placeholder for the prefix " + placeholder;
+				return "placeholderapi " + (isRelational ? "relational " : "") + "placeholder with the prefix " + placeholder;
 			case MVDW_PLACEHOLDER_API:
 				return "mvdwplaceholderapi placeholder named " + placeholder;
 			default:

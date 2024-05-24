@@ -19,11 +19,11 @@ import org.jetbrains.annotations.Nullable;
 @Name("Placeholder")
 @Description("An expression to obtain the placeholder (or part of it) in a placeholder request event.")
 @Examples({
-	"on placeholderapi placeholder request for the prefix \"custom\":",
+	"placeholderapi placeholder with the prefix \"skriptplaceholders\":",
 		"\tbroadcast \"Placeholder: %the placeholder%\"",
 		"\tbroadcast \"Prefix: %the placeholder prefix%\"",
 		"\tbroadcast \"Identifier: %the placeholder identifier%\"",
-	"on mvdw placeholder request for the placeholder \"custom_hey\":",
+	"mvdw placeholder named \"skriptplaceholders_test\":",
 		"\tbroadcast \"Placeholder: %the placeholder%\""
 })
 @Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support)")

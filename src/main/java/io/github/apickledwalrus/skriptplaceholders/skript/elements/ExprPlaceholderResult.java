@@ -22,10 +22,10 @@ import org.jetbrains.annotations.Nullable;
 @Name("Placeholder Result")
 @Description("The value of a placeholder in a placeholder event. Can be set, reset, or deleted.")
 @Examples({
-	"on placeholderapi placeholder request for the prefix \"skriptplaceholders\":",
+	"placeholderapi placeholder with the prefix \"skriptplaceholders\":",
 		"\tif the identifier is \"author\": # Placeholder is \"%skriptplaceholders_author%\"",
 			"\t\tset the result to \"APickledWalrus\"",
-	"on mvdw placeholder request for the placeholder \"skriptplaceholders_author\":",
+	"mvdw placeholder named \"skriptplaceholders_author\":",
 		"\t# Placeholder is \"{skriptplaceholders_author}\"",
 		"\tset the result to \"APickledWalrus\""
 })
