@@ -16,6 +16,7 @@ public class MVdWPlaceholderAPIListener implements PlaceholderListener {
 	private final String placeholder;
 
 	private final Set<PlaceholderEvaluator> evaluators = new HashSet<>();
+	private boolean isInvalid;
 
 	public MVdWPlaceholderAPIListener(Plugin plugin, String placeholder) {
 		this.plugin = plugin;
@@ -25,6 +26,9 @@ public class MVdWPlaceholderAPIListener implements PlaceholderListener {
 	@Override
 	public void registerListener() {
 		PlaceholderAPI.registerPlaceholder(plugin, placeholder, event -> {
+			if (isInvalid) { // true when the listener has been unregistered
+				return null;
+			}
 			OfflinePlayer player = event.getPlayer();
 			if (player == null) { // this is for an actual offline player
 				player = event.getOfflinePlayer();
@@ -41,7 +45,7 @@ public class MVdWPlaceholderAPIListener implements PlaceholderListener {
 
 	@Override
 	public void unregisterListener() {
-		// TODO determine if this is possible
+		isInvalid = true;
 	}
 
 	@Override

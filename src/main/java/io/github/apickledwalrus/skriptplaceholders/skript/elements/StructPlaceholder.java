@@ -46,7 +46,7 @@ import java.util.List;
 		"\t# Placeholder is \"{skriptplaceholders_author}\"",
 		"\tset the result to \"APickledWalrus\""
 })
-@Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support)")
+@Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
 public class StructPlaceholder extends Structure implements PlaceholderEvaluator {
 
 	static {
