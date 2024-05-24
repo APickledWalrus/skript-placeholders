@@ -30,10 +30,6 @@ import org.skriptlang.skript.lang.entry.EntryContainer;
 import org.skriptlang.skript.lang.script.Script;
 import org.skriptlang.skript.lang.structure.Structure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @Name("Custom Placeholder")
 @Description({
 	"A structure for creating custom placeholders.",
@@ -58,8 +54,8 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 
 	static {
 		Skript.registerStructure(StructPlaceholder.class,
-				"[on] (placeholder[ ]api|papi) [placeholder] request (for|with) [the] [:relational] prefix[es] %*strings%",
-				"[on] (mvdw[ ]placeholder[ ]api|mvdw) [placeholder] request (for|with) [the] placeholder[s] %*strings%"
+				"(placeholder[ ]api|papi) [:relational] placeholder (with|for) [the] prefix %*string%",
+				"(mvdw[ ]placeholder[ ]api|mvdw) placeholder [with [the] name|named] %*string%"
 		);
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, new Getter<Player, PlaceholderEvent>() {
 			@Override
@@ -78,32 +74,29 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 
 	private PlaceholderRegistry registry;
 	private PlaceholderPlugin plugin;
-	private String[] placeholders;
+	private String placeholder;
 
 	private boolean isRelational;
 	private Trigger trigger;
 
 	@Override
 	public boolean init(Literal<?> @NotNull [] args, int matchedPattern, @NotNull ParseResult parseResult, @NotNull EntryContainer entryContainer) {
-		plugin = PlaceholderPlugin.values()[matchedPattern];
+		plugin = PlaceholderPlugin.values()[matchedPattern <= 1 ? matchedPattern : matchedPattern - 2];
 		if (!plugin.isInstalled()) {
-			Skript.error(plugin.getDisplayName() + " placeholders can not be requested because the plugin is not installed.");
+			Skript.error(plugin.getDisplayName() + " placeholders can not be created because the plugin is not installed.");
 			return false;
 		}
 
-		List<String> placeholders = new ArrayList<>();
 		//noinspection unchecked - Skript guarantees this will be a Literal<String>
-		for (String placeholder : ((Literal<String>) args[0]).getAll()) {
-			String error = plugin.validatePrefix(placeholder);
-			if (error != null) {
-				Skript.error(error);
-				return false;
-			}
-			placeholders.add(placeholder);
+		String placeholder = ((Literal<String>) args[0]).getSingle();
+		String error = plugin.validatePrefix(placeholder);
+		if (error != null) {
+			Skript.error(error);
+			return false;
 		}
+		this.placeholder = placeholder;
 
 		this.registry = SkriptPlaceholders.getInstance().getRegistry();
-		this.placeholders = placeholders.toArray(new String[0]);
 		this.isRelational = parseResult.hasTag("relational");
 
 		return true;
@@ -115,7 +108,7 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		Script script = parser.getCurrentScript();
 		SectionNode source = getEntryContainer().getSource();
 
-		parser.setCurrentEvent("placeholder request", isRelational ? RelationalPlaceholderEvent.class : PlaceholderEvent.class);
+		parser.setCurrentEvent("custom placeholder", isRelational ? RelationalPlaceholderEvent.class : PlaceholderEvent.class);
 
 		// TODO better SkriptEvent?
 		//noinspection ConstantConditions - getCurrentEventName will not be null as we set it right before
@@ -127,14 +120,10 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 		// see https://github.com/APickledWalrus/skript-placeholders/issues/40
 		// ensure registration is on the main thread
 		if (Bukkit.isPrimaryThread()) {
-			for (String placeholder : placeholders) {
-				registry.registerPlaceholder(plugin, placeholder, this);
-			}
+			registry.registerPlaceholder(plugin, placeholder, this);
 		} else {
 			Bukkit.getScheduler().runTask(SkriptPlaceholders.getInstance(), () -> {
-				for (String placeholder : placeholders) {
-					registry.registerPlaceholder(plugin, placeholder, this);
-				}
+				registry.registerPlaceholder(plugin, placeholder, this);
 			});
 		}
 
@@ -143,20 +132,16 @@ public class StructPlaceholder extends Structure implements PlaceholderEvaluator
 
 	@Override
 	public void unload() {
-		for (String placeholder : placeholders) {
-			registry.unregisterPlaceholder(plugin, placeholder, this);
-		}
+		registry.unregisterPlaceholder(plugin, placeholder, this);
 	}
 
 	@Override
 	public @NotNull String toString(@Nullable Event event, boolean debug) {
-		String placeholders = Arrays.toString(this.placeholders);
-		placeholders = placeholders.substring(1, placeholders.length() - 1); // Trim off the ends
 		switch (plugin) {
 			case PLACEHOLDER_API:
-				return "placeholderapi request for the prefixes " + placeholders;
+				return "placeholderapi " + (isRelational ? "relational " : "") + "placeholder for the prefix " + placeholder;
 			case MVDW_PLACEHOLDER_API:
-				return "mvdwplaceholderapi request for the placeholders " + placeholders;
+				return "mvdwplaceholderapi placeholder named " + placeholder;
 			default:
 				throw new IllegalArgumentException("Unable to handle PlaceholderPlugin: " + plugin);
 		}
