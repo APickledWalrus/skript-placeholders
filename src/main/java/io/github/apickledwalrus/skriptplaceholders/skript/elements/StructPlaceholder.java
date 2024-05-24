@@ -42,6 +42,12 @@ import java.util.List;
 	"on placeholderapi placeholder request for the prefix \"skriptplaceholders\":",
 		"\tif the identifier is \"author\": # Placeholder is \"%skriptplaceholders_author%\"",
 			"\t\tset the result to \"APickledWalrus\"",
+	"on placeholderapi placeholder request for the relational prefix \"skriptplaceholders\":",
+		"\tif the identifier is \"rel_longer_name\": # Placeholder is \"%skriptplaceholders_author%\"",
+			"\t\tif the length of the name of the first player > the length of the name of the second player:",
+				"\t\t\tset the result to the name of the first player",
+			"\t\telse:",
+				"\t\t\tset the result to the name of the second player",
 	"on mvdw placeholder request for the placeholder \"skriptplaceholders_author\":",
 		"\t# Placeholder is \"{skriptplaceholders_author}\"",
 		"\tset the result to \"APickledWalrus\""
