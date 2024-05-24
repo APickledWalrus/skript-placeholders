@@ -35,12 +35,12 @@ import java.util.List;
 			"\tsend \"Status: %{_status}%\" to the player"
 })
 @Since("1.0.0, 1.2.0 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
-public class ExprParsePlaceholder extends SimpleExpression<String> {
+public class ExprPlaceholderValue extends SimpleExpression<String> {
 
 	static {
-		Skript.registerExpression(ExprParsePlaceholder.class, String.class, ExpressionType.COMBINED,
-				"[the] ([value of] [:relational] placeholder[s]|[:relational] placeholder [value] [of]) %strings% [(from|of) %-players/offlineplayers%]",
-				"parse [:relational] placeholder[s] %strings% [(for|as) %-players/offlineplayers%]"
+		Skript.registerExpression(ExprPlaceholderValue.class, String.class, ExpressionType.COMBINED,
+				"[the] [value of] [:relational] placeholder[s] %strings% [(for|from|of) %-players/offlineplayers%]",
+				"placeholder[s] %strings%'[s] value [(for|from|of) %-players/offlineplayers%]"
 		);
 	}
 
@@ -134,7 +134,7 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 		string.append(placeholders.isSingle() ? "placeholder " : "placeholders ");
 		string.append(placeholders.toString(event, debug));
 		if (players != null) {
-			string.append(" from ").append(players.toString(event, debug));
+			string.append(" for ").append(players.toString(event, debug));
 		}
 		return string.toString();
 	}
