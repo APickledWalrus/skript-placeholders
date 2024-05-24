@@ -38,7 +38,7 @@ public class ExprPlaceholderValue extends SimpleExpression<String> {
 
 	static {
 		Skript.registerExpression(ExprPlaceholderValue.class, String.class, ExpressionType.COMBINED,
-				"[the] [value of] [:relational] placeholder[s] %strings% [(for|from|of) %-players/offlineplayers%]",
+				"[the] [value of [the]] [:relational] placeholder[s] %strings% [(for|from|of) %-players/offlineplayers%]",
 				"placeholder[s] %strings%'[s] value [(for|from|of) %-players/offlineplayers%]"
 		);
 	}
