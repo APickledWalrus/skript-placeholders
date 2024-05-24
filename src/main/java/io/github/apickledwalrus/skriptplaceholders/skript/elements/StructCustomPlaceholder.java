@@ -50,10 +50,10 @@ import org.skriptlang.skript.lang.structure.Structure;
 		"\tset the result to \"APickledWalrus\""
 })
 @Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
-public class StructPlaceholder extends Structure implements PlaceholderEvaluator {
+public class StructCustomPlaceholder extends Structure implements PlaceholderEvaluator {
 
 	static {
-		Skript.registerStructure(StructPlaceholder.class,
+		Skript.registerStructure(StructCustomPlaceholder.class,
 				"(placeholder[ ]api|papi) [:relational] placeholder (with|for) [the] prefix %*string%",
 				"(mvdw[ ]placeholder[ ]api|mvdw) placeholder [with [the] name|named] %*string%"
 		);

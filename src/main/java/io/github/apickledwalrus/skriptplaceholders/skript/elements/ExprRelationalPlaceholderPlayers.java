@@ -27,10 +27,10 @@ import org.jetbrains.annotations.Nullable;
 				"\t\t\tset the result to the name of the second player"
 })
 @Since("1.7.0")
-public class ExprRelationalPlayers extends SimpleExpression<Player> {
+public class ExprRelationalPlaceholderPlayers extends SimpleExpression<Player> {
 
 	static {
-		Skript.registerExpression(ExprRelationalPlayers.class, Player.class, ExpressionType.SIMPLE,
+		Skript.registerExpression(ExprRelationalPlaceholderPlayers.class, Player.class, ExpressionType.SIMPLE,
 				"[the] first player",
 				"[the] second player"
 		);

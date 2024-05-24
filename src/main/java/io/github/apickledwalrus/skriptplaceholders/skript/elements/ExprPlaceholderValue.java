@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Name("Value of Placeholder")
+@Name("Placeholder Value")
 @Description("An expression to obtain the value of a placeholder from a supported plugin.")
 @Examples({
 	"command /ping <player>:",
