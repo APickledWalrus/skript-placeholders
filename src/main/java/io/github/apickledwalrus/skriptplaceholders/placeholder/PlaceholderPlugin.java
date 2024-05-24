@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -51,6 +52,23 @@ public enum PlaceholderPlugin {
 			}
 			return value;
 		}
+
+		@Override
+		public boolean supportsRelationalPlaceholders() {
+			return true;
+		}
+
+		@Override
+		public @Nullable String parseRelationalPlaceholder(String placeholder, Player one, Player two) {
+			if (placeholder.indexOf('%') == -1) { // Try to add percentage signs manually
+				placeholder = "%" + placeholder + "%";
+			}
+			String value = me.clip.placeholderapi.PlaceholderAPI.setRelationalPlaceholders(one, two, placeholder);
+			if (value.isEmpty() || value.equalsIgnoreCase(placeholder)) {
+				return null;
+			}
+			return value;
+		}
 	},
 	MVDW_PLACEHOLDER_API("MVdWPlaceholderAPI", Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI")) {
 		@Override
@@ -79,6 +97,11 @@ public enum PlaceholderPlugin {
 			}
 			return null;
 		}
+
+		@Override
+		public boolean supportsRelationalPlaceholders() {
+			return false;
+		}
 	};
 
 	private static final Collection<PlaceholderPlugin> INSTALLED_PLUGINS = Arrays.stream(values())
@@ -101,14 +124,14 @@ public enum PlaceholderPlugin {
 	}
 
 	/**
-	 * @return A display name representing the placeholder plugin.
+	 * @return A display name representing this placeholder plugin.
 	 */
 	public final String getDisplayName() {
 		return displayName;
 	}
 
 	/**
-	 * @return Whether the placeholder plugin is installed on the server.
+	 * @return Whether this placeholder plugin is installed on the server.
 	 */
 	public final boolean isInstalled() {
 		return installed;
@@ -133,5 +156,18 @@ public enum PlaceholderPlugin {
 	 * @return The value of the placeholder for the given player (if provided).
 	 */
 	public abstract @Nullable String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player);
+
+	/**
+	 * Relational placeholders are placeholders where the result is based on two players.
+	 * @return Whether this placeholder plugin supports the usage of relational placeholders.
+	 */
+	public abstract boolean supportsRelationalPlaceholders();
+
+	public @Nullable String parseRelationalPlaceholder(String placeholder, Player one, Player two) {
+		if (!supportsRelationalPlaceholders()) {
+			throw new UnsupportedOperationException("The '" + getDisplayName() + "' placeholder plugin does not support relational placeholders.");
+		}
+		throw new RuntimeException("The '" + getDisplayName() + "' is missing an implementation for relational placeholders.");
+	}
 
 }

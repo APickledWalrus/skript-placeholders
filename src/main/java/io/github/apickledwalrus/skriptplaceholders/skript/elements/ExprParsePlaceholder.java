@@ -12,6 +12,7 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderPlugin;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -24,37 +25,64 @@ import java.util.List;
 @Examples({
 	"command /ping <player>:",
 		"\ttrigger:",
-			"\t\tset {_ping} to placeholder \"player_ping\" from arg-1 # PlaceholderAPI",
-			"\t\tset {_ping} to placeholder \"{ping}\" from arg-1 # MVdWPlaceholderAPI",
-			"\t\tsend \"Ping of %arg-1%: %{_ping}%\" to player"
+			"\t\tset {_ping} to the placeholder \"player_ping\" from arg-1 # PlaceholderAPI",
+			"\t\tset {_ping} to the placeholder \"{ping}\" from arg-1 # MVdWPlaceholderAPI",
+			"\t\tsend \"Ping of %arg-1%: %{_ping}%\" to the player",
+	"",
+	"command /friend status <player> <player>:",
+		"\ttrigger:",
+			"\tset {_status} to the relational placeholder \"friendship_status\" from arg-1 and arg-2",
+			"\tsend \"Status: %{_status}%\" to the player"
 })
-@Since("1.0, 1.2 (MVdWPlaceholderAPI support)")
+@Since("1.0, 1.2 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
 public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	static {
 		Skript.registerExpression(ExprParsePlaceholder.class, String.class, ExpressionType.COMBINED,
-				"[the] ([value of] placeholder[s]|placeholder [value] [of]) %strings% [(from|of) %-players/offlineplayers%]",
-				"parse placeholder[s] %strings% [(for|as) %-players/offlineplayers%]"
+				"[the] ([value of] [:relational] placeholder[s]|[:relational] placeholder [value] [of]) %strings% [(from|of) %-players/offlineplayers%]",
+				"parse [:relational] placeholder[s] %strings% [(for|as) %-players/offlineplayers%]"
 		);
 	}
 
+	private boolean isRelational;
 	private Expression<String> placeholders;
 	@Nullable
 	private Expression<OfflinePlayer> players;
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public boolean init(Expression<?>[] exprs, int matchedPattern, @NotNull Kleenean isDelayed, @NotNull ParseResult parseResult) {
+		isRelational = parseResult.hasTag("relational");
 		placeholders = (Expression<String>) exprs[0];
 		players = (Expression<OfflinePlayer>) exprs[1];
+
+		if (isRelational && (players == null || players.isSingle())) {
+			Skript.error("There must be two players provided to use relational placeholders.");
+			return false;
+		}
+
 		return true;
 	}
 
 	@Override
 	protected String @NotNull [] get(@NotNull Event event) {
-		List<String> values = new ArrayList<>();
 		String[] placeholders = this.placeholders.getArray(event);
 		OfflinePlayer[] players = this.players != null ? this.players.getArray(event) : new OfflinePlayer[]{null};
+		if (isRelational) {
+			if (players.length == 2) {
+				Player one = players[0].getPlayer();
+				Player two = players[1].getPlayer();
+				if (one != null && two != null) { // both are online
+					return parseRelationalPlaceholders(placeholders, one, two);
+				}
+			}
+			return new String[0];
+		}
+		return parsePlaceholders(placeholders, players);
+	}
+
+	private static String[] parsePlaceholders(String[] placeholders, @Nullable OfflinePlayer[] players) {
+		List<String> values = new ArrayList<>();
 		for (OfflinePlayer player : players) {
 			for (String placeholder : placeholders) {
 				for (PlaceholderPlugin plugin : PlaceholderPlugin.getInstalledPlugins()) {
@@ -69,9 +97,27 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 		return values.toArray(new String[0]);
 	}
 
+	private static String[] parseRelationalPlaceholders(String[] placeholders, Player one, Player two) {
+		List<String> values = new ArrayList<>();
+		for (String placeholder : placeholders) {
+			for (PlaceholderPlugin plugin : PlaceholderPlugin.getInstalledPlugins()) {
+				if (!plugin.supportsRelationalPlaceholders()) {
+					continue;
+				}
+				String value = plugin.parseRelationalPlaceholder(placeholder, one, two);
+				if (value != null) {
+					values.add(value);
+					break;
+				}
+			}
+		}
+		return values.toArray(new String[0]);
+	}
+
 	@Override
 	public boolean isSingle() {
-		return placeholders.isSingle() && (players == null || players.isSingle());
+		// single if there is one placeholder, and it is relational OR there is only one player
+		return placeholders.isSingle() && (isRelational || players == null || players.isSingle());
 	}
 
 	@Override
@@ -81,8 +127,16 @@ public class ExprParsePlaceholder extends SimpleExpression<String> {
 
 	@Override
 	public @NotNull String toString(@Nullable Event event, boolean debug) {
-		return "the value of placeholder(s) " + placeholders.toString(event, debug)
-				+ (players != null ? " from " + players.toString(event, debug) : "");
+		StringBuilder string = new StringBuilder("the value of ");
+		if (isRelational) {
+			string.append("relational ");
+		}
+		string.append(placeholders.isSingle() ? "placeholder " : "placeholders ");
+		string.append(placeholders.toString(event, debug));
+		if (players != null) {
+			string.append(" from ").append(players.toString(event, debug));
+		}
+		return string.toString();
 	}
 
 }
