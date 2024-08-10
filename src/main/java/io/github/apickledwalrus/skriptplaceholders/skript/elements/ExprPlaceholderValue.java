@@ -84,11 +84,12 @@ public class ExprPlaceholderValue extends SimpleExpression<String> {
 		List<String> values = new ArrayList<>();
 		for (OfflinePlayer player : players) {
 			for (String placeholder : placeholders) {
+				// try to find a plugin this placeholder works for
 				for (PlaceholderPlugin plugin : PlaceholderPlugin.getInstalledPlugins()) {
 					String value = plugin.parsePlaceholder(placeholder, player);
 					if (value != null) {
 						values.add(value);
-						break;
+						break; // worked with this plugin, move onto next placeholder
 					}
 				}
 			}
@@ -99,6 +100,7 @@ public class ExprPlaceholderValue extends SimpleExpression<String> {
 	private static String[] parseRelationalPlaceholders(String[] placeholders, Player one, Player two) {
 		List<String> values = new ArrayList<>();
 		for (String placeholder : placeholders) {
+			// try to find a plugin this placeholder works for
 			for (PlaceholderPlugin plugin : PlaceholderPlugin.getInstalledPlugins()) {
 				if (!plugin.supportsRelationalPlaceholders()) {
 					continue;
@@ -106,7 +108,7 @@ public class ExprPlaceholderValue extends SimpleExpression<String> {
 				String value = plugin.parseRelationalPlaceholder(placeholder, one, two);
 				if (value != null) {
 					values.add(value);
-					break;
+					break; // worked with this plugin, move onto next placeholder
 				}
 			}
 		}

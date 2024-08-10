@@ -1,6 +1,7 @@
 package io.github.apickledwalrus.skriptplaceholders.skript;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * An event to be used by Skript for passing context regarding relational placeholders during execution.
@@ -15,7 +16,7 @@ public class RelationalPlaceholderEvent extends PlaceholderEvent {
 	}
 
 	@Override
-	public Player getPlayer() {
+	public @NotNull Player getPlayer() {
 		//noinspection ConstantConditions - player is passed up as NotNull
 		return super.getPlayer().getPlayer();
 	}

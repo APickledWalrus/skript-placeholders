@@ -155,8 +155,7 @@ public class StructCustomPlaceholder extends Structure implements PlaceholderEva
 	}
 
 	@Override
-	@Nullable
-	public String evaluate(String placeholder, @Nullable OfflinePlayer player) {
+	public @Nullable String evaluate(String placeholder, @Nullable OfflinePlayer player) {
 		if (isRelational) { // a relational placeholder structure cannot evaluate non-relational placeholders
 			return null;
 		}
