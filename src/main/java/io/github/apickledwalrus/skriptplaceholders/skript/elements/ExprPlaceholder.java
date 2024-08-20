@@ -16,6 +16,8 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
+
 @Name("Placeholder")
 @Description("An expression to obtain the placeholder (or part of it) in a placeholder request event.")
 @Examples({
@@ -47,11 +49,11 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 
 	@Override
 	public boolean init(Expression<?> @NotNull [] exprs, int matchedPattern, @NotNull Kleenean isDelayed, @NotNull ParseResult parseResult) {
+		this.part = PlaceholderPart.values()[parseResult.mark];
 		if (!getParser().isCurrentEvent(PlaceholderEvent.class)) {
-			Skript.error("'the placeholder' can only be used in custom placeholders");
+			Skript.error("'the " + part.name().toLowerCase(Locale.ENGLISH) + "' can only be used in custom placeholders");
 			return false;
 		}
-		this.part = PlaceholderPart.values()[parseResult.mark];
 		return true;
 	}
 
