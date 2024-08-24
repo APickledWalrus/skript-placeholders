@@ -54,8 +54,8 @@ public class StructCustomPlaceholder extends Structure implements PlaceholderEva
 
 	static {
 		Skript.registerStructure(StructCustomPlaceholder.class,
-				"(placeholder[ ]api|papi) [:relational] placeholder (with|for) [the] prefix %*string%",
-				"(mvdw[ ]placeholder[ ]api|mvdw) placeholder [with [the] name|named] %*string%"
+				"(placeholder[ ]api|papi) [:relational] placeholder [request] (with|for) [the] prefix %*string%",
+				"(mvdw[ ]placeholder[ ]api|mvdw) placeholder [request] [with [the] name|named] %*string%"
 		);
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, new Getter<Player, PlaceholderEvent>() {
 			@Override
