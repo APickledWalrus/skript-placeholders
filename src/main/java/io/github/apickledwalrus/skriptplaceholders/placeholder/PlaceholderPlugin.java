@@ -1,7 +1,6 @@
 package io.github.apickledwalrus.skriptplaceholders.placeholder;
 
 import ch.njol.skript.Skript;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -21,7 +20,7 @@ public enum PlaceholderPlugin {
 
 		@Override
 		public @Nullable String validatePrefix(String prefix) {
-			if (StringUtils.isBlank(prefix)) {
+			if (prefix.isBlank()) {
 				return "A prefix cannot be blank";
 			}
 			for (char character : prefix.toCharArray()) {
@@ -73,7 +72,7 @@ public enum PlaceholderPlugin {
 	MVDW_PLACEHOLDER_API("MVdWPlaceholderAPI", Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI")) {
 		@Override
 		public @Nullable String validatePrefix(String prefix) {
-			if (StringUtils.isBlank(prefix)) {
+			if (prefix.isBlank()) {
 				return "A placeholder cannot be blank";
 			}
 			return null;

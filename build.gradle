@@ -8,7 +8,7 @@ compileJava.options.encoding = 'UTF-8'
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
@@ -23,12 +23,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
-    implementation ('com.github.SkriptLang:Skript:2.7.3') {
+    implementation group: 'org.jetbrains', name: 'annotations', version: '24.1.0'
+    implementation 'org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT'
+    implementation ('com.github.SkriptLang:Skript:2.10.2') {
         transitive = false
     }
-    implementation ('me.clip:placeholderapi:2.11.6')
-    implementation('be.maximvdw:MVdWPlaceholderAPI:3.0.1-SNAPSHOT') {
+    implementation ('me.clip:placeholderapi:2.12.2')
+    implementation('be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT') {
     	transitive = false
     }
 }
