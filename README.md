@@ -2,7 +2,7 @@
 Placeholder integration for Skript.
 
 > [!IMPORTANT]
-> This addon requires Skript 2.7.3 or newer.
+> This addon requires Skript 2.10.2 or newer.
 > While this addon does not frequently receive updates, it is still compatible with the latest Skript versions and should function without issue.
 > If you encounter errors of any kind, please report them using the [issues tab](https://github.com/APickledWalrus/skript-placeholders/issues).
 
