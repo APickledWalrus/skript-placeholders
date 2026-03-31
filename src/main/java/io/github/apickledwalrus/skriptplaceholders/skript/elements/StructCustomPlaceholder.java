@@ -13,7 +13,6 @@ import ch.njol.skript.lang.Trigger;
 import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.EventValues;
-import ch.njol.skript.util.Getter;
 import io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderEvaluator;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderRegistry;
@@ -57,21 +56,14 @@ public class StructCustomPlaceholder extends Structure implements PlaceholderEva
 				"(placeholder[ ]api|papi) [:relational] placeholder (with|for) [the] prefix %*string%",
 				"(mvdw[ ]placeholder[ ]api|mvdw) placeholder [with [the] name|named] %*string%"
 		);
-		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, new Getter<Player, PlaceholderEvent>() {
-			@Override
-			public Player get(PlaceholderEvent event) {
-				OfflinePlayer player = event.getPlayer();
-				return player != null ? player.getPlayer() : null;
-			}
-		}, EventValues.TIME_NOW);
-		EventValues.registerEventValue(PlaceholderEvent.class, OfflinePlayer.class, new Getter<OfflinePlayer, PlaceholderEvent>() {
-			@Override
-			public OfflinePlayer get(PlaceholderEvent event) {
-				return event.getPlayer();
-			}
-		}, EventValues.TIME_NOW);
+		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, event -> {
+			OfflinePlayer player = event.getPlayer();
+			return player != null ? player.getPlayer() : null;
+		});
+		EventValues.registerEventValue(PlaceholderEvent.class, OfflinePlayer.class, PlaceholderEvent::getPlayer);
 	}
 
+	private SectionNode source;
 	private PlaceholderRegistry registry;
 	private PlaceholderPlugin plugin;
 	private String placeholder;
@@ -80,7 +72,7 @@ public class StructCustomPlaceholder extends Structure implements PlaceholderEva
 	private Trigger trigger;
 
 	@Override
-	public boolean init(Literal<?> @NotNull [] args, int matchedPattern, @NotNull ParseResult parseResult, @NotNull EntryContainer entryContainer) {
+	public boolean init(Literal<?> @NotNull [] args, int matchedPattern, @NotNull ParseResult parseResult, @Nullable EntryContainer entryContainer) {
 		plugin = PlaceholderPlugin.values()[matchedPattern <= 1 ? matchedPattern : matchedPattern - 2];
 		if (!plugin.isInstalled()) {
 			Skript.error(plugin.getDisplayName() + " placeholders can not be created because the plugin is not installed.");
@@ -94,6 +86,8 @@ public class StructCustomPlaceholder extends Structure implements PlaceholderEva
 			Skript.error(error);
 			return false;
 		}
+		assert entryContainer != null; // only null for simple structures
+		this.source = entryContainer.getSource();
 		this.placeholder = placeholder;
 
 		this.registry = SkriptPlaceholders.getInstance().getRegistry();
@@ -106,7 +100,6 @@ public class StructCustomPlaceholder extends Structure implements PlaceholderEva
 	public boolean load() {
 		ParserInstance parser = getParser();
 		Script script = parser.getCurrentScript();
-		SectionNode source = getEntryContainer().getSource();
 
 		parser.setCurrentEvent("custom placeholder", isRelational ? RelationalPlaceholderEvent.class : PlaceholderEvent.class);
 
