@@ -1,8 +1,16 @@
 name: skript-placeholders
 main: io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders
-api-version: 1.13
 version: @version@
-authors: [APickledWalrus, Pikachu920]
+api-version: '1.21.1'
+folia-supported: true
+authors: [APickledWalrus]
 description: Allows using and registering placeholders with PlaceholderAPI in Skript.
 website: https://github.com/APickledWalrus/skript-placeholders
-softdepend: [Skript, PlaceholderAPI]
+dependencies:
+  server:
+    Skript:
+      load: BEFORE
+      required: false
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
