@@ -49,19 +49,13 @@ import org.skriptlang.skript.registration.SyntaxRegistry;
 			else:
 				set the result to the name of the second player
 	""")
-@Example("""
-	mvdw placeholder named "skriptplaceholders_author":
-		# Placeholder is "{skriptplaceholders_author}"
-		set the result to "APickledWalrus"
-	""")
-@Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
+@Since({"1.0.0", "1.7.0 (PAPI relational placeholder support)"})
 public class StructCustomPlaceholder extends Structure implements PlaceholderEvaluator {
 
 	public static void register(SyntaxRegistry syntaxRegistry) {
 		syntaxRegistry.register(SyntaxRegistry.STRUCTURE, SyntaxInfo.Structure.builder(StructCustomPlaceholder.class)
 			.supplier(StructCustomPlaceholder::new)
-			.addPatterns("(placeholder[ ]api|papi) [:relational] placeholder (with|for) [the] prefix %*string%",
-				"(mvdw[ ]placeholder[ ]api|mvdw) placeholder [with [the] name|named] %*string%")
+			.addPattern("(placeholder[ ]api|papi) [:relational] placeholder (with|for) [the] prefix %*string%")
 			.build());
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, event -> {
 			OfflinePlayer player = event.getPlayer();
@@ -147,7 +141,6 @@ public class StructCustomPlaceholder extends Structure implements PlaceholderEva
 		return switch (plugin) {
 			case PLACEHOLDER_API ->
 				"placeholderapi " + (isRelational ? "relational " : "") + "placeholder with the prefix " + placeholder;
-			case MVDW_PLACEHOLDER_API -> "mvdwplaceholderapi placeholder named " + placeholder;
 		};
 	}
 

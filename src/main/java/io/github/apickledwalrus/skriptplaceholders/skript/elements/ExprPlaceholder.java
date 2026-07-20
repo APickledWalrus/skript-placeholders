@@ -27,11 +27,7 @@ import java.util.Locale;
 		broadcast "Prefix: %the placeholder prefix%"
 		broadcast "Identifier: %the placeholder identifier%"
 	""")
-@Example("""
-	mvdw placeholder named "skriptplaceholders_test":
-		broadcast "Placeholder: %the placeholder%"
-	""")
-@Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support)")
+@Since("1.0.0")
 @Events("Placeholder Request")
 public class ExprPlaceholder extends SimpleExpression<String> {
 

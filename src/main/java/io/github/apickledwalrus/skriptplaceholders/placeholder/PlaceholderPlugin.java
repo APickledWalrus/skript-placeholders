@@ -68,39 +68,6 @@ public enum PlaceholderPlugin {
 			}
 			return value;
 		}
-	},
-	MVDW_PLACEHOLDER_API("MVdWPlaceholderAPI", Skript.classExists("be.maximvdw.placeholderapi.PlaceholderAPI")) {
-		@Override
-		public @Nullable String validatePrefix(String prefix) {
-			if (prefix.isBlank()) {
-				return "A placeholder cannot be blank";
-			}
-			return null;
-		}
-
-		@Override
-		PlaceholderListener registerPlaceholder(Plugin plugin, String placeholder) {
-			PlaceholderListener listener = new MVdWPlaceholderAPIListener(plugin, placeholder);
-			listener.registerListener();
-			return listener;
-		}
-
-		@Override
-		public @Nullable String parsePlaceholder(String placeholder, @Nullable OfflinePlayer player) {
-			if (placeholder.charAt(0) == '{' && placeholder.charAt(placeholder.length() - 1) == '}') {
-				String value = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, placeholder);
-				if (value.isEmpty() || value.equalsIgnoreCase(placeholder)) {
-					return null;
-				}
-				return value;
-			}
-			return null;
-		}
-
-		@Override
-		public boolean supportsRelationalPlaceholders() {
-			return false;
-		}
 	};
 
 	private static final Collection<PlaceholderPlugin> INSTALLED_PLUGINS = Arrays.stream(values())

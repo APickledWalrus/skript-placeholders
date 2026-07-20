@@ -17,7 +17,6 @@ repositories {
     maven { url = 'https://repo.skriptlang.org/releases' }
     maven { url = 'https://repo.papermc.io/repository/maven-public/' }
     maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
-    maven { url = 'https://repo.mvdw-software.com/content/groups/public/' }
 }
 
 dependencies {
@@ -28,9 +27,6 @@ dependencies {
         transitive = false
     }
     implementation ('me.clip:placeholderapi:2.12.3')
-    implementation('be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT') {
-    	transitive = false
-    }
 }
 
 processResources {

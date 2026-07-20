@@ -6,9 +6,8 @@ Placeholder integration for Skript.
 > While this addon does not frequently receive updates, it is still compatible with the latest Skript versions and should function without issue.
 > If you encounter errors of any kind, please report them using the [issues tab](https://github.com/APickledWalrus/skript-placeholders/issues).
 
-This addon allows you to use and register placeholders with PlaceholderAPI and/or MVdWPlaceholderAPI.
-For this addon to work, you must have PlaceholderAPI or MVdWPlaceholderAPI installed.
-Please note that you must have an MVdW plugin for MVdWPlaceholderAPI to function.
+This addon allows you to use and register placeholders with PlaceholderAPI.
+For this addon to work, you must have PlaceholderAPI installed.
 
 This addon is a fork of [Ersatz (by Pikachu)](https://github.com/Pikachu920/Ersatz) which has been updated to work with PlaceholderAPI's new PlaceholderExpansion system and adds new features.
 
@@ -19,10 +18,6 @@ This addon is a fork of [Ersatz (by Pikachu)](https://github.com/Pikachu920/Ersa
 **PlaceholderAPI:** https://www.spigotmc.org/resources/placeholderapi.6245/
 
 **PlaceholderAPI Placeholders:** https://github.com/PlaceholderAPI/PlaceholderAPI/wiki/Placeholders
-
-**MVdWPlaceholderAPI:** https://www.spigotmc.org/resources/mvdwplaceholderapi.11182/
-
-**MVdWPlaceholderAPI Placeholders:** https://www.spigotmc.org/wiki/mvdw-placeholders/
 
 **SkUnity Resource Listing:** https://forums.skunity.com/resources/skript-placeholders.909/
 

@@ -27,12 +27,7 @@ import org.skriptlang.skript.registration.SyntaxRegistry;
 		if the identifier is "author": # Placeholder is "%skriptplaceholders_author%"
 			set the result to "APickledWalrus"
 	""")
-@Example("""
-	mvdw placeholder named "skriptplaceholders_author":
-		# Placeholder is "{skriptplaceholders_author}"
-		set the result to "APickledWalrus"
-	""")
-@Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support), 1.6.0 (using any type support)")
+@Since({"1.0.0", "1.6.0 (using any type support)"})
 @Events("Placeholder Request")
 public class ExprPlaceholderResult extends SimpleExpression<String> {
 

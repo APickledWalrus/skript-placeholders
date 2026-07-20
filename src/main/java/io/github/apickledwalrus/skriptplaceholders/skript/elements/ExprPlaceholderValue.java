@@ -28,7 +28,6 @@ import java.util.List;
 	command /ping <player>:
 		trigger:
 			set {_ping} to the placeholder "player_ping" from arg-1 # PlaceholderAPI
-			set {_ping} to the placeholder "{ping}" from arg-1 # MVdWPlaceholderAPI
 			send "Ping of %arg-1%: %{_ping}%" to the player
 	""")
 @Example("""
@@ -37,7 +36,7 @@ import java.util.List;
 			set {_status} to the relational placeholder "rel_friendship_status" from arg-1 and arg-2
 			send "Status: %{_status}%" to the player
 	""")
-@Since("1.0.0, 1.2.0 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
+@Since({"1.0.0", "1.7.0 (PAPI relational placeholder support)"})
 public class ExprPlaceholderValue extends SimpleExpression<String> {
 
 	public static void register(SyntaxRegistry syntaxRegistry) {

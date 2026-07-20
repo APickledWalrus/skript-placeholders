@@ -3,6 +3,6 @@ main: io.github.apickledwalrus.skriptplaceholders.SkriptPlaceholders
 api-version: 1.13
 version: @version@
 authors: [APickledWalrus, Pikachu920]
-description: Allows using and registering placeholders with PlaceholderAPI and MVdWPlaceholderAPI in Skript.
+description: Allows using and registering placeholders with PlaceholderAPI in Skript.
 website: https://github.com/APickledWalrus/skript-placeholders
-softdepend: [Skript, PlaceholderAPI, MVdWPlaceholderAPI]
+softdepend: [Skript, PlaceholderAPI]
