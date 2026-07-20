@@ -4,7 +4,7 @@ import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
 import ch.njol.skript.config.SectionNode;
 import ch.njol.skript.doc.Description;
-import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Example;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
@@ -28,34 +28,41 @@ import org.jetbrains.annotations.Nullable;
 import org.skriptlang.skript.lang.entry.EntryContainer;
 import org.skriptlang.skript.lang.script.Script;
 import org.skriptlang.skript.lang.structure.Structure;
+import org.skriptlang.skript.registration.SyntaxInfo;
+import org.skriptlang.skript.registration.SyntaxRegistry;
 
 @Name("Custom Placeholder")
 @Description({
 	"A structure for creating custom placeholders.",
 	"The code will be executed every time the placeholder plugin requests a value for the placeholder."
 })
-@Examples({
-	"placeholderapi placeholder with the prefix \"skriptplaceholders\":",
-		"\tif the identifier is \"author\": # Placeholder is \"%skriptplaceholders_author%\"",
-			"\t\tset the result to \"APickledWalrus\"",
-	"placeholderapi relational placeholder with the prefix \"skriptplaceholders\":",
-		"\tif the identifier is \"longer_name\": # Placeholder is \"%rel_skriptplaceholders_longer_name%\"",
-			"\t\tif the length of the name of the first player > the length of the name of the second player:",
-				"\t\t\tset the result to the name of the first player",
-			"\t\telse:",
-				"\t\t\tset the result to the name of the second player",
-	"mvdw placeholder named \"skriptplaceholders_author\":",
-		"\t# Placeholder is \"{skriptplaceholders_author}\"",
-		"\tset the result to \"APickledWalrus\""
-})
+@Example("""
+	placeholderapi placeholder with the prefix "skriptplaceholders":
+		if the identifier is "author": # Placeholder is "%skriptplaceholders_author%":
+			set the result to "APickledWalrus"
+	""")
+@Example("""
+	placeholderapi relational placeholder with the prefix "skriptplaceholders":
+		if the identifier is "longer_name": # Placeholder is "%rel_skriptplaceholders_longer_name%"
+			if the length of the name of the first player > the length of the name of the second player:
+				set the result to the name of the first player
+			else:
+				set the result to the name of the second player
+	""")
+@Example("""
+	mvdw placeholder named "skriptplaceholders_author":
+		# Placeholder is "{skriptplaceholders_author}"
+		set the result to "APickledWalrus"
+	""")
 @Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
 public class StructCustomPlaceholder extends Structure implements PlaceholderEvaluator {
 
-	static {
-		Skript.registerStructure(StructCustomPlaceholder.class,
-				"(placeholder[ ]api|papi) [:relational] placeholder (with|for) [the] prefix %*string%",
-				"(mvdw[ ]placeholder[ ]api|mvdw) placeholder [with [the] name|named] %*string%"
-		);
+	public static void register(SyntaxRegistry syntaxRegistry) {
+		syntaxRegistry.register(SyntaxRegistry.STRUCTURE, SyntaxInfo.Structure.builder(StructCustomPlaceholder.class)
+			.supplier(StructCustomPlaceholder::new)
+			.addPatterns("(placeholder[ ]api|papi) [:relational] placeholder (with|for) [the] prefix %*string%",
+				"(mvdw[ ]placeholder[ ]api|mvdw) placeholder [with [the] name|named] %*string%")
+			.build());
 		EventValues.registerEventValue(PlaceholderEvent.class, Player.class, event -> {
 			OfflinePlayer player = event.getPlayer();
 			return player != null ? player.getPlayer() : null;
@@ -137,14 +144,11 @@ public class StructCustomPlaceholder extends Structure implements PlaceholderEva
 
 	@Override
 	public @NotNull String toString(@Nullable Event event, boolean debug) {
-		switch (plugin) {
-			case PLACEHOLDER_API:
-				return "placeholderapi " + (isRelational ? "relational " : "") + "placeholder with the prefix " + placeholder;
-			case MVDW_PLACEHOLDER_API:
-				return "mvdwplaceholderapi placeholder named " + placeholder;
-			default:
-				throw new IllegalArgumentException("Unable to handle PlaceholderPlugin: " + plugin);
-		}
+		return switch (plugin) {
+			case PLACEHOLDER_API ->
+				"placeholderapi " + (isRelational ? "relational " : "") + "placeholder with the prefix " + placeholder;
+			case MVDW_PLACEHOLDER_API -> "mvdwplaceholderapi placeholder named " + placeholder;
+		};
 	}
 
 	@Override

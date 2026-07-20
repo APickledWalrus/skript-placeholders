@@ -2,11 +2,10 @@ package io.github.apickledwalrus.skriptplaceholders.skript.elements;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
-import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Example;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
@@ -15,25 +14,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.skriptlang.skript.registration.SyntaxInfo;
+import org.skriptlang.skript.registration.SyntaxRegistry;
 
 @Name("Relational Placeholder Players")
 @Description("The two players involved in a relational placeholder request.")
-@Examples({
-	"placeholderapi relational placeholder with the prefix \"skriptplaceholders\":",
-		"\tif the identifier is \"longer_name\": # Placeholder is \"%rel_skriptplaceholders_longer_name%\"",
-			"\t\tif the length of the name of the first player > the length of the name of the second player:",
-				"\t\t\tset the result to the name of the first player",
-			"\t\telse:",
-				"\t\t\tset the result to the name of the second player",
-})
+@Example("""
+	placeholderapi relational placeholder with the prefix "skriptplaceholders":
+		if the identifier is "longer_name": # Placeholder is "%rel_skriptplaceholders_longer_name%"
+			if the length of the name of the first player > the length of the name of the second player:
+				set the result to the name of the first player
+			else:
+				set the result to the name of the second player
+	""")
 @Since("1.7.0")
 public class ExprRelationalPlaceholderPlayers extends SimpleExpression<Player> {
 
-	static {
-		Skript.registerExpression(ExprRelationalPlaceholderPlayers.class, Player.class, ExpressionType.SIMPLE,
-				"[the] first player",
-				"[the] second player"
-		);
+	public static void register(SyntaxRegistry syntaxRegistry) {
+		syntaxRegistry.register(SyntaxRegistry.EXPRESSION, SyntaxInfo.Expression.builder(ExprRelationalPlaceholderPlayers.class, Player.class)
+			.supplier(ExprRelationalPlaceholderPlayers::new)
+			.addPatterns("[the] first player",
+				"[the] second player")
+			.build());
 	}
 
 	private boolean first;
@@ -49,12 +51,9 @@ public class ExprRelationalPlaceholderPlayers extends SimpleExpression<Player> {
 	}
 
 	@Override
-	protected Player @NotNull [] get(@NotNull Event e) {
-		if (!(e instanceof RelationalPlaceholderEvent)) {
-			return new Player[0];
-		}
-		RelationalPlaceholderEvent event = (RelationalPlaceholderEvent) e;
-		return new Player[]{first ? event.getPlayer() : event.getOther()};
+	protected Player @NotNull [] get(@NotNull Event event) {
+		RelationalPlaceholderEvent placeholderEvent = (RelationalPlaceholderEvent) event;
+		return new Player[]{first ? placeholderEvent.getPlayer() : placeholderEvent.getOther()};
 	}
 
 	@Override

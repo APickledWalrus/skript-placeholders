@@ -2,12 +2,12 @@ package io.github.apickledwalrus.skriptplaceholders.skript.elements;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
-import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Example;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.lang.SyntaxStringBuilder;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import io.github.apickledwalrus.skriptplaceholders.placeholder.PlaceholderPlugin;
@@ -16,31 +16,36 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.skriptlang.skript.registration.SyntaxInfo;
+import org.skriptlang.skript.registration.SyntaxRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Name("Placeholder Value")
 @Description("An expression to obtain the value of a placeholder from a supported plugin.")
-@Examples({
-	"command /ping <player>:",
-		"\ttrigger:",
-			"\t\tset {_ping} to the placeholder \"player_ping\" from arg-1 # PlaceholderAPI",
-			"\t\tset {_ping} to the placeholder \"{ping}\" from arg-1 # MVdWPlaceholderAPI",
-			"\t\tsend \"Ping of %arg-1%: %{_ping}%\" to the player",
-	"command /friend status <player> <player>:",
-		"\ttrigger:",
-			"\tset {_status} to the relational placeholder \"rel_friendship_status\" from arg-1 and arg-2",
-			"\tsend \"Status: %{_status}%\" to the player"
-})
+@Example("""
+	command /ping <player>:
+		trigger:
+			set {_ping} to the placeholder "player_ping" from arg-1 # PlaceholderAPI
+			set {_ping} to the placeholder "{ping}" from arg-1 # MVdWPlaceholderAPI
+			send "Ping of %arg-1%: %{_ping}%" to the player
+	""")
+@Example("""
+	command /friend status <player> <player>:
+		trigger:
+			set {_status} to the relational placeholder "rel_friendship_status" from arg-1 and arg-2
+			send "Status: %{_status}%" to the player
+	""")
 @Since("1.0.0, 1.2.0 (MVdWPlaceholderAPI support), 1.7.0 (relational placeholder support)")
 public class ExprPlaceholderValue extends SimpleExpression<String> {
 
-	static {
-		Skript.registerExpression(ExprPlaceholderValue.class, String.class, ExpressionType.COMBINED,
-				"[the] [value[s] of [the]] [:relational] placeholder[s] [in] %strings% [(for|from|of) %-players/offlineplayers%]",
-				"[:relational] placeholder[s] %strings%'[s] value[s] [(for|from|of) %-players/offlineplayers%]"
-		);
+	public static void register(SyntaxRegistry syntaxRegistry) {
+		syntaxRegistry.register(SyntaxRegistry.EXPRESSION, SyntaxInfo.Expression.builder(ExprPlaceholderValue.class, String.class)
+			.supplier(ExprPlaceholderValue::new)
+			.addPatterns("[the] [value[s] of [the]] [:relational] placeholder[s] [in] %strings% [(for|from|of) %-players/offlineplayers%]",
+				"[:relational] placeholder[s] %strings%'[s] value[s] [(for|from|of) %-players/offlineplayers%]")
+			.build());
 	}
 
 	private boolean isRelational;
@@ -128,16 +133,12 @@ public class ExprPlaceholderValue extends SimpleExpression<String> {
 
 	@Override
 	public @NotNull String toString(@Nullable Event event, boolean debug) {
-		StringBuilder string = new StringBuilder("the value of ");
-		if (isRelational) {
-			string.append("relational ");
-		}
-		string.append(placeholders.isSingle() ? "placeholder " : "placeholders ");
-		string.append(placeholders.toString(event, debug));
-		if (players != null) {
-			string.append(" for ").append(players.toString(event, debug));
-		}
-		return string.toString();
+		return new SyntaxStringBuilder(event, debug)
+			.append("the value of")
+			.appendIf(isRelational, "relational")
+			.append(placeholders.isSingle() ? "placeholder" : "placeholders", placeholders)
+			.appendIf(players != null, "for", players)
+			.toString();
 	}
 
 }

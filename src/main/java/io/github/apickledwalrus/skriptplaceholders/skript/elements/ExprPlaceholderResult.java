@@ -4,11 +4,10 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer.ChangeMode;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Events;
-import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Example;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.registrations.Classes;
@@ -18,25 +17,30 @@ import io.github.apickledwalrus.skriptplaceholders.skript.PlaceholderEvent;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.skriptlang.skript.registration.SyntaxInfo;
+import org.skriptlang.skript.registration.SyntaxRegistry;
 
 @Name("Placeholder Result")
 @Description("The value of a placeholder in a placeholder event. Can be set, reset, or deleted.")
-@Examples({
-	"placeholderapi placeholder with the prefix \"skriptplaceholders\":",
-		"\tif the identifier is \"author\": # Placeholder is \"%skriptplaceholders_author%\"",
-			"\t\tset the result to \"APickledWalrus\"",
-	"mvdw placeholder named \"skriptplaceholders_author\":",
-		"\t# Placeholder is \"{skriptplaceholders_author}\"",
-		"\tset the result to \"APickledWalrus\""
-})
+@Example("""
+	placeholderapi placeholder with the prefix "skriptplaceholders":
+		if the identifier is "author": # Placeholder is "%skriptplaceholders_author%"
+			set the result to "APickledWalrus"
+	""")
+@Example("""
+	mvdw placeholder named "skriptplaceholders_author":
+		# Placeholder is "{skriptplaceholders_author}"
+		set the result to "APickledWalrus"
+	""")
 @Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support), 1.6.0 (using any type support)")
 @Events("Placeholder Request")
 public class ExprPlaceholderResult extends SimpleExpression<String> {
 
-	static {
-		Skript.registerExpression(ExprPlaceholderResult.class, String.class, ExpressionType.SIMPLE,
-				"[the] [placeholder] result"
-		);
+	public static void register(SyntaxRegistry syntaxRegistry) {
+		syntaxRegistry.register(SyntaxRegistry.EXPRESSION, SyntaxInfo.Expression.builder(ExprPlaceholderResult.class, String.class)
+			.supplier(ExprPlaceholderResult::new)
+			.addPattern("[the] [placeholder] result")
+			.build());
 	}
 
 	@Override
@@ -54,36 +58,24 @@ public class ExprPlaceholderResult extends SimpleExpression<String> {
 	}
 
 	@Override
-	public Class<?> @NotNull [] acceptChange(ChangeMode mode) {
-		switch (mode) {
-			case SET:
-			case DELETE:
-			case RESET:
-				return CollectionUtils.array(Object.class);
-			default:
-				//noinspection ConstantConditions - Skript annotated this wrong
-				return null;
-		}
+	public Class<?> @Nullable [] acceptChange(ChangeMode mode) {
+		return switch (mode) {
+			case SET, DELETE, RESET -> CollectionUtils.array(Object.class);
+			default -> null;
+		};
 	}
 
 	@Override
-	public void change(@NotNull Event event, Object @NotNull [] delta, ChangeMode mode) {
-		PlaceholderEvent placeholderEvent = ((PlaceholderEvent) event);
-		switch (mode) {
-			case SET:
-				if (delta[0] instanceof String) {
-					placeholderEvent.setResult((String) delta[0]);
-				} else {
-					placeholderEvent.setResult(Classes.toString(delta[0]));
-				}
-				break;
-			case DELETE:
-			case RESET:
-				placeholderEvent.setResult(null);
-				break;
-			default:
-				assert false;
+	public void change(@NotNull Event event, Object @Nullable [] delta, ChangeMode mode) {
+		String result = null;
+		if (delta != null) {
+			if (delta[0] instanceof String string) {
+				result = string;
+			} else {
+				result = Classes.toString(delta[0]);
+			}
 		}
+		((PlaceholderEvent) event).setResult(result);
 	}
 
 	@Override

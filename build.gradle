@@ -8,27 +8,26 @@ compileJava.options.encoding = 'UTF-8'
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
 repositories {
     mavenCentral()
-    maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-    maven { url 'https://jitpack.io' }
-    maven { url 'https://repo.skriptlang.org/releases' }
-    maven { url 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
-    maven { url 'https://repo.mvdw-software.com/content/groups/public/' }
+    maven { url = 'https://repo.skriptlang.org/releases' }
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url = 'https://repo.mvdw-software.com/content/groups/public/' }
 }
 
 dependencies {
-    implementation group: 'org.jetbrains', name: 'annotations', version: '24.1.0'
-    implementation 'org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT'
-    implementation ('com.github.SkriptLang:Skript:2.10.2') {
+    implementation group: 'org.jetbrains', name: 'annotations', version: '26.0.1'
+    implementation group: 'com.google.code.findbugs', name: 'findbugs', version: '3.0.1'
+    implementation group: 'io.papermc.paper', name: 'paper-api', version: '1.21.1-R0.1-SNAPSHOT'
+    implementation ('com.github.SkriptLang:Skript:2.14.3') {
         transitive = false
     }
-    implementation ('me.clip:placeholderapi:2.12.2')
+    implementation ('me.clip:placeholderapi:2.12.3')
     implementation('be.maximvdw:MVdWPlaceholderAPI:3.1.1-SNAPSHOT') {
     	transitive = false
     }

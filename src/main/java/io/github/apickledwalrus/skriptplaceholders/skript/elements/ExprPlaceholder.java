@@ -3,11 +3,10 @@ package io.github.apickledwalrus.skriptplaceholders.skript.elements;
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Events;
-import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Example;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
@@ -15,28 +14,33 @@ import io.github.apickledwalrus.skriptplaceholders.skript.PlaceholderEvent;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.skriptlang.skript.registration.SyntaxInfo;
+import org.skriptlang.skript.registration.SyntaxRegistry;
 
 import java.util.Locale;
 
 @Name("Placeholder")
 @Description("An expression to obtain the placeholder (or part of it) in a placeholder request event.")
-@Examples({
-	"placeholderapi placeholder with the prefix \"skriptplaceholders\":",
-		"\tbroadcast \"Placeholder: %the placeholder%\"",
-		"\tbroadcast \"Prefix: %the placeholder prefix%\"",
-		"\tbroadcast \"Identifier: %the placeholder identifier%\"",
-	"mvdw placeholder named \"skriptplaceholders_test\":",
-		"\tbroadcast \"Placeholder: %the placeholder%\""
-})
+@Example("""
+	placeholderapi placeholder with the prefix "skriptplaceholders":
+		broadcast "Placeholder: %the placeholder%"
+		broadcast "Prefix: %the placeholder prefix%"
+		broadcast "Identifier: %the placeholder identifier%"
+	""")
+@Example("""
+	mvdw placeholder named "skriptplaceholders_test":
+		broadcast "Placeholder: %the placeholder%"
+	""")
 @Since("1.0.0, 1.3.0 (MVdWPlaceholderAPI support)")
 @Events("Placeholder Request")
 public class ExprPlaceholder extends SimpleExpression<String> {
 
-	static {
-		Skript.registerExpression(ExprPlaceholder.class, String.class, ExpressionType.SIMPLE,
-				"[the] placeholder",
-				"[the] [placeholder] (1:prefix|2:identifier)"
-		);
+	public static void register(SyntaxRegistry syntaxRegistry) {
+		syntaxRegistry.register(SyntaxRegistry.EXPRESSION, SyntaxInfo.Expression.builder(ExprPlaceholder.class, String.class)
+			.supplier(ExprPlaceholder::new)
+			.addPatterns("[the] placeholder",
+				"[the] [placeholder] (1:prefix|2:identifier)")
+			.build());
 	}
 
 	private enum PlaceholderPart {
@@ -59,22 +63,18 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 
 	@Override
 	protected String @NotNull [] get(@NotNull Event event) {
-		if (!(event instanceof PlaceholderEvent)) {
-			return new String[0];
-		}
 		PlaceholderEvent placeholderEvent = (PlaceholderEvent) event;
-		switch (part) {
-			case PLACEHOLDER:
-				return new String[]{placeholderEvent.getPlaceholder()};
-			case PREFIX:
+		return switch (part) {
+			case PLACEHOLDER -> new String[]{placeholderEvent.getPlaceholder()};
+			case PREFIX -> {
 				String prefix = placeholderEvent.getPrefix();
-				return prefix != null ? new String[]{prefix} : new String[0];
-			case IDENTIFIER:
+				yield prefix != null ? new String[]{prefix} : new String[0];
+			}
+			case IDENTIFIER -> {
 				String identifier = placeholderEvent.getIdentifier();
-				return identifier != null ? new String[]{identifier} : new String[0];
-			default:
-				throw new IllegalArgumentException("Unable to handle PlaceholderPart: " + part);
-		}
+				yield identifier != null ? new String[]{identifier} : new String[0];
+			}
+		};
 	}
 
 	@Override
@@ -89,16 +89,11 @@ public class ExprPlaceholder extends SimpleExpression<String> {
 
 	@Override
 	public @NotNull String toString(@Nullable Event event, boolean debug) {
-		switch (part) {
-			case PLACEHOLDER:
-				return "the placeholder";
-			case PREFIX:
-				return "the placeholder prefix";
-			case IDENTIFIER:
-				return "the placeholder identifier";
-			default:
-				throw new IllegalArgumentException("Unable to handle PlaceholderPart: " + part);
-		}
+		return switch (part) {
+			case PLACEHOLDER -> "the placeholder";
+			case PREFIX -> "the placeholder prefix";
+			case IDENTIFIER -> "the placeholder identifier";
+		};
 	}
 
 }
